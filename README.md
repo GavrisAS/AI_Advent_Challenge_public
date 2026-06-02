@@ -1,2 +1,2 @@
 # AI_Advent_Challenge_public
-Журнал прохождения AI Advent Challenge #8
+Публичный журнал прохождения AI Advent Challenge #8
