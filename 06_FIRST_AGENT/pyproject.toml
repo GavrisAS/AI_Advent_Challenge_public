@@ -1,0 +1,9 @@
+[project]
+name = "day6-first-agent"
+version = "0.1.0"
+description = "Day 6: first stateful LLM agent for AI Advent Challenge"
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+day6-agent = "ai_advent_agent.cli:main"
