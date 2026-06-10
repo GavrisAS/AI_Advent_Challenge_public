@@ -1,0 +1,10 @@
+[project]
+name = "day8-token-agent"
+version = "0.1.0"
+description = "Day 8: token-aware persistent-context LLM agent for AI Advent Challenge"
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+day8-agent = "ai_advent_agent.cli:main"
+day8-scenarios = "ai_advent_agent.scenarios:main"
