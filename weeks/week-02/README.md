@@ -11,6 +11,7 @@
 | day-06 | First Agent | done | [day-06-first-agent](day-06-first-agent/) |
 | day-07 | Save Context | done | [day-07-save-context](day-07-save-context/) |
 | day-08 | Tokens Accounting | done | [day-08-tokens-accounting](day-08-tokens-accounting/) |
+| day-09 | Context Management Summary | done | [day-09-context-management-summary](day-09-context-management-summary/) |
 
 ## Ключевые навыки недели
 
@@ -21,4 +22,4 @@
 
 ## Итоги недели
 
-Дни 6–8 выполнены и перенесены как исторические snapshot. Дни 9–10 пока перенесены как условия для следующих реализаций.
+Дни 6–9 выполнены и имеют snapshot/артефакты. День 10 пока перенесён как условие для следующей реализации.

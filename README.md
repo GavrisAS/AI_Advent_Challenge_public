@@ -14,6 +14,7 @@
 | Week 02 | 06 | First Agent | done | [Открыть](weeks/week-02/day-06-first-agent/) |
 | Week 02 | 07 | Save Context | done | [Открыть](weeks/week-02/day-07-save-context/) |
 | Week 02 | 08 | Tokens Accounting | done | [Открыть](weeks/week-02/day-08-tokens-accounting/) |
+| Week 02 | 09 | Context Management Summary | done | [Открыть](weeks/week-02/day-09-context-management-summary/) |
 
 ## Структура репозитория
 
