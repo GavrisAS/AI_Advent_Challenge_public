@@ -32,7 +32,6 @@
 ```text
 .
 ├── README.md
-├── codex-log.md
 ├── snapshot/
 │   ├── .env.example
 │   └── ANSWER_FORMAT.py

@@ -31,7 +31,6 @@
 ```text
 .
 ├── README.md
-├── codex-log.md
 ├── snapshot/
 │   ├── .env.example
 │   └── LLM_REST_API.py

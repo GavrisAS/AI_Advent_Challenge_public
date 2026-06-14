@@ -4,11 +4,6 @@
 
 Первая неделя посвящена базовой работе с LLM через API: REST-вызовам, формату ответа, стратегиям рассуждения, temperature и сравнению моделей.
 
-## Связанные лекции
-
-- [AI Prompting — подробный конспект](../../learning/lectures/notes/01-ai-prompting-notes.md)
-- [AI Prompting — summary](../../learning/lectures/summaries/01-ai-prompting-summary.md)
-
 ## Задания недели
 
 | День | Тема | Статус | Папка |

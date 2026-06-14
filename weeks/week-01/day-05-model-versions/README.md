@@ -45,7 +45,6 @@
 ```text
 .
 ├── README.md
-├── codex-log.md
 ├── snapshot/
 │   ├── .env.example
 │   └── MODEL_VERSIONS.py

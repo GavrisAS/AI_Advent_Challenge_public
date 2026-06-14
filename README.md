@@ -6,16 +6,14 @@
 
 | Неделя | День | Тема | Статус | Ссылка |
 |---|---:|---|---|---|
-| week-01 | 01 | llm rest api | done | [Открыть](weeks/week-01/day-01-llm-rest-api/) |
-| week-01 | 02 | answer format | done | [Открыть](weeks/week-01/day-02-answer-format/) |
-| week-01 | 03 | reasoning | done | [Открыть](weeks/week-01/day-03-reasoning/) |
-| week-01 | 04 | temperature | done | [Открыть](weeks/week-01/day-04-temperature/) |
-| week-01 | 05 | model versions | done | [Открыть](weeks/week-01/day-05-model-versions/) |
-| week-02 | 06 | first agent | done | [Открыть](weeks/week-02/day-06-first-agent/) |
-| week-02 | 07 | save context | done | [Открыть](weeks/week-02/day-07-save-context/) |
-| week-02 | 08 | tokens accounting | done | [Открыть](weeks/week-02/day-08-tokens-accounting/) |
-| week-02 | 09 | context management summary | done | [Открыть](weeks/week-02/day-09-context-management-summary/) |
-| week-02 | 10 | context management strategies | done | [Открыть](weeks/week-02/day-10-context-management-strategies/) |
+| Week 01 | 01 | LLM REST API | done | [Открыть](weeks/week-01/day-01-llm-rest-api/) |
+| Week 01 | 02 | Answer Format | done | [Открыть](weeks/week-01/day-02-answer-format/) |
+| Week 01 | 03 | Reasoning | done | [Открыть](weeks/week-01/day-03-reasoning/) |
+| Week 01 | 04 | Temperature | done | [Открыть](weeks/week-01/day-04-temperature/) |
+| Week 01 | 05 | Model Versions | done | [Открыть](weeks/week-01/day-05-model-versions/) |
+| Week 02 | 06 | First Agent | done | [Открыть](weeks/week-02/day-06-first-agent/) |
+| Week 02 | 07 | Save Context | done | [Открыть](weeks/week-02/day-07-save-context/) |
+| Week 02 | 08 | Tokens Accounting | done | [Открыть](weeks/week-02/day-08-tokens-accounting/) |
 
 ## Структура репозитория
 
