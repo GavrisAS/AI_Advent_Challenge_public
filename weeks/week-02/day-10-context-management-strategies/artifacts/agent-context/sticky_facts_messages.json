@@ -1,0 +1,41 @@
+{
+  "message_count": 9,
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты полезный AI-ассистент. Отвечай на русском языке. Давай практичный, структурированный и проверяемый ответ."
+    },
+    {
+      "role": "system",
+      "content": "Sticky facts:\n- goal: Собрать ТЗ на AI-агента для поддержки инженера в репозитории; проект Atlas Agent.\n- constraints: Не отправлять приватные файлы наружу; не делать commit без подтверждения.\n- preferences: Ответы на русском, коротко, с конкретными командами.\n- decisions: Основной интерфейс CLI; состояние хранится в JSON; token reports в JSONL.\n- agreements: Offline-сценарии не требуют API key."
+    },
+    {
+      "role": "user",
+      "content": "Договорённость: offline-сценарии не требуют API key."
+    },
+    {
+      "role": "assistant",
+      "content": "Зафиксировал offline-режим без API key."
+    },
+    {
+      "role": "user",
+      "content": "В ветке A сравним простой deterministic planner."
+    },
+    {
+      "role": "assistant",
+      "content": "Ветка A будет про deterministic planner."
+    },
+    {
+      "role": "user",
+      "content": "В ветке B сравним planner с LLM-based extraction фактов."
+    },
+    {
+      "role": "assistant",
+      "content": "Ветка B будет про LLM-based extraction."
+    },
+    {
+      "role": "user",
+      "content": "Собери итоговое ТЗ и не потеряй ранние ограничения проекта."
+    }
+  ]
+}

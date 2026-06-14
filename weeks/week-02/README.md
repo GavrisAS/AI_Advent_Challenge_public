@@ -12,6 +12,7 @@
 | day-07 | Save Context | done | [day-07-save-context](day-07-save-context/) |
 | day-08 | Tokens Accounting | done | [day-08-tokens-accounting](day-08-tokens-accounting/) |
 | day-09 | Context Management Summary | done | [day-09-context-management-summary](day-09-context-management-summary/) |
+| day-10 | Context Management Strategies | done | [day-10-context-management-strategies](day-10-context-management-strategies/) |
 
 ## Ключевые навыки недели
 
@@ -22,4 +23,4 @@
 
 ## Итоги недели
 
-Дни 6–9 выполнены и имеют snapshot/артефакты. День 10 пока перенесён как условие для следующей реализации.
+Дни 6–10 выполнены и имеют snapshot/артефакты. Неделя 02 закрывает базовую линию agent context management: persistence, token accounting, summary memory и стратегии без summary.

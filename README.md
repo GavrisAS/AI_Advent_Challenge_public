@@ -15,6 +15,7 @@
 | Week 02 | 07 | Save Context | done | [Открыть](weeks/week-02/day-07-save-context/) |
 | Week 02 | 08 | Tokens Accounting | done | [Открыть](weeks/week-02/day-08-tokens-accounting/) |
 | Week 02 | 09 | Context Management Summary | done | [Открыть](weeks/week-02/day-09-context-management-summary/) |
+| Week 02 | 10 | Context Management Strategies | done | [Открыть](weeks/week-02/day-10-context-management-strategies/) |
 
 ## Структура репозитория
 
