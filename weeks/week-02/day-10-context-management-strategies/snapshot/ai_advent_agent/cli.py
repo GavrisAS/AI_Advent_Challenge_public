@@ -683,7 +683,7 @@ def main(argv: list[str] | None = None) -> None:
     while True:
         try:
             user_text = input("Вы: ").strip()
-        except EOFError, KeyboardInterrupt:
+        except (EOFError, KeyboardInterrupt):
             print("\nВыход.")
             break
 

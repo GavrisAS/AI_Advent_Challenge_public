@@ -216,7 +216,7 @@ class SimpleAgent:
             self._update_facts_from_user_message(cleaned_input)
             preparation = self._prepare_messages_for_request(user_message)
             result = self.client.chat(preparation.request_messages, self.config)
-        except ContextOverflowError, DeepSeekError:
+        except (ContextOverflowError, DeepSeekError):
             self.messages = original_messages
             self.summary_memory = original_summary
             self.facts_memory = original_facts
@@ -716,7 +716,7 @@ class SimpleAgent:
             return None
         try:
             return int(value)
-        except TypeError, ValueError:
+        except (TypeError, ValueError):
             return None
 
     def _summary_tokens_in_request(self, messages: list[Message]) -> int:
