@@ -1,4 +1,7 @@
 # Day 07 — Save Context
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=1C-TPDf6MpkajEt8Xnb8Aq3riJsAisKI1)
 
 ## Исходное условие
 
@@ -45,10 +48,8 @@
 │   ├── pyproject.toml
 │   └── ai_advent_agent/
 ├── results/
-├── artifacts/
-│   └── agent-context/
-└── video/
-    └── day-07-save-context-demo.webm
+└── artifacts/
+    └── agent-context/
 ```
 
 ## Как запустить
@@ -71,10 +72,6 @@ python -m ai_advent_agent.cli
 ## Результаты
 
 - [Исторический JSON-контекст](artifacts/agent-context/messages.json)
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-07-save-context-demo.webm)
 
 ## Выводы
 

@@ -1,4 +1,7 @@
 # Day 04 — Temperature
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=1k1_C1DIlnLK4qxJqMV5m52PWf_wWQt-S)
 
 ## Исходное условие
 
@@ -41,9 +44,7 @@
 ├── results/
 │   ├── day4_temperature_results_20260607_215421.md
 │   └── day4_temperature_results_20260607_215421_filled.md
-├── artifacts/
-└── video/
-    └── day-04-temperature-demo.webm
+└── artifacts/
 ```
 
 ## Как запустить
@@ -61,10 +62,6 @@ python TEMPERATURE.py
 
 - [Сырой отчёт запуска](results/day4_temperature_results_20260607_215421.md)
 - [Заполненный отчёт со сравнением](results/day4_temperature_results_20260607_215421_filled.md)
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-04-temperature-demo.webm)
 
 ## Выводы
 

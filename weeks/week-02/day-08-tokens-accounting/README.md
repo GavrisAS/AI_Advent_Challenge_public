@@ -1,4 +1,7 @@
 # Day 08 — Tokens Accounting
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=1hWcVBHbaG2po9z2ksCkGmIG2od9GxanL)
 
 ## Исходное условие
 
@@ -54,11 +57,9 @@
 │   ├── ai_advent_agent/
 │   └── tests/
 ├── results/
-├── artifacts/
-│   ├── agent-context/
-│   └── skills-all.md
-└── video/
-    └── day-08-tokens-accounting-demo.webm
+└── artifacts/
+    ├── agent-context/
+    └── skills-all.md
 ```
 
 ## Как запустить
@@ -88,10 +89,6 @@ python -m unittest discover -s tests -v
 - [Исторический JSON-контекст](artifacts/agent-context/messages.json)
 - [Исторические token reports](artifacts/agent-context/token_reports.jsonl)
 - [Большой файл для проверки переполнения](artifacts/skills-all.md)
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-08-tokens-accounting-demo.webm)
 
 ## Выводы
 

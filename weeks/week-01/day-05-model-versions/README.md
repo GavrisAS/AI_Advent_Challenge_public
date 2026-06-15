@@ -1,4 +1,7 @@
 # Day 05 — Model Versions
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=15tc2qSqARPIUJEEhxygiHiZ1P2CpA3zv)
 
 ## Исходное условие
 
@@ -51,9 +54,7 @@
 ├── results/
 │   ├── day5_model_versions_results_20260607_223007.md
 │   └── day5_model_versions_results_20260607_223007_filled.md
-├── artifacts/
-└── video/
-    └── day-05-model-versions-demo.webm
+└── artifacts/
 ```
 
 ## Как запустить
@@ -71,10 +72,6 @@ python MODEL_VERSIONS.py
 
 - [Сырой отчёт запуска](results/day5_model_versions_results_20260607_223007.md)
 - [Заполненный отчёт со сравнением](results/day5_model_versions_results_20260607_223007_filled.md)
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-05-model-versions-demo.webm)
 
 ## Выводы
 

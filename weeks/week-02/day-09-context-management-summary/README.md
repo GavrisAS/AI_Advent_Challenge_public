@@ -1,4 +1,7 @@
 # Day 09 — Context Management Summary
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=1u4YAYo67XGNN2ngqpsGipbtcBWsB3W7Q)
 
 ## Исходное условие
 
@@ -65,12 +68,11 @@ CLI дополнен аргументами:
 │   └── tests/
 ├── results/
 │   └── day-09-summary-comparison.md
-├── artifacts/
-│   └── agent-context/
-│       ├── messages.json
-│       ├── summary.json
-│       └── token_reports.jsonl
-└── video/
+└── artifacts/
+    └── agent-context/
+        ├── messages.json
+        ├── summary.json
+        └── token_reports.jsonl
 ```
 
 ## Как запустить
@@ -129,10 +131,6 @@ uv run day9-agent \
 - [Демонстрационный token_reports.jsonl](artifacts/agent-context/token_reports.jsonl)
 
 Offline-сценарий показал снижение оценочного prompt с 3 569 до 614 токенов: 42 старых сообщения заменены summary, при этом ранний важный факт сохранён в compressed context.
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-09-context-management-summary-demo.webm)
 
 ## Выводы
 

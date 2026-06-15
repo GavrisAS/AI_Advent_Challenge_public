@@ -1,4 +1,7 @@
 # Day 06 — First Agent
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=1Jn3QCrsbSmHGBChmHMrQYXQ6EYYAUVEA)
 
 ## Исходное условие
 
@@ -50,9 +53,7 @@
 │   ├── pyproject.toml
 │   └── ai_advent_agent/
 ├── results/
-├── artifacts/
-└── video/
-    └── day-06-first-agent-demo.webm
+└── artifacts/
 ```
 
 ## Как запустить
@@ -73,10 +74,6 @@ python -m ai_advent_agent.cli
 ## Результаты
 
 Результат задания представлен самодостаточным snapshot и видео-отчётом. Отдельные файлы результатов для дня 6 не создавались.
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-06-first-agent-demo.webm)
 
 ## Выводы
 

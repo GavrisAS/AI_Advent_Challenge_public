@@ -1,4 +1,7 @@
 # Day 03 — Reasoning
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=1unKw8Aa2gHA3YLs0PPI48ZelDpa6MQHY)
 
 ## Исходное условие
 
@@ -44,9 +47,7 @@
 │   └── REASONING.py
 ├── results/
 │   └── day3_results_20260607_204013.md
-├── artifacts/
-└── video/
-    └── day-03-reasoning-demo.webm
+└── artifacts/
 ```
 
 ## Как запустить
@@ -65,10 +66,6 @@ python REASONING.py
 - [Исторический отчёт запуска](results/day3_results_20260607_204013.md)
 
 Новые запуски сохраняют Markdown-отчёты рядом со скриптом в `snapshot/`.
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-03-reasoning-demo.webm)
 
 ## Выводы
 

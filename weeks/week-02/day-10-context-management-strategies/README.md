@@ -1,4 +1,7 @@
 # Day 10 — Context Management Strategies
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=1e1NrlZqFp0cS10ybd4TIUkA8mzqCVfEn)
 
 ## Исходное условие
 
@@ -54,15 +57,14 @@ Summary memory Day 09 сохранена, но Day 10 comparison запуска�
 ├── snapshot/
 ├── results/
 │   └── day-10-context-strategies-comparison.md
-├── artifacts/
-│   └── agent-context/
-│       ├── branching_active_messages.json
-│       ├── branches.json
-│       ├── facts.json
-│       ├── sliding_window_messages.json
-│       ├── sticky_facts_messages.json
-│       └── token_reports.jsonl
-└── video/
+└── artifacts/
+    └── agent-context/
+        ├── branching_active_messages.json
+        ├── branches.json
+        ├── facts.json
+        ├── sliding_window_messages.json
+        ├── sticky_facts_messages.json
+        └── token_reports.jsonl
 ```
 
 ## Как запустить
@@ -155,10 +157,6 @@ uv run day10-agent \
 - [Демонстрационные runtime-артефакты](artifacts/agent-context/)
 
 Краткий вывод: sliding window дешевле, но теряет ранние требования; sticky facts устойчивее для целей, ограничений и предпочтений; branching удобен для независимого сравнения альтернатив от одного checkpoint.
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-10-context-management-strategies-demo.webm)
 
 ## Выводы
 

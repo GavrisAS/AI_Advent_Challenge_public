@@ -18,6 +18,14 @@ env/
 .env.*
 !.env.example
 
+# Videos are stored in Google Drive links, not in git/export
+weeks/**/video/
+*.webm
+*.mp4
+*.mov
+*.mkv
+*.avi
+
 # OS / IDE
 .DS_Store
 .idea/

@@ -1,4 +1,7 @@
 # Day 02 — Answer Format
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=1g4SxS-eBHxvBSdLeqhqpO3GoOhKhwbPy)
 
 ## Исходное условие
 
@@ -36,9 +39,7 @@
 │   ├── .env.example
 │   └── ANSWER_FORMAT.py
 ├── results/
-├── artifacts/
-└── video/
-    └── day-02-answer-format-demo.webm
+└── artifacts/
 ```
 
 ## Как запустить
@@ -53,10 +54,6 @@ python ANSWER_FORMAT.py
 ## Результаты
 
 Результат задания представлен демонстрационным скриптом и видео-отчётом. Отдельный файл сравнения для дня 2 не сохранялся.
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-02-answer-format-demo.webm)
 
 ## Выводы
 

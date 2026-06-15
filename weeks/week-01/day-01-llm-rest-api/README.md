@@ -1,4 +1,7 @@
 # Day 01 — LLM REST API
+## 🎥 Видео-отчёт
+
+> [▶️ Смотреть видео-отчёт](https://drive.google.com/open?id=19mGLknqhk82LCQfpXaUwgx05hbRG5LvW)
 
 ## Исходное условие
 
@@ -35,9 +38,7 @@
 │   ├── .env.example
 │   └── LLM_REST_API.py
 ├── results/
-├── artifacts/
-└── video/
-    └── day-01-llm-rest-api-demo.webm
+└── artifacts/
 ```
 
 ## Как запустить
@@ -52,10 +53,6 @@ python LLM_REST_API.py
 ## Результаты
 
 Результат задания представлен кодом в `snapshot/` и видео-отчётом. Отдельные Markdown-результаты для дня 1 не создавались.
-
-## Видео-отчёт
-
-- [Видео выполнения задания](video/day-01-llm-rest-api-demo.webm)
 
 ## Выводы
 
