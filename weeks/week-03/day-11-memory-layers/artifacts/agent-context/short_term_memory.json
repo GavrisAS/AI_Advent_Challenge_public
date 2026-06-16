@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "layer": "short_term",
+  "updated_at": "2026-06-16T09:53:26.972173+00:00",
+  "notes": [
+    "Пользователь уже уточнил, что важна демонстрация разделения файлов памяти."
+  ],
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Нужно показать short-term, working и long-term memory отдельно."
+    },
+    {
+      "role": "assistant",
+      "content": "Соберу prompt так, чтобы каждый слой был виден отдельно."
+    }
+  ]
+}

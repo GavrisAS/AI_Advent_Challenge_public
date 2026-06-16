@@ -1,0 +1,17 @@
+[project]
+name = "day11-memory-layers-agent"
+version = "0.1.0"
+description = "Day 11: explicit memory layers LLM agent for AI Advent Challenge"
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+day11-agent = "ai_advent_agent.cli:main"
+day11-scenarios = "ai_advent_agent.scenarios:main"
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["ai_advent_agent"]
