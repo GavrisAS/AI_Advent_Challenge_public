@@ -1,4 +1,4 @@
-"""CLI interface for the Day 8 token-aware persistent-context agent."""
+"""CLI interface for the current AI Advent Challenge training agent."""
 
 from __future__ import annotations
 
@@ -6,9 +6,15 @@ import argparse
 import os
 import sys
 from pathlib import Path
-from typing import cast
 
 from ai_advent_agent.agent import AgentResponse, ContextOverflowError, SimpleAgent
+from ai_advent_agent.commands import (
+    CommandCompleter,
+    CommandContext,
+    CommandRegistry,
+    CommandRouter,
+    build_command_registry,
+)
 from ai_advent_agent.config import (
     DEFAULT_API_URL,
     DEFAULT_BRANCHES_FILE,
@@ -28,9 +34,7 @@ from ai_advent_agent.config import (
     DEFAULT_WARN_CONTEXT_RATIO,
     DEFAULT_WORKING_MEMORY_FILE,
     AgentConfig,
-    AgentStrategy,
     ContextOverflowPolicy,
-    SummaryMode,
     parse_overflow_policy,
 )
 from ai_advent_agent.context_management import JsonBranchesStore, JsonFactsStore
@@ -40,7 +44,6 @@ from ai_advent_agent.memory_layers import (
     JsonKeyValueMemoryStore,
     JsonShortTermMemoryStore,
     MemoryEventStore,
-    parse_key_value_argument,
 )
 from ai_advent_agent.storage import ContextStorageError, JsonContextStore, JsonSummaryStore
 from ai_advent_agent.token_report import TokenReport, TokenReportStore
@@ -80,7 +83,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
 
     parser = argparse.ArgumentParser(
-        description="Day 8: LLM-агент с persistent context и подсчётом токенов."
+        description="Актуальный учебный LLM-агент AI Advent Challenge."
     )
     parser.add_argument("--model", default=os.getenv("DEEPSEEK_MODEL", DEFAULT_MODEL))
     parser.add_argument("--api-url", default=os.getenv("DEEPSEEK_API_URL", DEFAULT_API_URL))
@@ -238,6 +241,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Не выводить metadata после ответа.",
     )
+    parser.add_argument(
+        "--plain-input",
+        action="store_true",
+        help="Использовать обычный input без slash-command autocomplete menu.",
+    )
     return parser.parse_args(argv)
 
 
@@ -252,49 +260,6 @@ def require_api_key() -> str:
         )
         sys.exit(1)
     return api_key
-
-
-def print_help() -> None:
-    print(
-        "Команды:\n"
-        "  /help                         — показать подсказку\n"
-        "  /reset                        — очистить историю, context JSON и token reports\n"
-        "  /clear-context                — удалить JSON-файл контекста и token reports\n"
-        "  /history                      — показать количество сообщений в истории\n"
-        "  /history full                 — показать сохранённую историю сообщений\n"
-        "  /context                      — показать текущий режим контекста\n"
-        "  /memory                       — показать сводку всех memory layers\n"
-        "  /memory short                 — показать short-term memory\n"
-        "  /memory working               — показать working memory\n"
-        "  /memory long                  — показать long-term memory\n"
-        "  /remember short <text>        — сохранить short-term note\n"
-        "  /remember working <key>: <v>  — сохранить запись working memory\n"
-        "  /remember long <key>: <v>     — сохранить запись long-term memory\n"
-        "  /forget working <key>         — удалить запись working memory\n"
-        "  /forget long <key>            — удалить запись long-term memory\n"
-        "  /memory reset working         — очистить working memory\n"
-        "  /memory reset all --yes       — очистить все memory layers\n"
-        "  /facts                        — показать sticky facts\n"
-        "  /branches                     — показать ветки и checkpoints\n"
-        "  /checkpoint <name>            — создать checkpoint текущего состояния\n"
-        "  /branch <name>                — создать ветку от checkpoint или текущего состояния\n"
-        "  /switch <name>                — переключиться на ветку\n"
-        "  /summary                      — показать текущее summary memory\n"
-        "  /summary clear                — очистить summary memory\n"
-        "  /summary-mode off             — отключить summary memory\n"
-        "  /summary-mode llm             — включить LLM-summary memory\n"
-        "  /tokens                       — показать token breakdown текущей истории\n"
-        "  /last-report                  — показать последний token report\n"
-        "  /analyze-file <path>          — dry-run: оценить токены файла без отправки в API\n"
-        "  /ask-file <path>              — отправить содержимое файла в модель как user message\n"
-        "  /config                       — показать текущие настройки\n"
-        "  /strategy direct              — переключить стратегию на прямой ответ\n"
-        "  /strategy step_by_step        — переключить стратегию на пошаговый ответ\n"
-        "  /context-mode error           — не отправлять запрос при переполнении\n"
-        "  /context-mode no_trim         — отправить как есть и показать ошибку API\n"
-        "  /context-mode sliding_window  — удалять старые сообщения при переполнении\n"
-        "  /exit                         — выйти\n"
-    )
 
 
 def print_config(agent: SimpleAgent) -> None:
@@ -499,270 +464,14 @@ def print_key_value_memory(title: str, entries: dict[str, str]) -> None:
 
 
 def handle_command(command: str, agent: SimpleAgent, show_metadata: bool = True) -> bool:
-    normalized = command.strip()
-    lowered = normalized.lower()
-
-    try:
-        if lowered == "/help":
-            print_help()
-            return True
-
-        if lowered == "/reset":
-            agent.reset()
-            print(
-                "История, summary memory и token reports очищены. В JSON сохранён system prompt.\n"
-            )
-            return True
-
-        if lowered == "/clear-context":
-            agent.clear_context_file()
-            print(
-                "Файлы контекста, summary и token reports удалены. "
-                "Новая сессия начата с system prompt.\n"
-            )
-            return True
-
-        if lowered == "/history":
-            print_history_summary(agent.get_history())
-            return True
-
-        if lowered == "/history full":
-            print_history_full(agent.get_history())
-            return True
-
-        if lowered == "/context":
-            print(f"Файл контекста: {agent.context_path or 'сохранение отключено'}")
-            print(f"Context strategy: {agent.config.context_strategy}")
-            print(f"Recent messages limit: {agent.config.recent_messages_limit}")
-            print(f"Файл facts: {agent.facts_path or 'сохранение отключено'}")
-            print(f"Файл branches: {agent.branches_path or 'сохранение отключено'}")
-            print(f"Active branch: {agent.branch_memory.active_branch}")
-            print(f"Файл summary: {agent.summary_path or 'сохранение отключено'}")
-            print(f"Summary mode: {agent.config.summary_mode}")
-            print(f"Summary active: {agent.summary_memory.active}")
-            print(f"Summarized messages: {agent.summary_memory.summarized_message_count}")
-            print(
-                f"Файл short-term memory: {agent.short_term_memory_path or 'сохранение отключено'}"
-            )
-            print(f"Файл working memory: {agent.working_memory_path or 'сохранение отключено'}")
-            print(f"Файл long-term memory: {agent.long_term_memory_path or 'сохранение отключено'}")
-            print(f"Файл memory events: {agent.memory_events_path or 'логирование отключено'}")
-            print(f"Файл token reports: {agent.token_report_path or 'логирование отключено'}\n")
-            return True
-
-        if lowered == "/memory":
-            print_memory_summary(agent)
-            return True
-
-        if lowered in {"/memory short", "/memory working", "/memory long"}:
-            print_memory_layer(agent, lowered.removeprefix("/memory ").strip())
-            return True
-
-        if lowered == "/memory reset working":
-            agent.reset_working_memory()
-            print("Working memory очищена.\n")
-            return True
-
-        if lowered.startswith("/memory reset all"):
-            if lowered != "/memory reset all --yes":
-                print("Для очистки всех memory layers используйте: /memory reset all --yes\n")
-                return True
-            agent.reset_all_memory_layers()
-            print("Все memory layers очищены.\n")
-            return True
-
-        if lowered.startswith("/remember short"):
-            text = normalized[len("/remember short") :].strip()
-            if not text:
-                print("Использование: /remember short <text>\n")
-                return True
-            agent.remember_short(text)
-            print("Сохранено в short-term memory.\n")
-            return True
-
-        if lowered.startswith("/remember working"):
-            argument = normalized[len("/remember working") :].strip()
-            if not argument:
-                print("Использование: /remember working <key>: <value>\n")
-                return True
-            key, value = parse_key_value_argument(argument)
-            agent.remember_working(key, value)
-            print(f"Сохранено в working memory: {key}\n")
-            return True
-
-        if lowered.startswith("/remember long"):
-            argument = normalized[len("/remember long") :].strip()
-            if not argument:
-                print("Использование: /remember long <key>: <value>\n")
-                return True
-            key, value = parse_key_value_argument(argument)
-            agent.remember_long(key, value)
-            print(f"Сохранено в long-term memory: {key}\n")
-            return True
-
-        if lowered.startswith("/forget working"):
-            key = normalized[len("/forget working") :].strip()
-            if not key:
-                print("Использование: /forget working <key>\n")
-                return True
-            removed = agent.forget_working(key)
-            print(("Удалено" if removed else "Ключ не найден") + f" в working memory: {key}\n")
-            return True
-
-        if lowered.startswith("/forget long"):
-            key = normalized[len("/forget long") :].strip()
-            if not key:
-                print("Использование: /forget long <key>\n")
-                return True
-            removed = agent.forget_long(key)
-            print(("Удалено" if removed else "Ключ не найден") + f" в long-term memory: {key}\n")
-            return True
-
-        if lowered == "/facts":
-            facts = agent.facts_memory.normalized()
-            if not agent.facts_memory.active:
-                print("Sticky facts пустые.\n")
-            else:
-                print("Sticky facts:")
-                for key, value in facts.items():
-                    if value.strip():
-                        print(f"  {key}: {value}")
-                print()
-            return True
-
-        if lowered == "/branches":
-            print(f"Active branch: {agent.branch_memory.active_branch}")
-            print("Branches:")
-            if not agent.branch_memory.branches:
-                print("  -")
-            for name, branch in sorted(agent.branch_memory.branches.items()):
-                marker = "*" if name == agent.branch_memory.active_branch else " "
-                print(f"  {marker} {name}: messages={len(branch.messages)}")
-            print("Checkpoints:")
-            if not agent.branch_memory.checkpoints:
-                print("  -")
-            for name, checkpoint in sorted(agent.branch_memory.checkpoints.items()):
-                latest = " latest" if name == agent.branch_memory.latest_checkpoint else ""
-                print(f"  {name}: messages={len(checkpoint.messages)}{latest}")
-            print()
-            return True
-
-        if lowered.startswith("/checkpoint"):
-            name = normalized[len("/checkpoint") :].strip()
-            if not name:
-                print("Использование: /checkpoint <name>\n")
-                return True
-            agent.create_checkpoint(name)
-            print(f"Checkpoint создан: {name}\n")
-            return True
-
-        if lowered.startswith("/branch"):
-            name = normalized[len("/branch") :].strip()
-            if not name:
-                print("Использование: /branch <name>\n")
-                return True
-            agent.create_branch(name)
-            print(f"Ветка создана и активирована: {name}\n")
-            return True
-
-        if lowered.startswith("/switch"):
-            name = normalized[len("/switch") :].strip()
-            if not name:
-                print("Использование: /switch <name>\n")
-                return True
-            agent.switch_branch(name)
-            print(f"Активная ветка: {name}\n")
-            return True
-
-        if lowered == "/summary":
-            if not agent.summary_memory.active:
-                print("Summary memory пустая.\n")
-            else:
-                print(
-                    "Summary memory:\n"
-                    f"{agent.summary_memory.summary}\n\n"
-                    f"Сжато сообщений: {agent.summary_memory.summarized_message_count}\n"
-                )
-            return True
-
-        if lowered == "/summary clear":
-            agent.summary_memory.summary = ""
-            agent.summary_memory.summarized_message_count = 0
-            agent.summary_memory.updated_at = ""
-            agent.save_summary()
-            print("Summary memory очищена.\n")
-            return True
-
-        if lowered == "/tokens":
-            print_token_breakdown(agent)
-            return True
-
-        if lowered == "/last-report":
-            if agent.last_token_report is None:
-                print("За текущий запуск ещё нет token report.\n")
-            else:
-                print_token_report(agent.last_token_report)
-                print()
-            return True
-
-        if lowered == "/config":
-            print_config(agent)
-            return True
-
-        if lowered.startswith("/strategy"):
-            parts = lowered.split(maxsplit=1)
-            if len(parts) != 2 or parts[1] not in {"direct", "step_by_step"}:
-                print("Использование: /strategy direct или /strategy step_by_step\n")
-                return True
-
-            agent.set_strategy(cast(AgentStrategy, parts[1]))
-            print(f"Стратегия изменена: {agent.config.strategy}\n")
-            return True
-
-        if lowered.startswith("/context-mode"):
-            parts = lowered.split(maxsplit=1)
-            if len(parts) != 2:
-                print("Использование: /context-mode error|no_trim|sliding_window\n")
-                return True
-            agent.set_overflow_policy(parse_overflow_policy(parts[1]))
-            print(f"Context overflow policy изменена: {agent.config.overflow_policy.value}\n")
-            return True
-
-        if lowered.startswith("/summary-mode"):
-            parts = lowered.split(maxsplit=1)
-            if len(parts) != 2 or parts[1] not in {"off", "llm"}:
-                print("Использование: /summary-mode off|llm\n")
-                return True
-            agent.set_summary_mode(cast(SummaryMode, parts[1]))
-            print(f"Summary mode изменён: {agent.config.summary_mode}\n")
-            return True
-
-        if lowered.startswith("/analyze-file"):
-            path = extract_path_argument(normalized, "/analyze-file")
-            if path is None:
-                print("Использование: /analyze-file path/to/skills-all.md\n")
-                return True
-            analyze_file(path, agent)
-            return True
-
-        if lowered.startswith("/ask-file"):
-            path = extract_path_argument(normalized, "/ask-file")
-            if path is None:
-                print("Использование: /ask-file path/to/skills-all.md\n")
-                return True
-            ask_file(path, agent, show_metadata=show_metadata)
-            return True
-    except ContextStorageError as error:
-        print(f"Ошибка контекста: {error}\n", file=sys.stderr)
-        return True
-    except (OSError, UnicodeDecodeError) as error:
-        print(f"Ошибка файла: {error}\n", file=sys.stderr)
-        return True
-    except ValueError as error:
-        print(f"Ошибка команды: {error}\n", file=sys.stderr)
-        return True
-
-    return False
+    registry = build_command_registry()
+    result = CommandRouter(registry).route(
+        command,
+        CommandContext(agent=agent, show_metadata=show_metadata),
+    )
+    if result.exit_requested:
+        print("Выход.")
+    return result.handled
 
 
 def extract_path_argument(command: str, prefix: str) -> Path | None:
@@ -866,6 +575,16 @@ def format_optional_number(value: int | None) -> str:
     return "-" if value is None else format_number(value)
 
 
+def read_user_input(registry: CommandRegistry, *, plain_input: bool = False) -> str:
+    if plain_input:
+        return input("Вы: ")
+    try:
+        from prompt_toolkit import prompt
+    except ImportError:
+        return input("Вы: ")
+    return prompt("Вы: ", completer=CommandCompleter(registry), complete_while_typing=True)
+
+
 def main(argv: list[str] | None = None) -> None:
     # Load default .env first, then optionally explicit .env. Existing variables win.
     load_env_file()
@@ -881,6 +600,8 @@ def main(argv: list[str] | None = None) -> None:
 
     show_metadata = not args.no_metadata
     history = agent.get_history()
+    command_registry = build_command_registry()
+    command_router = CommandRouter(command_registry)
 
     print("Day 11. Агент с явными memory layers")
     print(f"Модель: {agent.config.model}")
@@ -899,14 +620,11 @@ def main(argv: list[str] | None = None) -> None:
     print(f"Файл memory events: {agent.memory_events_path or 'логирование отключено'}")
     print(f"Файл token reports: {agent.token_report_path or 'логирование отключено'}")
     print(f"Загружено сообщений: {len(history)}")
-    print(
-        "Введите запрос. Команды: /help, /tokens, /analyze-file <path>, "
-        "/memory, /remember, /facts, /branches, /checkpoint <name>, /exit.\n"
-    )
+    print("Введите / для меню команд или /help для справки.\n")
 
     while True:
         try:
-            user_text = input("Вы: ").strip()
+            user_text = read_user_input(command_registry, plain_input=args.plain_input).strip()
         except (EOFError, KeyboardInterrupt) as _error:
             print("\nВыход.")
             break
@@ -914,11 +632,14 @@ def main(argv: list[str] | None = None) -> None:
         if not user_text:
             continue
 
-        if user_text.lower() in EXIT_COMMANDS:
+        command_result = command_router.route(
+            user_text,
+            CommandContext(agent=agent, show_metadata=show_metadata),
+        )
+        if command_result.exit_requested:
             print("Выход.")
             break
-
-        if handle_command(user_text, agent, show_metadata=show_metadata):
+        if command_result.handled:
             continue
 
         try:

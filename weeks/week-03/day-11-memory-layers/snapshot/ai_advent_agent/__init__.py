@@ -1,4 +1,4 @@
-"""Token-aware persistent-context LLM agent for AI Advent Challenge Day 8."""
+"""AI Advent Challenge training LLM agent."""
 
 from ai_advent_agent.agent import AgentResponse, ContextOverflowError, SimpleAgent
 from ai_advent_agent.config import AgentConfig, ContextOverflowPolicy

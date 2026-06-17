@@ -1,4 +1,4 @@
-"""Offline token scenarios for Day 8, Day 9 and Day 10 demonstrations.
+"""Offline demonstration scenarios for the AI Advent Challenge training agent.
 
 These scenarios do not call the LLM API. They show how estimated context tokens
 grow for short/long dialogs and for a large file such as skills-all.md.
@@ -32,7 +32,7 @@ from ai_advent_agent.token_report import TokenReport, TokenReportStore
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Day 8 token growth scenarios.")
+    parser = argparse.ArgumentParser(description="AI Advent token growth scenarios.")
     subparsers = parser.add_subparsers(dest="scenario", required=True)
 
     short = subparsers.add_parser("short", help="Короткий диалог: 3 коротких user/assistant turn.")

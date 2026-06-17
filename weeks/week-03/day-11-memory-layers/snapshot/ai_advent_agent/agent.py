@@ -1030,8 +1030,8 @@ class SimpleAgent:
             "Контекст превышает лимит модели: "
             f"projected={report.projected_total_tokens_estimated:,} tokens, "
             f"limit={report.context_window_tokens:,} tokens. "
-            "Запрос не отправлен. Используйте /context-mode sliding_window, "
-            "очистите историю через /reset или уменьшите входной текст."
+            "Запрос не отправлен. Используйте /config overflow sliding_window, "
+            "очистите сессию через /session reset или уменьшите входной текст."
         ).replace(",", " ")
 
     def _to_agent_response(

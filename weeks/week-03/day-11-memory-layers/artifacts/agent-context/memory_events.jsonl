@@ -1,4 +1,4 @@
-{"schema_version": 1, "created_at": "2026-06-16T09:53:26.972673+00:00", "action": "remember", "layer": "long_term", "key": "language", "value": "русский"}
-{"schema_version": 1, "created_at": "2026-06-16T09:53:26.972735+00:00", "action": "remember", "layer": "long_term", "key": "style", "value": "кратко и технически"}
-{"schema_version": 1, "created_at": "2026-06-16T09:53:26.972782+00:00", "action": "remember", "layer": "working", "key": "task", "value": "спроектировать memory layers для AI Advent агента"}
-{"schema_version": 1, "created_at": "2026-06-16T09:53:26.972822+00:00", "action": "remember", "layer": "short_term", "text": "Пользователь уточнил важность раздельных файлов памяти."}
+{"schema_version": 1, "created_at": "2026-06-17T05:26:46.921405+00:00", "action": "remember", "layer": "long_term", "key": "language", "value": "русский"}
+{"schema_version": 1, "created_at": "2026-06-17T05:26:46.921485+00:00", "action": "remember", "layer": "long_term", "key": "style", "value": "кратко и технически"}
+{"schema_version": 1, "created_at": "2026-06-17T05:26:46.921533+00:00", "action": "remember", "layer": "working", "key": "task", "value": "спроектировать memory layers для AI Advent агента"}
+{"schema_version": 1, "created_at": "2026-06-17T05:26:46.921572+00:00", "action": "remember", "layer": "short_term", "text": "Пользователь уточнил важность раздельных файлов памяти."}

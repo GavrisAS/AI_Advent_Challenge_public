@@ -1,4 +1,4 @@
-"""Configuration objects for the Day 8 token-aware agent."""
+"""Configuration objects for the AI Advent Challenge training agent."""
 
 from __future__ import annotations
 
@@ -54,7 +54,7 @@ class AgentConfig:
     reasoning_effort: str | None = None
     stop: list[str] | None = None
 
-    # Day 8 token/context settings.
+    # Token/context settings.
     context_window_tokens: int = DEFAULT_CONTEXT_WINDOW_TOKENS
     warn_context_ratio: float = DEFAULT_WARN_CONTEXT_RATIO
     overflow_policy: ContextOverflowPolicy = ContextOverflowPolicy.ERROR

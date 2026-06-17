@@ -1,4 +1,4 @@
-"""Approximate token counting utilities for Day 8.
+"""Approximate token counting utilities for the AI Advent Challenge training agent.
 
 The exact tokenizer depends on the model/provider. This project intentionally keeps
 zero external dependencies, so the local counter is an estimate. The API `usage`

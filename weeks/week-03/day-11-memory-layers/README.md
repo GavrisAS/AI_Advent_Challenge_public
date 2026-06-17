@@ -42,26 +42,35 @@
 
 В актуальный пакет `packages/ai_advent_agent/` добавлены memory layers:
 
-- `short-term memory` — последние сообщения текущего диалога и явные `/remember short`;
+- `short-term memory` — последние сообщения текущего диалога и явные `/memory add short`;
 - `working memory` — key-value состояние текущей задачи;
 - `long-term memory` — key-value профиль, устойчивые предпочтения, решения и знания;
 - `memory events` — JSONL-журнал явных операций `remember`, `forget`, `reset`.
 
-CLI поддерживает явное управление памятью:
+С Day 11 CLI использует namespace-структуру slash-команд и интерактивное меню команд через
+`prompt_toolkit`. При вводе `/` показываются верхнеуровневые группы, при вводе `/m` список
+фильтруется до `/memory`, а после `/memory ` показываются вложенные команды memory subsystem.
+
+Основные команды памяти:
 
 ```text
 /memory
 /memory short
+/memory summary
+/memory facts
 /memory working
 /memory long
-/remember short <text>
-/remember working <key>: <value>
-/remember long <key>: <value>
-/forget working <key>
-/forget long <key>
+/memory add short <text>
+/memory set working <key>: <value>
+/memory set long <key>: <value>
+/memory forget working <key>
+/memory forget long <key>
 /memory reset working
 /memory reset all --yes
 ```
+
+Старые команды `/remember`, `/forget`, `/facts`, `/summary` сохранены как legacy aliases, но новые
+README и сценарии используют namespace-команды.
 
 Prompt assembly собирается в порядке:
 
@@ -129,6 +138,7 @@ uv run day11-agent \
 ```
 
 Для online-сценария нужен `DEEPSEEK_API_KEY` в окружении или в `snapshot/.env`.
+Если нужно отключить интерактивное меню команд, добавьте флаг `--plain-input`.
 
 ## Сценарий демонстрации для видео
 
@@ -186,7 +196,7 @@ uv run day11-scenarios memory-layers-demo
 - `memory_events.jsonl` показывает, что сохранение было явным;
 - `token_reports.jsonl` показывает, какие слои попали в prompt и сколько токенов они добавили.
 
-### C. Демонстрация интерактивного агента
+### C. Демонстрация интерактивного агента и меню команд
 
 Запустить из `snapshot/`:
 
@@ -200,29 +210,56 @@ uv run day11-agent \
   --token-report-file ../artifacts/agent-context/token_reports.jsonl
 ```
 
+Показать autocomplete menu:
+
+1. Ввести `/` и показать список верхнеуровневых команд:
+   `/help`, `/status`, `/config`, `/session`, `/storage`, `/memory`, `/branch`, `/file`, `/exit`.
+2. Ввести `/m` и показать, что список фильтруется до `/memory`.
+3. Ввести `/memory ` и показать вложенные команды:
+   `/memory short`, `/memory summary`, `/memory facts`, `/memory working`, `/memory long`,
+   `/memory add short`, `/memory set working`, `/memory set long`, `/memory forget working`,
+   `/memory forget long`, `/memory reset working`, `/memory reset all --yes`.
+
 Ввести вручную:
 
 ```text
 /memory
-/remember long language: русский
-/remember long style: кратко и технически
-/remember working task: реализовать memory layers для AI Advent агента
-/remember working constraint: хранить слои памяти отдельно
+/memory set long language: русский
+/memory set long style: кратко и технически
+/memory set working task: реализовать memory layers для AI Advent агента
+/memory set working constraint: хранить слои памяти отдельно
+/memory add short Обсуждаем демонстрацию Day 11
 /memory
-Сформулируй план реализации ассистента с учётом моей памяти.
+/memory short
 /memory working
 /memory long
-/forget working task
-/memory
+/memory summary
+/memory facts
+/status
+/status context
+/status tokens
+/status report
 ```
 
 Показать эффект:
 
 - `/memory` до сохранения показывает пустые слои;
-- `/remember long` пишет только в long-term memory;
-- `/remember working` пишет только в working memory;
+- `/memory set long` пишет только в long-term memory;
+- `/memory set working` пишет только в working memory;
+- `/memory add short` добавляет short-term note;
 - после обычного вопроса token report показывает активные memory layers;
-- `/forget working task` удаляет задачу из working memory, но не трогает long-term memory.
+- `/status ...` показывает диагностику, контекстные файлы, token breakdown и последний report.
+
+Показать legacy aliases:
+
+```text
+/help legacy
+/facts
+/remember working demo: legacy alias работает
+```
+
+Объяснить, что старые команды продолжают работать, но печатают короткое предупреждение и в новых
+сценариях заменяются namespace-командами.
 
 ### D. Online-сценарий с моделью по API
 
@@ -250,10 +287,11 @@ uv run day11-agent \
 
 ```text
 /memory reset all --yes
-/remember long language: русский
-/remember long style: кратко и технически
-/remember working task: реализовать memory layers для AI Advent агента
-/remember working constraint: хранить слои памяти отдельно
+/memory set long language: русский
+/memory set long style: кратко и технически
+/memory set working task: реализовать memory layers для AI Advent агента
+/memory set working constraint: хранить слои памяти отдельно
+/memory add short Обсуждаем демонстрацию Day 11
 /memory
 Сформулируй план реализации ассистента с учётом моей памяти.
 ```
