@@ -16,4 +16,4 @@ requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["ai_advent_agent"]
+packages = ["ai_advent_agent", "ai_advent_agent.commands"]

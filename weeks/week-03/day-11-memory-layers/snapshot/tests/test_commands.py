@@ -1,15 +1,21 @@
 from __future__ import annotations
 
+import importlib
+import io
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 
 from ai_advent_agent.agent import SimpleAgent
 from ai_advent_agent.commands import (
     CommandCompleter,
     CommandContext,
+    CommandRegistry,
     CommandRouter,
+    build_command_completer,
     build_command_registry,
+    should_open_nested_completion,
 )
 from ai_advent_agent.config import AgentConfig
 from ai_advent_agent.context_management import JsonBranchesStore, JsonFactsStore
@@ -58,6 +64,20 @@ def build_agent(tmp_dir: Path) -> SimpleAgent:
 
 
 class CommandRegistryTest(unittest.TestCase):
+    def test_commands_package_public_api_and_modules_are_importable(self) -> None:
+        for module_name in [
+            "ai_advent_agent.commands",
+            "ai_advent_agent.commands.registry",
+            "ai_advent_agent.commands.router",
+            "ai_advent_agent.commands.completer",
+            "ai_advent_agent.commands.builders",
+        ]:
+            self.assertIsNotNone(importlib.import_module(module_name))
+
+        registry = build_command_registry()
+        self.assertIsInstance(registry, CommandRegistry)
+        self.assertIsInstance(build_command_completer(registry), CommandCompleter)
+
     def test_registry_contains_top_level_commands(self) -> None:
         registry = build_command_registry()
 
@@ -89,6 +109,22 @@ class CommandRegistryTest(unittest.TestCase):
             self.assertTrue(router.route("/memory working", context).handled)
             self.assertFalse(router.route("обычный пользовательский запрос", context).handled)
 
+    def test_config_is_namespace_not_legacy_alias(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            agent = build_agent(Path(tmp))
+            router = CommandRouter(build_command_registry())
+            context = CommandContext(agent=agent, show_metadata=False)
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                self.assertTrue(router.route("/config", context).handled)
+                self.assertTrue(router.route("/config show", context).handled)
+
+            text = output.getvalue()
+            self.assertNotIn("Deprecated command", text)
+            self.assertIn("Команды /config:", text)
+            self.assertIn("Текущая конфигурация:", text)
+
     def test_memory_set_working_writes_working_memory(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             agent = build_agent(Path(tmp))
@@ -115,20 +151,100 @@ class CommandRegistryTest(unittest.TestCase):
             self.assertTrue(router.route("/context-mode sliding_window", context).handled)
             self.assertEqual(agent.config.overflow_policy.value, "sliding_window")
 
-    def test_completer_suggestions(self) -> None:
+    def test_help_legacy_lists_legacy_aliases(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            agent = build_agent(Path(tmp))
+            router = CommandRouter(build_command_registry())
+            context = CommandContext(agent=agent, show_metadata=False)
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                self.assertTrue(router.route("/help legacy", context).handled)
+
+            text = output.getvalue()
+            self.assertIn("/facts", text)
+            self.assertIn("/remember working", text)
+            self.assertIn("/context-mode", text)
+
+    def test_root_suggestions_show_only_namespace_commands(self) -> None:
         completer = CommandCompleter(build_command_registry())
 
-        slash = {item.text for item in completer.suggest("/")}
-        filtered = {item.text for item in completer.suggest("/m")}
-        memory = {item.text for item in completer.suggest("/memory ")}
+        suggestions = completer.suggest("/")
+        slash = {item.display_text for item in suggestions}
+        branch = next(item for item in suggestions if item.display_text == "/branch")
+        exit_item = next(item for item in suggestions if item.display_text == "/exit")
 
-        self.assertIn("/status", slash)
-        self.assertIn("/memory", slash)
-        self.assertEqual(filtered, {"/memory"})
+        self.assertEqual(
+            slash,
+            {
+                "/branch",
+                "/config",
+                "/exit",
+                "/file",
+                "/help",
+                "/memory",
+                "/session",
+                "/status",
+                "/storage",
+            },
+        )
+        self.assertNotIn("/facts", slash)
+        self.assertNotIn("/remember", slash)
+        self.assertNotIn("/context", slash)
+        self.assertNotIn("/help [group|legacy]", slash)
+        self.assertEqual(branch.insert_text, "/branch ")
+        self.assertTrue(branch.description)
+        self.assertEqual(exit_item.insert_text, "/exit")
+
+    def test_completer_filters_and_inserts_root_group_with_trailing_space(self) -> None:
+        completer = CommandCompleter(build_command_registry())
+
+        filtered = completer.suggest("/br")
+
+        self.assertEqual([item.display_text for item in filtered], ["/branch"])
+        self.assertEqual(filtered[0].insert_text, "/branch ")
+
+    def test_completer_suggestions_for_nested_groups(self) -> None:
+        completer = CommandCompleter(build_command_registry())
+
+        branch = {item.display_text: item for item in completer.suggest("/branch ")}
+        memory = {item.display_text: item.insert_text for item in completer.suggest("/memory ")}
+        config = {item.display_text: item.insert_text for item in completer.suggest("/config ")}
+        status = {item.display_text: item.insert_text for item in completer.suggest("/status ")}
+
+        self.assertIn("/branch checkpoint", branch)
+        self.assertIn("/branch create", branch)
+        self.assertIn("/branch list", branch)
+        self.assertIn("/branch switch", branch)
+        self.assertTrue(all(item.description for item in branch.values()))
+        self.assertEqual(branch["/branch checkpoint"].insert_text, "/branch checkpoint ")
         self.assertIn("/memory short", memory)
+        self.assertIn("/memory summary", memory)
+        self.assertIn("/memory facts", memory)
+        self.assertIn("/memory working", memory)
+        self.assertIn("/memory long", memory)
         self.assertIn("/memory add short", memory)
         self.assertIn("/memory set working", memory)
+        self.assertIn("/memory set long", memory)
+        self.assertIn("/memory forget working", memory)
+        self.assertIn("/memory forget long", memory)
+        self.assertIn("/memory reset working", memory)
         self.assertIn("/memory reset all --yes", memory)
+        self.assertEqual(memory["/memory set working"], "/memory set working ")
+        self.assertEqual(memory["/memory reset all --yes"], "/memory reset all --yes")
+        self.assertIn("/config show", config)
+        self.assertIn("/config strategy", config)
+        self.assertEqual(config["/config overflow"], "/config overflow ")
+        self.assertIn("/status context", status)
+        self.assertIn("/status tokens", status)
+
+    def test_should_open_nested_completion(self) -> None:
+        registry = build_command_registry()
+
+        self.assertTrue(should_open_nested_completion("/branch ", registry))
+        self.assertTrue(should_open_nested_completion("/memory ", registry))
+        self.assertFalse(should_open_nested_completion("/exit", registry))
+        self.assertFalse(should_open_nested_completion("обычный текст", registry))
 
 
 if __name__ == "__main__":
