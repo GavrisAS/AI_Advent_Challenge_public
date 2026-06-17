@@ -12,8 +12,15 @@ def command_specs() -> list[CommandSpec]:
             "/session reset",
             "Начать новую сессию и сохранить system prompt.",
             handle_session_reset,
+            order=10,
         ),
-        CommandSpec(("exit",), "/exit", "Выйти из интерактивного режима.", handle_exit),
+        CommandSpec(
+            ("exit",),
+            "/exit",
+            "Выйти из интерактивного режима.",
+            handle_exit,
+            order=90,
+        ),
     ]
 
 

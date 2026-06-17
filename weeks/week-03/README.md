@@ -8,7 +8,7 @@
 
 | День | Тема | Статус | Папка |
 |---|---|---|---|
-| day-11 | Memory Layers | done | [day-11-memory-layers](day-11-memory-layers/) |
+| day-11 | Memory Layers | ✅ done | [day-11-memory-layers](day-11-memory-layers/) |
 
 ## Ключевые навыки недели
 
@@ -20,4 +20,4 @@
 
 ## Итоги недели
 
-Day 11 выполнен: добавлены явные memory layers, offline/online демонстрационные сценарии, snapshot, results и artifacts. Day 12 подготовлен как planned-заготовка под персонализацию ассистента. Итоги недели будут расширяться после следующих заданий Week 03.
+Итоги Week 03 будут расширяться по мере выполнения следующих заданий.

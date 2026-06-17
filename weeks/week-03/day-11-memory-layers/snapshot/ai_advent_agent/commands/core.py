@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -36,6 +36,20 @@ class CommandResult:
     exit_requested: bool = False
 
 
+@dataclass(frozen=True, slots=True)
+class CommandSuggestion:
+    insert_text: str
+    display_text: str
+    description: str
+
+    @property
+    def text(self) -> str:
+        return self.insert_text
+
+
+CommandArgumentProvider = Callable[[CommandContext | None, str], Sequence[CommandSuggestion]]
+
+
 @dataclass(slots=True)
 class CommandSpec:
     """A command leaf or group in the slash-command tree."""
@@ -46,6 +60,9 @@ class CommandSpec:
     handler: CommandHandler | None = None
     aliases: tuple[tuple[str, ...], ...] = ()
     legacy: bool = False
+    order: int = 100
+    argument_suggestions: tuple[CommandSuggestion, ...] = ()
+    argument_provider: CommandArgumentProvider | None = None
     children: dict[str, CommandSpec] = field(default_factory=dict)
 
     @property
@@ -66,14 +83,3 @@ class CommandAlias:
     source: tuple[str, ...]
     target: tuple[str, ...]
     legacy: bool = True
-
-
-@dataclass(frozen=True, slots=True)
-class CommandSuggestion:
-    insert_text: str
-    display_text: str
-    description: str
-
-    @property
-    def text(self) -> str:
-        return self.insert_text

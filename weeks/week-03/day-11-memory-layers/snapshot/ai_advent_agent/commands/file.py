@@ -13,9 +13,14 @@ def command_specs() -> list[CommandSpec]:
             "/file analyze <path>",
             "Dry-run token report для файла.",
             handle_file_analyze,
+            order=10,
         ),
         CommandSpec(
-            ("file", "ask"), "/file ask <path>", "Отправить файл в модель.", handle_file_ask
+            ("file", "ask"),
+            "/file ask <path>",
+            "Отправить файл в модель.",
+            handle_file_ask,
+            order=20,
         ),
     ]
 

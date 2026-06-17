@@ -7,11 +7,19 @@ from .registry import CommandRegistry
 
 
 def command_specs() -> list[CommandSpec]:
-    return [CommandSpec(("help",), "/help [group|legacy]", "Показать справку.", handle_help)]
+    return [
+        CommandSpec(
+            ("help",),
+            "/help [group|legacy]",
+            "Показать справку.",
+            handle_help,
+            order=10,
+        )
+    ]
 
 
 def print_group_usage(registry: CommandRegistry, path: tuple[str, ...]) -> None:
-    commands = registry.children_for(path)
+    commands = [spec for spec in registry.children_for(path) if spec.handler is not None]
     if not commands:
         print(f"Использование: /{' '.join(path)}\n")
         return

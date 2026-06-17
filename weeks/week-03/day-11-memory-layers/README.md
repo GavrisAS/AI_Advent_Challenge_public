@@ -45,7 +45,7 @@
 - `short-term memory` — последние сообщения текущего диалога и явные `/memory add short`;
 - `working memory` — key-value состояние текущей задачи;
 - `long-term memory` — key-value профиль, устойчивые предпочтения, решения и знания;
-- `memory events` — JSONL-журнал явных операций `remember`, `forget`, `reset`.
+- `memory events` — JSONL-журнал явных операций `add`, `set`, `forget`, `reset`.
 
 С Day 11 CLI использует namespace-структуру slash-команд и интерактивное меню команд через
 `prompt_toolkit`. При вводе `/` показываются верхнеуровневые группы, при вводе `/m` список
@@ -53,6 +53,12 @@
 (`/memory `, `/config `, `/status `), после чего меню переходит к вложенным suggestions.
 Меню всегда отображается в двухколоночном виде: первая колонка — команда, вторая колонка —
 краткое описание.
+Команды с ограниченным набором аргументов подсказывают значения автоматически: например,
+`/config strategy ` предлагает `direct` и `step_by_step`, `/config overflow ` предлагает
+`error`, `no_trim`, `sliding_window`, а `/memory set ` предлагает `working` и `long`.
+После выбора intermediate-команды с fixed argument completion CLI вставляет trailing space и сразу
+открывает следующее меню: `/config strategy` → `/config strategy ` → `direct`/`step_by_step`,
+`/memory set` → `/memory set ` → `working`/`long`.
 Command subsystem оформлен как пакет `ai_advent_agent.commands`: registry, router, completer,
 builders и feature-модули команд живут отдельно, а публичные импорты
 `from ai_advent_agent.commands import ...` сохранены.
@@ -62,10 +68,10 @@ builders и feature-модули команд живут отдельно, а п
 ```text
 /memory
 /memory short
-/memory summary
-/memory facts
 /memory working
 /memory long
+/memory summary
+/memory facts
 /memory add short <text>
 /memory set working <key>: <value>
 /memory set long <key>: <value>
@@ -230,11 +236,30 @@ uv run day11-agent \
    `/branch checkpoint`, `/branch create`, `/branch list`, `/branch switch`.
 3. Ввести `/m` и показать, что список фильтруется до `/memory`.
 4. Выбрать `/memory`: в строку вставляется `/memory ` и открываются вложенные команды:
-   `/memory short`, `/memory summary`, `/memory facts`, `/memory working`, `/memory long`,
-   `/memory add short`, `/memory set working`, `/memory set long`, `/memory forget working`,
-   `/memory forget long`, `/memory reset working`, `/memory reset all --yes`.
-5. Выбрать `/config`: в строку вставляется `/config `. Для показа конфигурации использовать
+   `/memory short`, `/memory working`, `/memory long`, `/memory summary`, `/memory facts`,
+   `/memory add`, `/memory set`, `/memory forget`, `/memory reset`.
+5. Выбрать `/memory set`: в строку вставляется `/memory set ` и сразу открывается argument menu:
+   `working`, `long`.
+6. Выбрать `/memory reset`: в строку вставляется `/memory reset ` и сразу открывается argument menu:
+   `working`, `all --yes`.
+7. Выбрать `/config`: в строку вставляется `/config `. Для показа конфигурации использовать
    `/config show` или `/status config`; `/config` является namespace-командой, а не deprecated alias.
+8. Выбрать `/config strategy`: в строку вставляется `/config strategy ` и сразу открывается
+   argument menu с `direct` и `step_by_step`.
+9. Ввести `/config overflow ` и показать, что argument completion предлагает `error`, `no_trim`,
+   `sliding_window`.
+10. Ввести `/memory set ` и показать, что argument completion предлагает `working` и `long`.
+    После выбора `working` строка становится `/memory set working `, дальше key-value вводится
+    вручную.
+11. Ввести `/memory reset ` и показать, что argument completion предлагает `working` и
+    `all --yes`.
+
+Отдельно показать fixed argument follow-up:
+
+- `/config ` → выбрать `/config strategy` → увидеть `direct`, `step_by_step`;
+- `/config ` → выбрать `/config overflow` → увидеть `error`, `no_trim`, `sliding_window`;
+- `/memory ` → выбрать `/memory set` → увидеть `working`, `long`;
+- `/memory ` → выбрать `/memory reset` → увидеть `working`, `all --yes`.
 
 Ввести вручную:
 

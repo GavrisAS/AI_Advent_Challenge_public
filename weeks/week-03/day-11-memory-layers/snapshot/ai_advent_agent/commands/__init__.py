@@ -6,6 +6,7 @@ from .builders import build_command_completer, build_command_registry
 from .completer import (
     CommandCompleter,
     build_command_key_bindings,
+    should_open_followup_completion,
     should_open_nested_completion,
 )
 from .context import (
@@ -26,6 +27,7 @@ from .context import (
 )
 from .core import (
     CommandAlias,
+    CommandArgumentProvider,
     CommandContext,
     CommandError,
     CommandGroup,
@@ -39,6 +41,7 @@ from .router import CommandRouter
 
 __all__ = [
     "CommandAlias",
+    "CommandArgumentProvider",
     "CommandCompleter",
     "CommandContext",
     "CommandError",
@@ -66,5 +69,6 @@ __all__ = [
     "print_metadata",
     "print_token_breakdown",
     "print_token_report",
+    "should_open_followup_completion",
     "should_open_nested_completion",
 ]

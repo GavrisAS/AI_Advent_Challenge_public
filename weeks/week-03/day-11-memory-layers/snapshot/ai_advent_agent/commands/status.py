@@ -15,31 +15,54 @@ from .help import print_group_usage
 
 def command_specs() -> list[CommandSpec]:
     return [
-        CommandSpec(("status",), "/status", "Краткая диагностика состояния.", handle_status),
-        CommandSpec(("status", "config"), "/status config", "Показать настройки.", handle_config),
+        CommandSpec(
+            ("status",),
+            "/status",
+            "Краткая диагностика состояния.",
+            handle_status,
+            order=20,
+        ),
+        CommandSpec(
+            ("status", "config"),
+            "/status config",
+            "Показать настройки.",
+            handle_config,
+            order=10,
+        ),
         CommandSpec(
             ("status", "context"),
             "/status context",
             "Показать контекстные файлы.",
             handle_context_status,
+            order=20,
         ),
         CommandSpec(
-            ("status", "tokens"), "/status tokens", "Показать token breakdown.", handle_tokens
+            ("status", "tokens"),
+            "/status tokens",
+            "Показать token breakdown.",
+            handle_tokens,
+            order=30,
         ),
         CommandSpec(
             ("status", "report"),
             "/status report",
             "Показать последний token report.",
             handle_last_report,
+            order=40,
         ),
         CommandSpec(
-            ("status", "history"), "/status history", "Показать сводку history.", handle_history
+            ("status", "history"),
+            "/status history",
+            "Показать сводку history.",
+            handle_history,
+            order=50,
         ),
         CommandSpec(
             ("status", "history", "full"),
             "/status history full",
             "Показать полную history.",
             handle_history_full,
+            order=60,
         ),
     ]
 

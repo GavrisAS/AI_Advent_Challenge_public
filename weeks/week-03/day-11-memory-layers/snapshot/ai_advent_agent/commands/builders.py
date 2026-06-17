@@ -10,18 +10,18 @@ from .registry import CommandRegistry
 
 def build_command_registry() -> CommandRegistry:
     registry = CommandRegistry()
-    for name, description in [
-        ("help", "Справка по slash-командам."),
-        ("status", "Диагностика текущего состояния агента."),
-        ("config", "Изменение runtime-настроек."),
-        ("session", "Управление текущей сессией."),
-        ("storage", "Очистка runtime-файлов."),
-        ("memory", "Memory layers, summary и sticky facts."),
-        ("branch", "Checkpoints и branches."),
-        ("file", "Анализ файла и отправка файла в модель."),
-        ("exit", "Выйти из интерактивного режима."),
+    for name, description, order in [
+        ("help", "Справка по slash-командам.", 10),
+        ("status", "Диагностика текущего состояния агента.", 20),
+        ("config", "Изменение runtime-настроек.", 30),
+        ("session", "Управление текущей сессией.", 40),
+        ("storage", "Очистка runtime-файлов.", 50),
+        ("memory", "Memory layers, summary и sticky facts.", 60),
+        ("branch", "Checkpoints и branches.", 70),
+        ("file", "Анализ файла и отправка файла в модель.", 80),
+        ("exit", "Выйти из интерактивного режима.", 90),
     ]:
-        registry.register_group(name, description)
+        registry.register_group(name, description, order=order)
 
     for module in [
         help,

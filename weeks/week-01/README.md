@@ -8,11 +8,11 @@
 
 | День | Тема | Статус | Папка |
 |---|---|---|---|
-| day-01 | LLM REST API | done | [day-01-llm-rest-api](day-01-llm-rest-api/) |
-| day-02 | Answer Format | done | [day-02-answer-format](day-02-answer-format/) |
-| day-03 | Reasoning | done | [day-03-reasoning](day-03-reasoning/) |
-| day-04 | Temperature | done | [day-04-temperature](day-04-temperature/) |
-| day-05 | Model Versions | done | [day-05-model-versions](day-05-model-versions/) |
+| day-01 | LLM REST API | ✅ done | [day-01-llm-rest-api](day-01-llm-rest-api/) |
+| day-02 | Answer Format | ✅ done | [day-02-answer-format](day-02-answer-format/) |
+| day-03 | Reasoning | ✅ done | [day-03-reasoning](day-03-reasoning/) |
+| day-04 | Temperature | ✅ done | [day-04-temperature](day-04-temperature/) |
+| day-05 | Model Versions | ✅ done | [day-05-model-versions](day-05-model-versions/) |
 
 ## Ключевые навыки недели
 

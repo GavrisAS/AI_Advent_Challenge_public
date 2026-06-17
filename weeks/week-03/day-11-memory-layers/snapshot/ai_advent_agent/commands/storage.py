@@ -12,18 +12,21 @@ def command_specs() -> list[CommandSpec]:
             "/storage clear context",
             "Удалить context/runtime файлы текущего контекста.",
             handle_storage_clear_context,
+            order=10,
         ),
         CommandSpec(
             ("storage", "clear", "reports"),
             "/storage clear reports",
             "Удалить token reports.",
             handle_storage_clear_reports,
+            order=20,
         ),
         CommandSpec(
             ("storage", "clear", "all"),
             "/storage clear all --yes",
             "Удалить все runtime-файлы агента.",
             handle_storage_clear_all,
+            order=30,
         ),
     ]
 

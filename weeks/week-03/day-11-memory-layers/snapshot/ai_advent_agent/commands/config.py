@@ -6,32 +6,60 @@ from typing import cast
 
 from ai_advent_agent.config import AgentStrategy, SummaryMode, parse_overflow_policy
 
-from .core import CommandContext, CommandResult, CommandSpec
+from .core import CommandContext, CommandResult, CommandSpec, CommandSuggestion
 from .status import handle_config
 
 
 def command_specs() -> list[CommandSpec]:
     return [
         CommandSpec(
-            ("config", "show"), "/config show", "Показать текущую конфигурацию.", handle_config
+            ("config", "show"),
+            "/config show",
+            "Показать текущую конфигурацию.",
+            handle_config,
+            order=10,
         ),
         CommandSpec(
             ("config", "strategy"),
             "/config strategy direct|step_by_step",
             "Изменить response strategy.",
             handle_config_strategy,
+            order=20,
+            argument_suggestions=(
+                CommandSuggestion("direct", "direct", "Быстрый прямой ответ."),
+                CommandSuggestion(
+                    "step_by_step",
+                    "step_by_step",
+                    "Пошаговое рассуждение.",
+                ),
+            ),
         ),
         CommandSpec(
             ("config", "summary"),
             "/config summary off|llm",
             "Изменить summary mode.",
             handle_config_summary,
+            order=30,
+            argument_suggestions=(
+                CommandSuggestion("off", "off", "Не использовать summary memory."),
+                CommandSuggestion("llm", "llm", "Использовать LLM summary memory."),
+            ),
         ),
         CommandSpec(
             ("config", "overflow"),
             "/config overflow error|no_trim|sliding_window",
             "Изменить overflow policy.",
             handle_config_overflow,
+            order=40,
+            argument_suggestions=(
+                CommandSuggestion("error", "error", "Ошибка при переполнении контекста."),
+                CommandSuggestion("no_trim", "no_trim", "Не обрезать контекст."),
+                CommandSuggestion(
+                    "sliding_window",
+                    "sliding_window",
+                    "Использовать sliding window при переполнении.",
+                ),
+            ),
         ),
     ]
 

@@ -13,9 +13,11 @@ class CommandRegistry:
         self._aliases: dict[tuple[str, ...], CommandAlias] = {}
         self._groups: dict[str, CommandGroup] = {}
 
-    def register_group(self, name: str, description: str) -> None:
+    def register_group(self, name: str, description: str, *, order: int = 100) -> None:
         self._groups[name] = CommandGroup(name=name, description=description)
-        self.register(CommandSpec(path=(name,), usage=f"/{name}", description=description))
+        self.register(
+            CommandSpec(path=(name,), usage=f"/{name}", description=description, order=order)
+        )
 
     def register(self, spec: CommandSpec) -> None:
         if not spec.path:
@@ -28,6 +30,7 @@ class CommandRegistry:
                     path=spec.path[:-1],
                     usage="/" + " ".join(spec.path[:-1]),
                     description="Группа команд.",
+                    order=spec.order,
                 )
                 self.register(parent)
             parent.children[spec.path[-1]] = spec
@@ -47,27 +50,29 @@ class CommandRegistry:
         return self._commands.get(path)
 
     def top_level(self) -> list[CommandSpec]:
-        return [
-            spec
-            for path, spec in sorted(self._commands.items())
-            if len(path) == 1 and not spec.legacy
-        ]
+        return sorted(
+            (spec for path, spec in self._commands.items() if len(path) == 1 and not spec.legacy),
+            key=_spec_sort_key,
+        )
 
     def children_for(self, path: tuple[str, ...]) -> list[CommandSpec]:
         spec = self.find(path)
         if spec is None:
             return []
-        return [spec.children[name] for name in sorted(spec.children)]
+        return sorted(spec.children.values(), key=_spec_sort_key)
 
     def group_help(self, group: str | None = None) -> list[CommandSpec]:
         if group is None:
             return self.top_level()
         prefix = (group,)
-        return [
-            spec
-            for path, spec in sorted(self._commands.items())
-            if path == prefix or (len(path) > 1 and path[:1] == prefix and not spec.legacy)
-        ]
+        return sorted(
+            (
+                spec
+                for path, spec in self._commands.items()
+                if path == prefix or (len(path) > 1 and path[:1] == prefix and not spec.legacy)
+            ),
+            key=_spec_sort_key,
+        )
 
     def legacy_help(self) -> list[tuple[str, str]]:
         rows: list[tuple[str, str]] = []
@@ -88,4 +93,8 @@ class CommandRegistry:
         return None, path, ()
 
     def command_items(self) -> list[tuple[tuple[str, ...], CommandSpec]]:
-        return sorted(self._commands.items())
+        return sorted(self._commands.items(), key=lambda item: _spec_sort_key(item[1]))
+
+
+def _spec_sort_key(spec: CommandSpec) -> tuple[int, str]:
+    return spec.order, spec.slash_path

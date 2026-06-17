@@ -81,20 +81,15 @@ def suggest_commands(text: str, registry: CommandRegistry) -> list[CommandSugges
     child_prefix = "" if trailing_space else tokens[-1].lower()
     base_tokens = tokens if trailing_space else tokens[:-1]
     base_path = tuple(token.lower() for token in base_tokens)
-    if base_path != group_path and registry.find(base_path) is not None:
-        children = [
-            spec
-            for path, spec in registry.command_items()
-            if len(path) > len(base_path)
-            and path[: len(base_path)] == base_path
-            and spec.handler is not None
-        ]
-    else:
-        children = [
-            spec
-            for path, spec in registry.command_items()
-            if len(path) > len(group_path) and path[:1] == group_path and spec.handler is not None
-        ]
+
+    argument_suggestions = _argument_suggestions_for(base_path, child_prefix, registry)
+    if argument_suggestions:
+        return argument_suggestions
+
+    child_base_path = base_path if registry.find(base_path) is not None else group_path
+    children = [
+        spec for spec in registry.children_for(child_base_path) if _should_show_in_completion(spec)
+    ]
 
     suggestions = []
     for spec in children:
@@ -105,15 +100,66 @@ def suggest_commands(text: str, registry: CommandRegistry) -> list[CommandSugges
     return suggestions
 
 
-def should_open_nested_completion(text_before_cursor: str, registry: CommandRegistry) -> bool:
+def _should_show_in_completion(spec: CommandSpec) -> bool:
+    return (
+        spec.handler is not None
+        or bool(spec.children)
+        or bool(spec.argument_suggestions)
+        or spec.argument_provider is not None
+    )
+
+
+def _argument_suggestions_for(
+    base_path: tuple[str, ...],
+    prefix: str,
+    registry: CommandRegistry,
+) -> list[CommandSuggestion]:
+    spec = registry.find(base_path)
+    if spec is None:
+        return []
+    suggestions = list(spec.argument_suggestions)
+    if spec.argument_provider is not None:
+        suggestions.extend(spec.argument_provider(None, prefix))
+
+    filtered = []
+    for suggestion in suggestions:
+        if prefix and not suggestion.display_text.lower().startswith(prefix):
+            continue
+        filtered.append(_argument_suggestion_for(base_path, suggestion))
+    return filtered
+
+
+def _argument_suggestion_for(
+    base_path: tuple[str, ...],
+    suggestion: CommandSuggestion,
+) -> CommandSuggestion:
+    trailing_space = suggestion.insert_text.endswith(" ")
+    argument = suggestion.insert_text.strip()
+    insert_text = "/" + " ".join((*base_path, *argument.split()))
+    if trailing_space:
+        insert_text = f"{insert_text} "
+    return CommandSuggestion(
+        insert_text=insert_text,
+        display_text=suggestion.display_text,
+        description=suggestion.description,
+    )
+
+
+def should_open_followup_completion(text_before_cursor: str, registry: CommandRegistry) -> bool:
     stripped = text_before_cursor.lstrip()
     if not stripped.startswith("/") or not stripped.endswith(" "):
         return False
     tokens = stripped[1:].split()
-    if len(tokens) != 1:
+    if not tokens:
         return False
-    spec = registry.find((tokens[0].lower(),))
-    return spec is not None and bool(spec.children)
+    spec = registry.find(tuple(token.lower() for token in tokens))
+    return spec is not None and (
+        bool(spec.children) or bool(spec.argument_suggestions) or spec.argument_provider is not None
+    )
+
+
+def should_open_nested_completion(text_before_cursor: str, registry: CommandRegistry) -> bool:
+    return should_open_followup_completion(text_before_cursor, registry)
 
 
 def build_command_key_bindings(registry: CommandRegistry):
@@ -128,7 +174,7 @@ def build_command_key_bindings(registry: CommandRegistry):
         completion = completion_state.current_completion if completion_state is not None else None
         if completion is not None:
             buffer.apply_completion(completion)
-            if should_open_nested_completion(buffer.document.text_before_cursor, registry):
+            if should_open_followup_completion(buffer.document.text_before_cursor, registry):
                 buffer.start_completion(select_first=False)
                 return
         buffer.validate_and_handle()

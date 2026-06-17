@@ -12,21 +12,28 @@ def command_specs() -> list[CommandSpec]:
             "/branch list",
             "Показать branches и checkpoints.",
             handle_branch_list,
+            order=10,
         ),
         CommandSpec(
             ("branch", "checkpoint"),
             "/branch checkpoint <name>",
             "Создать checkpoint.",
             handle_branch_checkpoint,
+            order=20,
         ),
         CommandSpec(
-            ("branch", "create"), "/branch create <name>", "Создать branch.", handle_branch_create
+            ("branch", "create"),
+            "/branch create <name>",
+            "Создать branch.",
+            handle_branch_create,
+            order=30,
         ),
         CommandSpec(
             ("branch", "switch"),
             "/branch switch <name>",
             "Переключиться на branch.",
             handle_branch_switch,
+            order=40,
         ),
     ]
 
