@@ -1,0 +1,4 @@
+Запрос отклонён локальным deterministic guard: он конфликтует с активными invariants.
+- architecture-001 [architecture]: Storage учебного агента остаётся JSON/JSONL. (pattern: перейти на sqlite)
+- architecture-001 [architecture]: Storage учебного агента остаётся JSON/JSONL. (pattern: удалить json storage)
+LLM API не вызывался; обычная история диалога не изменена.

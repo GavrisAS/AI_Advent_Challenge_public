@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "invariants": [
+    {
+      "id": "architecture-001",
+      "category": "architecture",
+      "text": "Storage учебного агента остаётся JSON/JSONL.",
+      "enabled": true,
+      "rationale": "JSON/JSONL проще инспектировать в artifacts и snapshot без внешней базы.",
+      "reject_patterns": [
+        "перейти на sqlite",
+        "удалить json storage"
+      ],
+      "created_at": "2026-06-18T19:12:50.044220+00:00",
+      "updated_at": "2026-06-18T19:12:50.044233+00:00"
+    },
+    {
+      "id": "business-001",
+      "category": "business_rule",
+      "text": "Приватные learning notes и memory-bank не публикуются в public export.",
+      "enabled": true,
+      "rationale": "",
+      "reject_patterns": [
+        "опубликовать memory-bank"
+      ],
+      "created_at": "2026-06-18T19:12:50.044247+00:00",
+      "updated_at": "2026-06-18T19:12:50.044248+00:00"
+    },
+    {
+      "id": "decision-001",
+      "category": "technical_decision",
+      "text": "Invariants проверяются deterministic guard до любых LLM-вызовов.",
+      "enabled": true,
+      "rationale": "",
+      "reject_patterns": [
+        "проверим после llm"
+      ],
+      "created_at": "2026-06-18T19:12:50.044238+00:00",
+      "updated_at": "2026-06-18T19:12:50.044240+00:00"
+    },
+    {
+      "id": "stack-001",
+      "category": "stack_constraint",
+      "text": "Offline-сценарии не требуют DEEPSEEK_API_KEY.",
+      "enabled": true,
+      "rationale": "",
+      "reject_patterns": [
+        "нужен api key"
+      ],
+      "created_at": "2026-06-18T19:12:50.044243+00:00",
+      "updated_at": "2026-06-18T19:12:50.044244+00:00"
+    }
+  ]
+}

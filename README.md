@@ -29,6 +29,7 @@
 | Week 03 | 11 | Memory Layers | ✅ done | [Открыть](weeks/week-03/day-11-memory-layers/) |
 | Week 03 | 12 | Assistant Personalization | ✅ done | [Открыть](weeks/week-03/day-12-assistant-personalization/) |
 | Week 03 | 13 | Task State Machine | ✅ done | [Открыть](weeks/week-03/day-13-task-state-machine/) |
+| Week 03 | 14 | State Invariants | ✅ done | [Открыть](weeks/week-03/day-14-state-invariants/) |
 
 ## Структура репозитория
 
