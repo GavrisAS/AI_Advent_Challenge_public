@@ -10,6 +10,7 @@
 |---|---|---|---|
 | day-11 | Memory Layers | ✅ done | [day-11-memory-layers](day-11-memory-layers/) |
 | day-12 | Assistant Personalization | ✅ done | [day-12-assistant-personalization](day-12-assistant-personalization/) |
+| day-13 | Task State Machine | ✅ done | [day-13-task-state-machine](day-13-task-state-machine/) |
 
 ## Ключевые навыки недели
 

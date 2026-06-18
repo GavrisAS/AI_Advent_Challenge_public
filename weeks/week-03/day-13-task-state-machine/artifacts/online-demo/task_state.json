@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "stage": "done",
+  "title": "Реализовать Day 13 task state machine",
+  "current_step": "Добавить команды /task",
+  "expected_action": "Запустить tests",
+  "done": true,
+  "paused": false,
+  "updated_at": "2026-06-18T17:03:04.089842+00:00",
+  "metadata": {}
+}

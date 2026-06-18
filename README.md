@@ -28,6 +28,7 @@
 | Week 02 | 10 | Context Management Strategies | ✅ done | [Открыть](weeks/week-02/day-10-context-management-strategies/) |
 | Week 03 | 11 | Memory Layers | ✅ done | [Открыть](weeks/week-03/day-11-memory-layers/) |
 | Week 03 | 12 | Assistant Personalization | ✅ done | [Открыть](weeks/week-03/day-12-assistant-personalization/) |
+| Week 03 | 13 | Task State Machine | ✅ done | [Открыть](weeks/week-03/day-13-task-state-machine/) |
 
 ## Структура репозитория
 

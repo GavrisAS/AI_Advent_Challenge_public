@@ -1,0 +1,21 @@
+{
+  "message_count": 4,
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты полезный AI-ассистент. Отвечай на русском языке. Давай практичный, структурированный и проверяемый ответ."
+    },
+    {
+      "role": "system",
+      "content": "Working memory: данные текущей задачи, ограничения и промежуточные решения.\n\n- constraint: task state хранится отдельно от memory и profile"
+    },
+    {
+      "role": "system",
+      "content": "Task state: formal workflow state for the current task. Use it to continue the task; do not treat it as memory or user profile.\n- stage: execution\n- title: Реализовать Day 13 task state machine для AI Advent агента.\n- current step: Добавить store, prompt block и команды /task.\n- expected action: добавить store, prompt block и команды /task\n- done: false\n- paused: false"
+    },
+    {
+      "role": "user",
+      "content": "Что мне делать дальше?"
+    }
+  ]
+}

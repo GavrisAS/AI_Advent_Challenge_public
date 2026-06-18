@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "stage": "done",
+  "title": "Реализовать Day 13 task state machine для AI Advent агента.",
+  "current_step": "Обновить README, notes и snapshot.",
+  "expected_action": "обновить README, notes и snapshot",
+  "done": true,
+  "paused": false,
+  "updated_at": "",
+  "metadata": {}
+}
