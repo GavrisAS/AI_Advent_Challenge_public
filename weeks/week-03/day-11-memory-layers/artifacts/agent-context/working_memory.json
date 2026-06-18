@@ -1,10 +1,9 @@
 {
   "schema_version": 1,
   "layer": "working",
-  "updated_at": "2026-06-17T05:26:46.921111+00:00",
+  "updated_at": "2026-06-18T04:20:03.645800+00:00",
   "entries": {
-    "checklist": "показать prompt assembly, token reports и memory events",
-    "constraint": "хранить short-term, working и long-term memory в отдельных файлах",
-    "task": "спроектировать memory layers для AI Advent агента"
+    "constraint": "хранить слои памяти отдельно",
+    "task": "реализовать memory layers для AI Advent агента"
   }
 }
