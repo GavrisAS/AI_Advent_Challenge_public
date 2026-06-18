@@ -4,6 +4,16 @@
 
 ## Прогресс
 
+### Недели
+
+| Неделя | Статус |
+|---|---|
+| Week 01 | ✅ done |
+| Week 02 | ✅ done |
+| Week 03 | 🚧 in_progress |
+
+### Дни
+
 | Неделя | День | Тема | Статус | Ссылка |
 |---|---:|---|---|---|
 | Week 01 | 01 | LLM REST API | ✅ done | [Открыть](weeks/week-01/day-01-llm-rest-api/) |
@@ -17,7 +27,7 @@
 | Week 02 | 09 | Context Management Summary | ✅ done | [Открыть](weeks/week-02/day-09-context-management-summary/) |
 | Week 02 | 10 | Context Management Strategies | ✅ done | [Открыть](weeks/week-02/day-10-context-management-strategies/) |
 | Week 03 | 11 | Memory Layers | ✅ done | [Открыть](weeks/week-03/day-11-memory-layers/) |
-| Week 03 | 12 | Assistant Personalization | 📦 published | [Открыть](weeks/week-03/day-12-assistant-personalization/) |
+| Week 03 | 12 | Assistant Personalization | ✅ done | [Открыть](weeks/week-03/day-12-assistant-personalization/) |
 
 ## Структура репозитория
 

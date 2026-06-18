@@ -35,7 +35,7 @@
 
 ## Реализация
 
-Статус: `📦 published`.
+Статус: `✅ done`.
 
 В актуальный пакет `packages/ai_advent_agent/` добавлена отдельная подсистема user profiles:
 
