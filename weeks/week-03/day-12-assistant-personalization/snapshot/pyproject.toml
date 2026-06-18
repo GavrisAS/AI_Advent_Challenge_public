@@ -1,0 +1,42 @@
+[project]
+name = "ai-advent-day12-assistant-personalization"
+version = "0.1.0"
+description = "Day 12 snapshot: assistant personalization profiles"
+requires-python = ">=3.14"
+dependencies = [
+    "prompt_toolkit>=3.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["ai_advent_agent", "ai_advent_agent.commands"]
+
+[project.scripts]
+day12-agent = "ai_advent_agent.cli:main"
+day12-scenarios = "ai_advent_agent.scenarios:main"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+    "ty",
+]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+src = ["ai_advent_agent", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF001"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

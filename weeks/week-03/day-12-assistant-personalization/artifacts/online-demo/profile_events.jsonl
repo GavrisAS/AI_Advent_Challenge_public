@@ -1,0 +1,9 @@
+{"schema_version": 1, "created_at": "2026-06-18T10:56:19.756171+00:00", "action": "create_profile", "profile": "concise_engineer", "field": null, "key": null, "value": null}
+{"schema_version": 1, "created_at": "2026-06-18T10:56:44.004968+00:00", "action": "set_profile_field", "profile": "concise_engineer", "field": "language", "key": null, "value": "русский"}
+{"schema_version": 1, "created_at": "2026-06-18T10:57:08.431093+00:00", "action": "set_profile_field", "profile": "concise_engineer", "field": "style", "key": null, "value": "кратко, технически, без вводных"}
+{"schema_version": 1, "created_at": "2026-06-18T10:57:34.004406+00:00", "action": "set_profile_preference", "profile": "concise_engineer", "field": null, "key": "examples", "value": "только если помогает принять решение"}
+{"schema_version": 1, "created_at": "2026-06-18T10:58:38.437550+00:00", "action": "create_profile", "profile": "teacher", "field": null, "key": null, "value": null}
+{"schema_version": 1, "created_at": "2026-06-18T10:58:59.108409+00:00", "action": "set_profile_field", "profile": "teacher", "field": "style", "key": null, "value": "обучающе, с пояснением причин"}
+{"schema_version": 1, "created_at": "2026-06-18T10:59:18.214279+00:00", "action": "set_profile_field", "profile": "teacher", "field": "format", "key": null, "value": "сначала идея, затем пример, затем критерии проверки"}
+{"schema_version": 1, "created_at": "2026-06-18T10:59:36.525614+00:00", "action": "use_profile", "profile": "concise_engineer", "field": null, "key": null, "value": null}
+{"schema_version": 1, "created_at": "2026-06-18T10:59:46.162556+00:00", "action": "use_profile", "profile": "teacher", "field": null, "key": null, "value": null}

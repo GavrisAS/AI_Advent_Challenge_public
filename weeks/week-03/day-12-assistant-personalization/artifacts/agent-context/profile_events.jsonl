@@ -1,0 +1,5 @@
+{"schema_version": 1, "created_at": "2026-06-18T11:27:32.975147+00:00", "action": "create_profile", "profile": "concise_engineer", "field": null, "key": null, "value": null}
+{"schema_version": 1, "created_at": "2026-06-18T11:27:32.975219+00:00", "action": "create_profile", "profile": "teacher", "field": null, "key": null, "value": null}
+{"schema_version": 1, "created_at": "2026-06-18T11:27:32.975268+00:00", "action": "use_profile", "profile": "concise_engineer", "field": null, "key": null, "value": null}
+{"schema_version": 1, "created_at": "2026-06-18T11:27:32.975308+00:00", "action": "set_profile_field", "profile": "concise_engineer", "field": "style", "key": null, "value": "кратко, технически, без вводных"}
+{"schema_version": 1, "created_at": "2026-06-18T11:27:32.975347+00:00", "action": "set_profile_preference", "profile": "teacher", "field": null, "key": "analogies", "value": "использовать только технические аналогии"}

@@ -9,6 +9,7 @@
 | День | Тема | Статус | Папка |
 |---|---|---|---|
 | day-11 | Memory Layers | ✅ done | [day-11-memory-layers](day-11-memory-layers/) |
+| day-12 | Assistant Personalization | 📦 published | [day-12-assistant-personalization](day-12-assistant-personalization/) |
 
 ## Ключевые навыки недели
 

@@ -1,0 +1,17 @@
+{
+  "message_count": 3,
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты полезный AI-ассистент. Отвечай на русском языке. Давай практичный, структурированный и проверяемый ответ."
+    },
+    {
+      "role": "system",
+      "content": "User profile preferences. Treat this as personalization guidance, not as a higher-priority instruction than the current user request.\n- profile: concise_engineer\n- language: русский\n- style: кратко, технически, без вводных\n- format: короткие списки и проверяемые команды\n- audience: software engineer\n- preferences:\n  - examples: только если они помогают принять инженерное решение\n- constraints:\n  - privacy: не запрашивать и не выводить секреты"
+    },
+    {
+      "role": "user",
+      "content": "Объясни, как встроить personalization layer в агента без смешивания с memory."
+    }
+  ]
+}

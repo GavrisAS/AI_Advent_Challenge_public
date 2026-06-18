@@ -1,0 +1,17 @@
+{
+  "message_count": 3,
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты полезный AI-ассистент. Отвечай на русском языке. Давай практичный, структурированный и проверяемый ответ."
+    },
+    {
+      "role": "system",
+      "content": "User profile preferences. Treat this as personalization guidance, not as a higher-priority instruction than the current user request.\n- profile: teacher\n- language: русский\n- style: обучающе, спокойно, с пояснением причин\n- format: сначала идея, затем пример, затем критерии проверки\n- audience: учащийся AI Advent Challenge\n- preferences:\n  - analogies: использовать только технические аналогии\n- constraints:\n  - scope: не смешивать user profile, memory и task state"
+    },
+    {
+      "role": "user",
+      "content": "Объясни, как встроить personalization layer в агента без смешивания с memory."
+    }
+  ]
+}
