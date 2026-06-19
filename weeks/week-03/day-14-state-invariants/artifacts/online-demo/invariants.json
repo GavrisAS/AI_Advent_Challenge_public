@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "invariants": [
+    {
+      "id": "architecture-001",
+      "category": "architecture",
+      "text": "Storage учебного агента остаётся JSON/JSONL",
+      "enabled": true,
+      "rationale": "JSON удобно инспектировать в snapshot",
+      "reject_patterns": [
+        "перейти на sqlite"
+      ],
+      "created_at": "2026-06-19T06:59:09.846236+00:00",
+      "updated_at": "2026-06-19T06:59:43.587414+00:00"
+    }
+  ]
+}
