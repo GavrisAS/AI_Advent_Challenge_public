@@ -1,0 +1,21 @@
+{
+  "message_count": 4,
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты полезный AI-ассистент. Отвечай на русском языке. Давай практичный, структурированный и проверяемый ответ."
+    },
+    {
+      "role": "system",
+      "content": "Working memory:\n- task: проверить controlled lifecycle и audit trail"
+    },
+    {
+      "role": "system",
+      "content": "Task state: formal workflow state for the current task. Use it to continue the task; do not treat it as memory or user profile.\n- stage: execution\n- title: Реализовать controlled transitions для task state\n- current step: Согласовать план\n- expected action: Утвердить план перед реализацией\n- plan approved: true\n- validation passed: false\n- done: false\n- paused: false\n- allowed next states: validation"
+    },
+    {
+      "role": "user",
+      "content": "Что разрешено делать дальше?"
+    }
+  ]
+}

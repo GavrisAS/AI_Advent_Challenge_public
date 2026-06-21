@@ -1,0 +1,8 @@
+{
+  "allowed": false,
+  "from_stage": "planning",
+  "target_stage": "execution",
+  "reason": "нельзя перейти к реализации до утверждённого плана.",
+  "required_action": "/task approve-plan",
+  "refusal": "Переход отклонён: planning → execution.\n\nПричина: нельзя перейти к реализации до утверждённого плана.\nСначала выполните: /task approve-plan"
+}

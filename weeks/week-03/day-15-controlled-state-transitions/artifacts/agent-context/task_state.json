@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "stage": "done",
+  "title": "Реализовать controlled transitions для task state",
+  "current_step": "Согласовать план",
+  "expected_action": "Утвердить план перед реализацией",
+  "plan_approved": true,
+  "validation_passed": true,
+  "done": true,
+  "paused": false,
+  "updated_at": "2026-06-19T16:13:24.876398+00:00",
+  "metadata": {}
+}

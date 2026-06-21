@@ -12,6 +12,7 @@
 | day-12 | Assistant Personalization | ✅ done | [day-12-assistant-personalization](day-12-assistant-personalization/) |
 | day-13 | Task State Machine | ✅ done | [day-13-task-state-machine](day-13-task-state-machine/) |
 | day-14 | State Invariants | ✅ done | [day-14-state-invariants](day-14-state-invariants/) |
+| day-15 | Controlled State Transitions | ✅ done | [day-15-controlled-state-transitions](day-15-controlled-state-transitions/) |
 
 ## Ключевые навыки недели
 
@@ -20,8 +21,11 @@
 - Проектировать stateful-поведение агента.
 - Управлять профилем пользователя, рабочим состоянием и долговременными знаниями.
 - Фиксировать hard invariants отдельно от profile, memory и task state.
+- Контролировать переходы task lifecycle через explicit guards.
 - Проверять влияние памяти и состояния на ответы ассистента.
 
 ## Итоги недели
 
-Итоги Week 03 будут расширяться по мере выполнения следующих заданий.
+Week 03 завершена. В актуальном агенте есть отдельные layers для memory, user profile, task state,
+hard invariants и controlled task transitions. Состояние задачи теперь не только сохраняется, но и
+переходит по проверяемому lifecycle: план, реализация, validation, финал.

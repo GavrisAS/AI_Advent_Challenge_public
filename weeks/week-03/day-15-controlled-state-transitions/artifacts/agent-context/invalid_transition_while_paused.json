@@ -1,0 +1,8 @@
+{
+  "allowed": false,
+  "from_stage": "execution",
+  "target_stage": "validation",
+  "reason": "задача на паузе.",
+  "required_action": "/task resume",
+  "refusal": "Переход отклонён: execution → validation.\n\nПричина: задача на паузе.\nСначала выполните: /task resume"
+}

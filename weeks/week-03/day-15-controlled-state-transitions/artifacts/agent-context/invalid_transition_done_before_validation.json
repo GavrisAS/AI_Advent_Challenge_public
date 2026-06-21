@@ -1,0 +1,8 @@
+{
+  "allowed": false,
+  "from_stage": "execution",
+  "target_stage": "done",
+  "reason": "нельзя завершить задачу без стадии validation.",
+  "required_action": "/task transition validation, затем /task pass-validation",
+  "refusal": "Переход отклонён: execution → done.\n\nПричина: нельзя завершить задачу без стадии validation.\nСначала выполните: /task transition validation, затем /task pass-validation"
+}

@@ -1,0 +1,2022 @@
+"""Offline demonstration scenarios for the AI Advent Challenge training agent.
+
+These scenarios do not call the LLM API. They show how estimated context tokens
+grow for short/long dialogs and for a large file such as skills-all.md.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+from ai_advent_agent.config import DEFAULT_CONTEXT_WINDOW_TOKENS, DEFAULT_SYSTEM_PROMPT
+from ai_advent_agent.context_management import (
+    BranchMemory,
+    BranchSnapshot,
+    JsonBranchesStore,
+    JsonFactsStore,
+    StickyFacts,
+)
+from ai_advent_agent.invariants import (
+    InvariantEventStore,
+    InvariantSet,
+    JsonInvariantStore,
+    build_invariant_refusal,
+    build_invariants_prompt_message,
+)
+from ai_advent_agent.llm_client import Message
+from ai_advent_agent.memory_layers import (
+    JsonKeyValueMemoryStore,
+    JsonShortTermMemoryStore,
+    KeyValueMemory,
+    MemoryEventStore,
+    ShortTermMemory,
+    build_memory_prompt_messages,
+)
+from ai_advent_agent.task_state import (
+    JsonTaskStateStore,
+    TaskEventStore,
+    TaskState,
+    TaskTransitionResult,
+    allowed_next_task_stages,
+    apply_task_transition,
+    build_task_state_prompt_message,
+    format_task_transition_refusal,
+    now_utc,
+    validate_task_transition,
+)
+from ai_advent_agent.token_counter import ApproxTokenCounter
+from ai_advent_agent.token_report import TokenReport, TokenReportStore
+from ai_advent_agent.user_profile import (
+    JsonUserProfileStore,
+    UserProfileEventStore,
+    UserProfiles,
+    build_profile_prompt_message,
+)
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="AI Advent token growth scenarios.")
+    subparsers = parser.add_subparsers(dest="scenario", required=True)
+
+    short = subparsers.add_parser("short", help="Короткий диалог: 3 коротких user/assistant turn.")
+    short.add_argument("--context-window-tokens", type=int, default=DEFAULT_CONTEXT_WINDOW_TOKENS)
+    short.add_argument("--max-tokens", type=int, default=1000)
+
+    long = subparsers.add_parser("long", help="Длинный синтетический диалог без API-вызовов.")
+    long.add_argument("--turns", type=int, default=50)
+    long.add_argument("--context-window-tokens", type=int, default=DEFAULT_CONTEXT_WINDOW_TOKENS)
+    long.add_argument("--max-tokens", type=int, default=1000)
+
+    overflow = subparsers.add_parser(
+        "overflow-file",
+        help="Dry-run для большого файла, например skills-all.md. Файл не отправляется в API.",
+    )
+    overflow.add_argument("path", type=Path)
+    overflow.add_argument(
+        "--context-window-tokens", type=int, default=DEFAULT_CONTEXT_WINDOW_TOKENS
+    )
+    overflow.add_argument("--max-tokens", type=int, default=1000)
+
+    summary = subparsers.add_parser(
+        "summary-comparison",
+        help="Day 9: сравнить длинный диалог без сжатия и с synthetic summary.",
+    )
+    summary.add_argument("--turns", type=int, default=24)
+    summary.add_argument("--recent-messages-limit", type=int, default=6)
+    summary.add_argument("--max-tokens", type=int, default=1000)
+
+    context = subparsers.add_parser(
+        "context-strategies-comparison",
+        help="Day 10: offline comparison of sliding_window, sticky_facts and branching.",
+    )
+    context.add_argument("--recent-messages-limit", type=int, default=6)
+    context.add_argument("--context-window-tokens", type=int, default=DEFAULT_CONTEXT_WINDOW_TOKENS)
+    context.add_argument("--max-tokens", type=int, default=1000)
+    context.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Куда сохранить демонстрационные JSON/JSONL артефакты.",
+    )
+
+    memory = subparsers.add_parser(
+        "memory-layers-demo",
+        help="Day 11: offline demo of short-term, working and long-term memory layers.",
+    )
+    memory.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Куда сохранить memory layer artifacts.",
+    )
+    memory.add_argument(
+        "--results-file",
+        type=Path,
+        default=None,
+        help="Куда сохранить Markdown-отчёт Day 11.",
+    )
+    memory.add_argument("--context-window-tokens", type=int, default=DEFAULT_CONTEXT_WINDOW_TOKENS)
+    memory.add_argument("--max-tokens", type=int, default=1000)
+
+    personalization = subparsers.add_parser(
+        "assistant-personalization-demo",
+        help="Day 12: offline demo of assistant personalization profiles.",
+    )
+    personalization.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Куда сохранить profile artifacts.",
+    )
+    personalization.add_argument(
+        "--results-file",
+        type=Path,
+        default=None,
+        help="Куда сохранить Markdown-отчёт Day 12.",
+    )
+    personalization.add_argument(
+        "--context-window-tokens",
+        type=int,
+        default=DEFAULT_CONTEXT_WINDOW_TOKENS,
+    )
+    personalization.add_argument("--max-tokens", type=int, default=1000)
+
+    task_state = subparsers.add_parser(
+        "task-state-machine-demo",
+        help="Day 13: offline demo of task state machine.",
+    )
+    task_state.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Куда сохранить task state artifacts.",
+    )
+    task_state.add_argument(
+        "--results-file",
+        type=Path,
+        default=None,
+        help="Куда сохранить Markdown-отчёт Day 13.",
+    )
+    task_state.add_argument(
+        "--context-window-tokens",
+        type=int,
+        default=DEFAULT_CONTEXT_WINDOW_TOKENS,
+    )
+    task_state.add_argument("--max-tokens", type=int, default=1000)
+
+    invariants = subparsers.add_parser(
+        "state-invariants-demo",
+        help="Day 14: offline demo of hard state invariants and local conflict guard.",
+    )
+    invariants.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Куда сохранить invariant artifacts.",
+    )
+    invariants.add_argument(
+        "--results-file",
+        type=Path,
+        default=None,
+        help="Куда сохранить Markdown-отчёт Day 14.",
+    )
+    invariants.add_argument(
+        "--context-window-tokens",
+        type=int,
+        default=DEFAULT_CONTEXT_WINDOW_TOKENS,
+    )
+    invariants.add_argument("--max-tokens", type=int, default=1000)
+
+    controlled = subparsers.add_parser(
+        "controlled-state-transitions-demo",
+        help="Day 15: offline demo of controlled task state transitions.",
+    )
+    controlled.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Куда сохранить controlled transition artifacts.",
+    )
+    controlled.add_argument(
+        "--results-file",
+        type=Path,
+        default=None,
+        help="Куда сохранить Markdown-отчёт Day 15.",
+    )
+    controlled.add_argument(
+        "--context-window-tokens",
+        type=int,
+        default=DEFAULT_CONTEXT_WINDOW_TOKENS,
+    )
+    controlled.add_argument("--max-tokens", type=int, default=1000)
+
+    return parser.parse_args(argv)
+
+
+def format_number(value: int) -> str:
+    return f"{value:,}".replace(",", " ")
+
+
+def print_row(
+    step: str,
+    messages: list[Message],
+    counter: ApproxTokenCounter,
+    *,
+    context_window: int,
+    max_tokens: int,
+) -> None:
+    prompt_tokens = counter.count_messages(messages)
+    projected_total = prompt_tokens + max_tokens
+    usage = projected_total / context_window * 100
+    print(
+        f"{step:<16} messages={len(messages):>3} "
+        f"prompt≈{format_number(prompt_tokens):>10} "
+        f"projected≈{format_number(projected_total):>10} "
+        f"usage={usage:>7.2f}%"
+    )
+
+
+def scenario_short(context_window: int, max_tokens: int) -> None:
+    counter = ApproxTokenCounter()
+    messages: list[Message] = [{"role": "system", "content": DEFAULT_SYSTEM_PROMPT}]
+    turns = [
+        (
+            "Объясни, что такое context management.",
+            "Context management — это управление тем, что модель видит в текущем запросе.",
+        ),
+        (
+            "Чем он отличается от memory management?",
+            "Memory management отвечает за сохранение и восстановление данных между сессиями.",
+        ),
+        (
+            "Дай короткий практический пример.",
+            "Пример: хранить messages в JSON и загружать их при следующем запуске агента.",
+        ),
+    ]
+
+    print("Scenario: short dialog")
+    print_row("start", messages, counter, context_window=context_window, max_tokens=max_tokens)
+    for index, (user, assistant) in enumerate(turns, start=1):
+        messages.append({"role": "user", "content": user})
+        print_row(
+            f"turn {index} user",
+            messages,
+            counter,
+            context_window=context_window,
+            max_tokens=max_tokens,
+        )
+        messages.append({"role": "assistant", "content": assistant})
+        print_row(
+            f"turn {index} done",
+            messages,
+            counter,
+            context_window=context_window,
+            max_tokens=max_tokens,
+        )
+
+
+def scenario_long(turns: int, context_window: int, max_tokens: int) -> None:
+    counter = ApproxTokenCounter()
+    messages: list[Message] = [{"role": "system", "content": DEFAULT_SYSTEM_PROMPT}]
+    user_template = (
+        "Продолжи проект агента. Нужно учитывать context management, persistent storage, "
+        "подсчёт токенов, предупреждения о лимите и аккуратное поведение при переполнении. "
+        "Это синтетическое сообщение номер {index}."
+    )
+    assistant_template = (
+        "На шаге {index} агент сохраняет историю, оценивает токены текущего запроса, "
+        "считает весь контекст, показывает projected usage и продолжает диалог. "
+        "Это демонстрационный ответ для накопления контекста."
+    )
+
+    print(f"Scenario: long dialog, turns={turns}")
+    print_row("start", messages, counter, context_window=context_window, max_tokens=max_tokens)
+    for index in range(1, turns + 1):
+        messages.append({"role": "user", "content": user_template.format(index=index)})
+        messages.append({"role": "assistant", "content": assistant_template.format(index=index)})
+        if index <= 5 or index % 10 == 0 or index == turns:
+            print_row(
+                f"turn {index}",
+                messages,
+                counter,
+                context_window=context_window,
+                max_tokens=max_tokens,
+            )
+
+
+def scenario_overflow_file(path: Path, context_window: int, max_tokens: int) -> None:
+    counter = ApproxTokenCounter()
+    text = path.expanduser().read_text(encoding="utf-8")
+    messages: list[Message] = [
+        {"role": "system", "content": DEFAULT_SYSTEM_PROMPT},
+        {"role": "user", "content": text},
+    ]
+    file_tokens = counter.count_text(text)
+    prompt_tokens = counter.count_messages(messages)
+    projected_total = prompt_tokens + max_tokens
+    usage = projected_total / context_window * 100
+
+    print("Scenario: overflow-file dry-run")
+    print(f"file: {path}")
+    print(f"chars: {format_number(len(text))}")
+    print(f"file_tokens_estimated: {format_number(file_tokens)}")
+    print(f"prompt_tokens_estimated: {format_number(prompt_tokens)}")
+    print(f"max_tokens: {format_number(max_tokens)}")
+    print(f"projected_total_tokens_estimated: {format_number(projected_total)}")
+    print(f"context_window_tokens: {format_number(context_window)}")
+    print(f"projected_usage: {usage:.2f}%")
+    print(f"overflow: {projected_total > context_window}")
+    print("Файл не отправлялся в API. Это безопасная проверка перед реальным запросом.")
+
+
+def build_synthetic_long_dialog(turns: int) -> list[Message]:
+    messages: list[Message] = [{"role": "system", "content": DEFAULT_SYSTEM_PROMPT}]
+    for index in range(1, turns + 1):
+        if index == 1:
+            user = (
+                "Важный ранний факт: пользователя зовут Алексей, проект называется "
+                "AI Advent Challenge, кодовое слово amber."
+            )
+        else:
+            user = (
+                "Продолжи обсуждение context management. Нужно учитывать persistent context, "
+                "подсчёт токенов, лимиты, команды CLI и тесты. "
+                f"Это синтетическое сообщение номер {index}."
+            )
+        assistant = (
+            "Зафиксировал требования и продолжаю проектировать агент. "
+            "Нужно отделять storage, token accounting, CLI и поведение при переполнении. "
+            f"Это синтетический ответ номер {index}."
+        )
+        messages.append({"role": "user", "content": user})
+        messages.append({"role": "assistant", "content": assistant})
+    return messages
+
+
+def scenario_summary_comparison(
+    *,
+    turns: int,
+    recent_messages_limit: int,
+    max_tokens: int,
+) -> None:
+    counter = ApproxTokenCounter()
+    full_history = build_synthetic_long_dialog(turns)
+    next_user: Message = {
+        "role": "user",
+        "content": "Что мы решили в начале и какой следующий шаг?",
+    }
+    full_request = [*full_history, next_user]
+    full_prompt_tokens = counter.count_messages(full_request)
+
+    conversation = full_history[1:]
+    replaced_messages = max(0, len(conversation) - recent_messages_limit)
+    early_fact = "Пользователя зовут Алексей; проект AI Advent Challenge; кодовое слово amber."
+    summary_text = (
+        "Summary старой истории: "
+        f"{early_fact} Агент должен развивать context management, storage, token accounting, "
+        "CLI-команды и тесты."
+    )
+    compressed_request: list[Message] = [
+        full_history[0],
+        {"role": "system", "content": f"Summary предыдущей истории диалога:\n{summary_text}"},
+        *conversation[replaced_messages:],
+        next_user,
+    ]
+    compressed_prompt_tokens = counter.count_messages(compressed_request)
+    saved_tokens = full_prompt_tokens - compressed_prompt_tokens
+    kept_early_fact = all(part in summary_text for part in ["Алексей", "AI Advent", "amber"])
+
+    print("# Day 09 summary comparison")
+    print()
+    print(f"- turns: {turns}")
+    print(f"- full_messages: {len(full_request)}")
+    print(f"- compressed_messages: {len(compressed_request)}")
+    print(f"- replaced_messages: {replaced_messages}")
+    print(f"- recent_messages_limit: {recent_messages_limit}")
+    print(f"- full_prompt_tokens_estimated: {format_number(full_prompt_tokens)}")
+    print(f"- compressed_prompt_tokens_estimated: {format_number(compressed_prompt_tokens)}")
+    print(f"- saved_prompt_tokens_estimated: {format_number(saved_tokens)}")
+    print(f"- projected_full_with_max_tokens: {format_number(full_prompt_tokens + max_tokens)}")
+    print(
+        "- projected_compressed_with_max_tokens: "
+        f"{format_number(compressed_prompt_tokens + max_tokens)}"
+    )
+    print(f"- early_important_fact_preserved: {kept_early_fact}")
+    print()
+    print("## Summary")
+    print()
+    print(summary_text)
+
+
+def build_day10_dialog() -> list[Message]:
+    system: Message = {"role": "system", "content": DEFAULT_SYSTEM_PROMPT}
+    turns = [
+        (
+            "Цель: собрать ТЗ на AI-агента для поддержки инженера в репозитории. "
+            "Важное имя проекта: Atlas Agent.",
+            "Зафиксировал цель и название проекта.",
+        ),
+        (
+            "Ограничение: агент не должен отправлять приватные файлы наружу и не должен делать "
+            "commit без подтверждения.",
+            "Добавил ограничения безопасности и git workflow.",
+        ),
+        (
+            "Предпочтение: ответы на русском, коротко, с конкретными командами.",
+            "Запомнил предпочтение по стилю ответов.",
+        ),
+        (
+            "Решение: основной интерфейс будет CLI, а состояние хранится в JSON.",
+            "Зафиксировал CLI и JSON-хранилище.",
+        ),
+        (
+            "Нужно добавить команду для проверки токенов и отчёты JSONL.",
+            "Добавил token report как часть требований.",
+        ),
+        (
+            "Договорённость: offline-сценарии не требуют API key.",
+            "Зафиксировал offline-режим без API key.",
+        ),
+        (
+            "В ветке A сравним простой deterministic planner.",
+            "Ветка A будет про deterministic planner.",
+        ),
+        (
+            "В ветке B сравним planner с LLM-based extraction фактов.",
+            "Ветка B будет про LLM-based extraction.",
+        ),
+    ]
+    messages = [system]
+    for user, assistant in turns:
+        messages.append({"role": "user", "content": user})
+        messages.append({"role": "assistant", "content": assistant})
+    return messages
+
+
+def scenario_context_strategies_comparison(
+    *,
+    recent_messages_limit: int,
+    context_window: int,
+    max_tokens: int,
+    output_dir: Path,
+) -> None:
+    counter = ApproxTokenCounter()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    dialog = build_day10_dialog()
+    next_user: Message = {
+        "role": "user",
+        "content": "Собери итоговое ТЗ и не потеряй ранние ограничения проекта.",
+    }
+
+    facts = StickyFacts(
+        {
+            "goal": (
+                "Собрать ТЗ на AI-агента для поддержки инженера в репозитории; проект Atlas Agent."
+            ),
+            "constraints": (
+                "Не отправлять приватные файлы наружу; не делать commit без подтверждения."
+            ),
+            "preferences": "Ответы на русском, коротко, с конкретными командами.",
+            "decisions": (
+                "Основной интерфейс CLI; состояние хранится в JSON; token reports в JSONL."
+            ),
+            "agreements": "Offline-сценарии не требуют API key.",
+            "user_data": "",
+        }
+    )
+
+    sliding_request = [dialog[0], *dialog[1:][-recent_messages_limit:], next_user]
+    facts_message: Message = {
+        "role": "system",
+        "content": "Sticky facts:\n"
+        + "\n".join(f"- {key}: {value}" for key, value in facts.normalized().items() if value),
+    }
+    sticky_request = [dialog[0], facts_message, *dialog[1:][-recent_messages_limit:], next_user]
+
+    checkpoint = BranchSnapshot(
+        name="requirements-base", messages=dialog[:13], facts=facts.normalized()
+    )
+    branch_a = BranchSnapshot(
+        name="deterministic-planner",
+        messages=[*checkpoint.messages, dialog[13], dialog[14], next_user],
+        facts=facts.normalized(),
+    )
+    branch_b = BranchSnapshot(
+        name="llm-facts-planner",
+        messages=[*checkpoint.messages, dialog[15], dialog[16], next_user],
+        facts=facts.normalized(),
+    )
+    branching_request = [dialog[0], facts_message, *branch_b.messages[1:][-recent_messages_limit:]]
+
+    rows = [
+        ("sliding_window", sliding_request, "Среднее", "Ранние цель и ограничения потеряны"),
+        ("sticky_facts", sticky_request, "Высокое", "Ранние факты сохранены в facts"),
+        ("branching", branching_request, "Высокое", "Ветки изолируют альтернативные решения"),
+    ]
+
+    JsonFactsStore(output_dir / "facts.json").save(facts)
+    branches_store = JsonBranchesStore(output_dir / "branches.json")
+    branches_store.save(
+        BranchMemory(
+            active_branch="llm-facts-planner",
+            latest_checkpoint="requirements-base",
+            branches={
+                "deterministic-planner": branch_a,
+                "llm-facts-planner": branch_b,
+            },
+            checkpoints={"requirements-base": checkpoint},
+        )
+    )
+    write_messages(output_dir / "sliding_window_messages.json", sliding_request)
+    write_messages(output_dir / "sticky_facts_messages.json", sticky_request)
+    write_messages(output_dir / "branching_active_messages.json", branching_request)
+
+    report_store = TokenReportStore(output_dir / "token_reports.jsonl")
+    report_store.clear()
+
+    print("# Day 10 context strategies comparison")
+    print()
+    print("| strategy | prompt tokens | projected tokens | quality | stability |")
+    print("|---|---:|---:|---|---|")
+    for strategy, messages, quality, stability in rows:
+        prompt_tokens = counter.count_messages(messages)
+        projected = prompt_tokens + max_tokens
+        report_store.append(
+            TokenReport(
+                request_tokens_estimated=counter.count_text(next_user["content"]),
+                history_tokens_before_estimated=counter.count_messages(dialog),
+                prompt_tokens_estimated=prompt_tokens,
+                projected_total_tokens_estimated=projected,
+                context_window_tokens=context_window,
+                context_usage_ratio=prompt_tokens / context_window,
+                projected_usage_ratio=projected / context_window,
+                warn_threshold_reached=projected / context_window >= 0.8,
+                overflow_detected=projected > context_window,
+                overflow_policy="error",
+                summary_active=False,
+            )
+        )
+        print(
+            f"| {strategy} | {format_number(prompt_tokens)} | "
+            f"{format_number(projected)} | {quality} | {stability} |"
+        )
+
+    print()
+    print(f"Artifacts: {output_dir}")
+    print("Summary mode: off; API calls: 0")
+
+
+def build_day11_demo_memory() -> tuple[ShortTermMemory, KeyValueMemory, KeyValueMemory, Message]:
+    short_term = ShortTermMemory(
+        notes=["Пользователь уже уточнил, что важна демонстрация разделения файлов памяти."],
+        recent_messages=[
+            {
+                "role": "user",
+                "content": "Нужно показать short-term, working и long-term memory отдельно.",
+            },
+            {
+                "role": "assistant",
+                "content": "Соберу prompt так, чтобы каждый слой был виден отдельно.",
+            },
+        ],
+    )
+    working = KeyValueMemory(
+        {
+            "task": "спроектировать memory layers для AI Advent агента",
+            "constraint": "хранить short-term, working и long-term memory в отдельных файлах",
+            "checklist": "показать prompt assembly, token reports и memory events",
+        }
+    )
+    long_term = KeyValueMemory(
+        {
+            "language": "русский",
+            "style": "кратко и технически",
+            "preference": "показывать проверяемые артефакты и команды запуска",
+        }
+    )
+    next_user: Message = {
+        "role": "user",
+        "content": "Сформулируй следующий шаг реализации ассистента с учётом моей памяти.",
+    }
+    return short_term, working, long_term, next_user
+
+
+def scenario_memory_layers_demo(
+    *,
+    output_dir: Path,
+    results_file: Path,
+    context_window: int,
+    max_tokens: int,
+) -> None:
+    counter = ApproxTokenCounter()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    results_file.parent.mkdir(parents=True, exist_ok=True)
+
+    short_term, working, long_term, next_user = build_day11_demo_memory()
+    JsonShortTermMemoryStore(output_dir / "short_term_memory.json").save(short_term)
+    JsonKeyValueMemoryStore(output_dir / "working_memory.json", layer="working").save(working)
+    JsonKeyValueMemoryStore(output_dir / "long_term_memory.json", layer="long_term").save(long_term)
+
+    event_store = MemoryEventStore(output_dir / "memory_events.jsonl")
+    event_store.clear()
+    event_store.append(
+        action="remember",
+        layer="long_term",
+        key="language",
+        value="русский",
+    )
+    event_store.append(
+        action="remember",
+        layer="long_term",
+        key="style",
+        value="кратко и технически",
+    )
+    event_store.append(
+        action="remember",
+        layer="working",
+        key="task",
+        value="спроектировать memory layers для AI Advent агента",
+    )
+    event_store.append(
+        action="remember",
+        layer="short_term",
+        text="Пользователь уточнил важность раздельных файлов памяти.",
+    )
+
+    base_system: Message = {"role": "system", "content": DEFAULT_SYSTEM_PROMPT}
+    no_memory_prompt = [base_system, next_user]
+    working_blocks, working_metadata = build_memory_prompt_messages(
+        short_term=ShortTermMemory(),
+        working=working,
+        long_term=KeyValueMemory(),
+        token_counter=counter,
+    )
+    working_prompt = [base_system, *working_blocks, next_user]
+    all_blocks, all_metadata = build_memory_prompt_messages(
+        short_term=short_term,
+        working=working,
+        long_term=long_term,
+        token_counter=counter,
+    )
+    all_prompt = [base_system, *all_blocks, next_user]
+
+    variants = [
+        ("no_memory", no_memory_prompt, None),
+        ("working_only", working_prompt, working_metadata),
+        ("all_layers", all_prompt, all_metadata),
+    ]
+
+    write_messages(output_dir / "prompt_no_memory.json", no_memory_prompt)
+    write_messages(output_dir / "prompt_working_memory.json", working_prompt)
+    write_messages(output_dir / "prompt_all_memory_layers.json", all_prompt)
+
+    report_store = TokenReportStore(output_dir / "token_reports.jsonl")
+    report_store.clear()
+
+    rows: list[tuple[str, int, int, str]] = []
+    decisions: dict[str, str] = {}
+    for name, messages, metadata in variants:
+        prompt_tokens = counter.count_messages(messages)
+        projected = prompt_tokens + max_tokens
+        decision = deterministic_memory_decision(messages)
+        decisions[name] = decision
+        rows.append((name, prompt_tokens, projected, decision))
+        report_store.append(
+            TokenReport(
+                request_tokens_estimated=counter.count_text(next_user["content"]),
+                history_tokens_before_estimated=counter.count_messages(messages[:-1]),
+                prompt_tokens_estimated=prompt_tokens,
+                projected_total_tokens_estimated=projected,
+                context_window_tokens=context_window,
+                context_usage_ratio=prompt_tokens / context_window,
+                projected_usage_ratio=projected / context_window,
+                warn_threshold_reached=projected / context_window >= 0.8,
+                overflow_detected=projected > context_window,
+                overflow_policy="error",
+                summary_active=False,
+                memory_layers_active=bool(metadata and metadata.layers_active),
+                memory_layer_entries={} if metadata is None else metadata.layer_entries,
+                memory_layer_tokens_estimated={}
+                if metadata is None
+                else metadata.layer_tokens_estimated,
+                memory_prompt_tokens_estimated=0
+                if metadata is None
+                else metadata.prompt_tokens_estimated,
+                prompt_assembly_order=["system", "current_user"]
+                if metadata is None
+                else ["system", *metadata.assembly_order, "current_user"],
+            )
+        )
+
+    results_file.write_text(
+        build_day11_results_markdown(rows, decisions, output_dir),
+        encoding="utf-8",
+    )
+
+    print("# Day 11 memory layers demo")
+    print()
+    print("| variant | prompt tokens | projected tokens | deterministic decision |")
+    print("|---|---:|---:|---|")
+    for name, prompt_tokens, projected, decision in rows:
+        print(
+            f"| {name} | {format_number(prompt_tokens)} | {format_number(projected)} | {decision} |"
+        )
+    print()
+    print(f"Artifacts: {output_dir}")
+    print(f"Results: {results_file}")
+    print("API calls: 0")
+
+
+def deterministic_memory_decision(messages: list[Message]) -> str:
+    prompt = "\n".join(message["content"] for message in messages)
+    has_long = "language: русский" in prompt and "style: кратко и технически" in prompt
+    has_working = "спроектировать memory layers" in prompt and "отдельных файлах" in prompt
+    has_short = "текущий диалог" in prompt or "разделения файлов памяти" in prompt
+
+    if has_long and has_working and has_short:
+        return "ответ на русском, краткий, с учётом задачи и последних уточнений"
+    if has_working:
+        return "ответ учитывает текущую задачу, но без профиля и последних уточнений"
+    return "общий ответ без персонализации и без состояния текущей задачи"
+
+
+def build_day11_results_markdown(
+    rows: list[tuple[str, int, int, str]],
+    decisions: dict[str, str],
+    output_dir: Path,
+) -> str:
+    table_rows = "\n".join(
+        f"| `{name}` | {format_number(prompt_tokens)} | {format_number(projected)} | {decision} |"
+        for name, prompt_tokens, projected, decision in rows
+    )
+    return f"""# Day 11 — Memory Layers
+
+Сценарий выполнен offline, без API-вызовов:
+
+```bash
+uv run --project packages/ai_advent_agent ai-advent-scenarios memory-layers-demo
+```
+
+## Таблица memory layers
+
+| Слой | Что хранит | Файл |
+|---|---|---|
+| Short-term | Последние реплики и явные short notes | `short_term_memory.json` |
+| Working | Текущая задача, ограничения и checklist | `working_memory.json` |
+| Long-term | Профиль, предпочтения, решения и знания | `long_term_memory.json` |
+| Memory events | Журнал явных операций remember/forget/reset | `memory_events.jsonl` |
+
+## Примеры данных
+
+- Long-term: язык `русский`, стиль `кратко и технически`.
+- Working: задача, отдельные файлы памяти, checklist по reports.
+- Short-term: последние реплики о демонстрации разделения файлов памяти.
+
+## Prompt assembly
+
+Сборка prompt в варианте `all_layers`:
+
+1. system prompt;
+2. long-term memory;
+3. working memory;
+4. short-term memory;
+5. текущее сообщение пользователя.
+
+Файлы prompt сохранены в `{output_dir}`:
+
+- `prompt_no_memory.json`
+- `prompt_working_memory.json`
+- `prompt_all_memory_layers.json`
+
+## Сравнение поведения
+
+| Вариант | Prompt tokens | Projected tokens | Иллюстрируемое поведение |
+|---|---:|---:|---|
+{table_rows}
+
+## Как слои влияют на ответ
+
+- Без memory layers агент отвечает обобщённо.
+- С working memory агент учитывает текущую задачу и ограничения.
+- Со всеми слоями агент учитывает профиль, задачу и последние уточнения.
+
+## Артефакты
+
+- `artifacts/agent-context/short_term_memory.json`
+- `artifacts/agent-context/working_memory.json`
+- `artifacts/agent-context/long_term_memory.json`
+- `artifacts/agent-context/memory_events.jsonl`
+- `artifacts/agent-context/token_reports.jsonl`
+
+## Выводы
+
+Memory layers делают stateful-поведение наблюдаемым: разные типы данных физически разделены,
+сохраняются только явными командами и отдельно участвуют в prompt assembly. Это снижает риск
+memory pollution и позволяет объяснить, почему ответ агента изменился.
+"""
+
+
+def build_day12_demo_profiles() -> UserProfiles:
+    profiles = UserProfiles()
+    concise = profiles.create("concise_engineer")
+    concise.set_field("language", "русский")
+    concise.set_field("style", "кратко, технически, без вводных")
+    concise.set_field("format", "короткие списки и проверяемые команды")
+    concise.set_field("audience", "software engineer")
+    concise.set_preference("examples", "только если они помогают принять инженерное решение")
+    concise.set_constraint("privacy", "не запрашивать и не выводить секреты")
+
+    teacher = profiles.create("teacher")
+    teacher.set_field("language", "русский")
+    teacher.set_field("style", "обучающе, спокойно, с пояснением причин")
+    teacher.set_field("format", "сначала идея, затем пример, затем критерии проверки")
+    teacher.set_field("audience", "учащийся AI Advent Challenge")
+    teacher.set_preference("analogies", "использовать только технические аналогии")
+    teacher.set_constraint("scope", "не смешивать user profile, memory и task state")
+    profiles.use("concise_engineer")
+    return profiles
+
+
+def scenario_assistant_personalization_demo(
+    *,
+    output_dir: Path,
+    results_file: Path,
+    context_window: int,
+    max_tokens: int,
+) -> None:
+    counter = ApproxTokenCounter()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    results_file.parent.mkdir(parents=True, exist_ok=True)
+
+    profiles = build_day12_demo_profiles()
+    JsonUserProfileStore(output_dir / "user_profiles.json").save(profiles)
+    event_store = UserProfileEventStore(output_dir / "profile_events.jsonl")
+    if event_store.path.exists():
+        event_store.path.unlink()
+    for profile_name in ["concise_engineer", "teacher"]:
+        event_store.append(action="create_profile", profile=profile_name)
+    event_store.append(action="use_profile", profile="concise_engineer")
+    event_store.append(
+        action="set_profile_field",
+        profile="concise_engineer",
+        field="style",
+        value="кратко, технически, без вводных",
+    )
+    event_store.append(
+        action="set_profile_preference",
+        profile="teacher",
+        key="analogies",
+        value="использовать только технические аналогии",
+    )
+
+    base_system: Message = {"role": "system", "content": DEFAULT_SYSTEM_PROMPT}
+    next_user: Message = {
+        "role": "user",
+        "content": "Объясни, как встроить personalization layer в агента без смешивания с memory.",
+    }
+
+    variants: list[tuple[str, UserProfiles]] = [
+        ("no_profile", UserProfiles()),
+        ("concise_engineer", profiles),
+        (
+            "teacher",
+            UserProfiles(
+                active_profile="teacher",
+                profiles={name: profile for name, profile in profiles.profiles.items()},
+            ),
+        ),
+    ]
+
+    rows: list[tuple[str, int, int, str]] = []
+    report_store = TokenReportStore(output_dir / "token_reports.jsonl")
+    report_store.clear()
+    for name, variant_profiles in variants:
+        profile_message, fields_count, profile_tokens = build_profile_prompt_message(
+            variant_profiles,
+            counter,
+        )
+        messages = [base_system, *([profile_message] if profile_message else []), next_user]
+        write_messages(output_dir / f"prompt_{name}.json", messages)
+        prompt_tokens = counter.count_messages(messages)
+        projected = prompt_tokens + max_tokens
+        decision = deterministic_profile_decision(messages)
+        rows.append((name, prompt_tokens, projected, decision))
+        report_store.append(
+            TokenReport(
+                request_tokens_estimated=counter.count_text(next_user["content"]),
+                history_tokens_before_estimated=counter.count_messages(messages[:-1]),
+                prompt_tokens_estimated=prompt_tokens,
+                projected_total_tokens_estimated=projected,
+                context_window_tokens=context_window,
+                context_usage_ratio=prompt_tokens / context_window,
+                projected_usage_ratio=projected / context_window,
+                warn_threshold_reached=projected / context_window >= 0.8,
+                overflow_detected=projected > context_window,
+                overflow_policy="error",
+                summary_active=False,
+                profile_active=profile_message is not None,
+                active_profile_name=variant_profiles.active_profile if profile_message else "",
+                profile_fields_count=fields_count,
+                profile_prompt_tokens_estimated=profile_tokens,
+                prompt_assembly_order=["system", "user_profile", "current_user"]
+                if profile_message
+                else ["system", "current_user"],
+            )
+        )
+
+    results_file.write_text(
+        build_day12_results_markdown(rows, output_dir),
+        encoding="utf-8",
+    )
+
+    print("# Day 12 assistant personalization demo")
+    print()
+    print("| variant | prompt tokens | projected tokens | deterministic behavior |")
+    print("|---|---:|---:|---|")
+    for name, prompt_tokens, projected, decision in rows:
+        print(
+            f"| {name} | {format_number(prompt_tokens)} | {format_number(projected)} | {decision} |"
+        )
+    print()
+    print(f"Artifacts: {output_dir}")
+    print(f"Results: {results_file}")
+    print("API calls: 0")
+
+
+def deterministic_profile_decision(messages: list[Message]) -> str:
+    prompt = "\n".join(message["content"] for message in messages)
+    if "concise_engineer" in prompt:
+        return "краткий инженерный ответ с командами и без вводных"
+    if "teacher" in prompt:
+        return "обучающее объяснение с причиной, примером и критериями проверки"
+    return "нейтральный ответ без сохранённой персонализации"
+
+
+def build_day12_results_markdown(
+    rows: list[tuple[str, int, int, str]],
+    output_dir: Path,
+) -> str:
+    table_rows = "\n".join(
+        f"| `{name}` | {format_number(prompt_tokens)} | {format_number(projected)} | {decision} |"
+        for name, prompt_tokens, projected, decision in rows
+    )
+    return f"""# Day 12 — Assistant Personalization
+
+Сценарий выполнен offline, без API-вызовов:
+
+```bash
+uv run --project packages/ai_advent_agent ai-advent-scenarios assistant-personalization-demo
+```
+
+## Профили
+
+Созданы два демонстрационных профиля без реальных персональных данных:
+
+- `concise_engineer` — русский язык, краткий инженерный стиль, проверяемые команды.
+- `teacher` — русский язык, обучающее объяснение, пример и критерии проверки.
+
+## Prompt assembly
+
+Базовый порядок для personalization:
+
+1. system prompt;
+2. user profile, если активный профиль существует и не пустой;
+3. current user request.
+
+В актуальном агенте этот слой вставляется перед explicit memory layers, чтобы user profile не
+смешивался с long-term memory, working memory и task state.
+
+Файлы prompt сохранены в `{output_dir}`:
+
+- `prompt_no_profile.json`
+- `prompt_concise_engineer.json`
+- `prompt_teacher.json`
+
+## Сравнение поведения
+
+| Вариант | Prompt tokens | Projected tokens | Иллюстрируемое поведение |
+|---|---:|---:|---|
+{table_rows}
+
+## Артефакты
+
+- `artifacts/agent-context/user_profiles.json`
+- `artifacts/agent-context/profile_events.jsonl`
+- `artifacts/agent-context/token_reports.jsonl`
+- `artifacts/agent-context/prompt_no_profile.json`
+- `artifacts/agent-context/prompt_concise_engineer.json`
+- `artifacts/agent-context/prompt_teacher.json`
+
+## Выводы
+
+Assistant personalization полезна как отдельный слой устойчивых пользовательских предпочтений.
+Она не должна быть скрытой long-term memory: профиль управляется явными командами `/profile`,
+попадает в prompt как preference guidance и отражается в token reports. Это делает поведение
+ассистента воспроизводимым и проверяемым без API-вызовов.
+"""
+
+
+def scenario_task_state_machine_demo(
+    *,
+    output_dir: Path,
+    results_file: Path,
+    context_window: int,
+    max_tokens: int,
+) -> None:
+    counter = ApproxTokenCounter()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    results_file.parent.mkdir(parents=True, exist_ok=True)
+
+    task_title = "Реализовать Day 13 task state machine для AI Advent агента."
+    states = [
+        ("empty", TaskState()),
+        (
+            "planning",
+            TaskState(
+                stage="planning",
+                title=task_title,
+                current_step="Описать модель task state и allowed transitions.",
+                expected_action="описать модель task state и allowed transitions",
+            ),
+        ),
+        (
+            "execution",
+            TaskState(
+                stage="execution",
+                title=task_title,
+                current_step="Добавить store, prompt block и команды /task.",
+                expected_action="добавить store, prompt block и команды /task",
+            ),
+        ),
+        (
+            "paused_execution",
+            TaskState(
+                stage="execution",
+                title=task_title,
+                current_step="Зафиксировать текущий шаг перед паузой.",
+                expected_action="зафиксировать текущий шаг перед паузой",
+                paused=True,
+            ),
+        ),
+        (
+            "validation",
+            TaskState(
+                stage="validation",
+                title=task_title,
+                current_step="Запустить tests, scenario и public export.",
+                expected_action="запустить tests, scenario и public export",
+            ),
+        ),
+        (
+            "done",
+            TaskState(
+                stage="done",
+                title=task_title,
+                current_step="Обновить README, notes и snapshot.",
+                expected_action="обновить README, notes и snapshot",
+                done=True,
+            ),
+        ),
+    ]
+
+    JsonTaskStateStore(output_dir / "task_state.json").save(states[-1][1])
+    event_store = TaskEventStore(output_dir / "task_events.jsonl")
+    event_store.clear()
+    for action, state in [
+        ("start_task", states[1][1]),
+        ("set_stage", states[2][1]),
+        ("pause_task", states[3][1]),
+        ("resume_task", states[2][1]),
+        ("set_stage", states[4][1]),
+        ("complete_task", states[5][1]),
+    ]:
+        event_store.append(action=action, state=state)
+
+    base_system: Message = {"role": "system", "content": DEFAULT_SYSTEM_PROMPT}
+    working_memory: Message = {
+        "role": "system",
+        "content": (
+            "Working memory: данные текущей задачи, ограничения и промежуточные решения.\n\n"
+            "- constraint: task state хранится отдельно от memory и profile"
+        ),
+    }
+    next_user: Message = {"role": "user", "content": "Что мне делать дальше?"}
+    report_store = TokenReportStore(output_dir / "token_reports.jsonl")
+    report_store.clear()
+
+    rows: list[tuple[str, str, bool, bool, int, str]] = []
+    for name, state in states:
+        task_message, task_tokens = build_task_state_prompt_message(state, counter)
+        messages = [base_system]
+        if name != "empty":
+            messages.append(working_memory)
+        if task_message is not None:
+            messages.append(task_message)
+        messages.append(next_user)
+        write_messages(output_dir / f"prompt_{name}.json", messages)
+        prompt_tokens = counter.count_messages(messages)
+        report_store.append(
+            TokenReport(
+                request_tokens_estimated=counter.count_text(next_user["content"]),
+                history_tokens_before_estimated=counter.count_messages(messages[:-1]),
+                prompt_tokens_estimated=prompt_tokens,
+                projected_total_tokens_estimated=prompt_tokens + max_tokens,
+                context_window_tokens=context_window,
+                context_usage_ratio=prompt_tokens / context_window,
+                projected_usage_ratio=(prompt_tokens + max_tokens) / context_window,
+                warn_threshold_reached=(prompt_tokens + max_tokens) / context_window >= 0.8,
+                overflow_detected=prompt_tokens + max_tokens > context_window,
+                overflow_policy="error",
+                memory_layers_active=name != "empty",
+                memory_layer_entries={"working": 1} if name != "empty" else {},
+                memory_layer_tokens_estimated={"working": counter.count_message(working_memory)}
+                if name != "empty"
+                else {},
+                memory_prompt_tokens_estimated=counter.count_message(working_memory)
+                if name != "empty"
+                else 0,
+                task_state_active=state.active,
+                task_stage=state.stage or None,
+                task_done=state.done,
+                task_paused=state.paused,
+                task_prompt_tokens_estimated=task_tokens,
+                prompt_assembly_order=[
+                    "system",
+                    *(["working_memory"] if name != "empty" else []),
+                    *(["task_state"] if task_message is not None else []),
+                    "current_user",
+                ],
+            )
+        )
+        rows.append(
+            (
+                name,
+                state.stage or "-",
+                state.paused,
+                state.done,
+                prompt_tokens,
+                deterministic_task_state_decision(messages),
+            )
+        )
+
+    results_file.write_text(
+        build_day13_results_markdown(rows, output_dir),
+        encoding="utf-8",
+    )
+
+    print("# Day 13 task state machine demo")
+    print()
+    print("| state | stage | paused | done | prompt tokens | deterministic behavior |")
+    print("|---|---|---|---|---:|---|")
+    for name, stage, paused, done, prompt_tokens, decision in rows:
+        print(f"| {name} | {stage} | {paused} | {done} | {prompt_tokens} | {decision} |")
+    print()
+    print(f"Artifacts: {output_dir}")
+    print(f"Results: {results_file}")
+    print("API calls: 0")
+
+
+def deterministic_task_state_decision(messages: list[Message]) -> str:
+    prompt = "\n".join(message["content"] for message in messages)
+    if "paused: true" in prompt:
+        return "продолжение запрещено до /task resume; stage остаётся execution"
+    if "stage: planning" in prompt:
+        return "следующий шаг — завершить план и перейти к execution"
+    if "stage: execution" in prompt:
+        return "следующий шаг — выполнить текущий command/store task"
+    if "stage: validation" in prompt:
+        return "следующий шаг — проверки и public export"
+    if "stage: done" in prompt:
+        return "задача завершена; новых действий не требуется"
+    return "общий ответ без task state"
+
+
+def build_day13_results_markdown(
+    rows: list[tuple[str, str, bool, bool, int, str]],
+    output_dir: Path,
+) -> str:
+    stage_rows = "\n".join(
+        f"| `{name}` | `{stage}` | {paused} | {done} | "
+        f"{format_number(prompt_tokens)} | {decision} |"
+        for name, stage, paused, done, prompt_tokens, decision in rows
+    )
+    full_prompt_order = (
+        "system prompt -> active user profile -> long-term memory -> working memory -> "
+        "task state -> short-term memory -> current user message"
+    )
+    return f"""# Day 13 — Task State Machine
+
+Сценарий выполнен offline, без API-вызовов:
+
+```bash
+uv run --project packages/ai_advent_agent ai-advent-scenarios task-state-machine-demo
+```
+
+## Таблица стадий
+
+| Snapshot | Stage | Paused | Done | Prompt tokens | Иллюстрируемое поведение |
+|---|---|---:|---:|---:|---|
+{stage_rows}
+
+## Таблица transitions
+
+| Команда | Переход |
+|---|---|
+| `/task start <title>` | empty/no task -> planning |
+| `/task next` | planning -> execution |
+| `/task next` | execution -> validation |
+| `/task next` или `/task complete` | validation -> done |
+| `/task pause` | active stage сохраняется, `paused=true` |
+| `/task resume` | stage сохраняется, `paused=false` |
+| `/task reset --yes` | task state очищается |
+
+## Prompt assembly order
+
+Day 13 добавляет отдельный слой:
+
+```text
+{full_prompt_order}
+```
+
+В offline-сценарии для наглядности используется минимальный порядок:
+
+```text
+system prompt -> working memory -> task state -> current user message
+```
+
+## Артефакты
+
+Файлы сохранены в `{output_dir}`:
+
+- `task_state.json`
+- `task_events.jsonl`
+- `token_reports.jsonl`
+- `prompt_empty.json`
+- `prompt_planning.json`
+- `prompt_execution.json`
+- `prompt_paused_execution.json`
+- `prompt_validation.json`
+- `prompt_done.json`
+
+## Выводы
+
+- Task state отделён от profile и memory: он хранит этап задачи, текущий шаг, ожидаемое действие
+  и флаги выполнения.
+- Пауза не превращается в отдельный stage: `paused=true` сохраняется рядом с текущим stage.
+- После resume агент может продолжить с того же stage без повторного объяснения задачи.
+- Token reports показывают, активен ли task state и сколько prompt tokens добавляет этот слой.
+"""
+
+
+def scenario_state_invariants_demo(
+    *,
+    output_dir: Path,
+    results_file: Path,
+    context_window: int,
+    max_tokens: int,
+) -> None:
+    counter = ApproxTokenCounter()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    results_file.parent.mkdir(parents=True, exist_ok=True)
+
+    invariants = build_day14_demo_invariants()
+    JsonInvariantStore(output_dir / "invariants.json").save(invariants)
+    event_store = InvariantEventStore(output_dir / "invariant_events.jsonl")
+    event_store.clear()
+    for invariant in invariants.all():
+        event_store.append(action="add_invariant", invariant=invariant)
+        for pattern in invariant.reject_patterns:
+            event_store.append(action="add_reject_pattern", invariant=invariant, value=pattern)
+
+    base_system: Message = {"role": "system", "content": DEFAULT_SYSTEM_PROMPT}
+    profile: Message = {
+        "role": "system",
+        "content": "User profile preferences. Use as style guidance only.\n- style: кратко",
+    }
+    long_term: Message = {
+        "role": "system",
+        "content": "Long-term memory:\n- project: AI Advent Challenge",
+    }
+    working: Message = {
+        "role": "system",
+        "content": "Working memory:\n- task: проверить hard invariants и conflict guard",
+    }
+    task_state: Message = {
+        "role": "system",
+        "content": "Task state:\n- stage: validation\n- paused: false",
+    }
+    short_term: Message = {
+        "role": "system",
+        "content": "Short-term memory:\n- последний шаг: показать refusal без API",
+    }
+    invariant_message, invariant_tokens, invariant_count = build_invariants_prompt_message(
+        invariants,
+        counter,
+    )
+    assert invariant_message is not None
+
+    conflict_user: Message = {
+        "role": "user",
+        "content": "Давай перейти на SQLite и удалить JSON storage.",
+    }
+    safe_user: Message = {
+        "role": "user",
+        "content": "Покажи, как добавить ещё один reject pattern без смены storage.",
+    }
+    no_invariant_prompt = [
+        base_system,
+        profile,
+        long_term,
+        working,
+        task_state,
+        short_term,
+        safe_user,
+    ]
+    full_safe_prompt = [
+        base_system,
+        invariant_message,
+        profile,
+        long_term,
+        working,
+        task_state,
+        short_term,
+        safe_user,
+    ]
+    conflict_prompt = [base_system, invariant_message, conflict_user]
+    conflicts = invariants.check_conflicts(conflict_user["content"])
+    event_store.append(action="check_conflict", conflicts=conflicts)
+    refusal = build_invariant_refusal(conflicts)
+
+    write_messages(output_dir / "prompt_without_invariants.json", no_invariant_prompt)
+    write_messages(output_dir / "prompt_with_invariants.json", full_safe_prompt)
+    write_messages(output_dir / "prompt_conflict_preflight.json", conflict_prompt)
+    (output_dir / "local_refusal.txt").write_text(refusal + "\n", encoding="utf-8")
+
+    report_store = TokenReportStore(output_dir / "token_reports.jsonl")
+    report_store.clear()
+    variants = [
+        ("without_invariants", no_invariant_prompt, False, 0, 0, False, 0),
+        ("with_invariants", full_safe_prompt, True, invariant_count, invariant_tokens, False, 0),
+        (
+            "conflict_refusal",
+            conflict_prompt,
+            True,
+            invariant_count,
+            invariant_tokens,
+            True,
+            len(conflicts),
+        ),
+    ]
+    rows: list[tuple[str, int, int, bool, int, str]] = []
+    for name, messages, active, count, tokens, conflict, conflict_count in variants:
+        prompt_tokens = counter.count_messages(messages)
+        projected = prompt_tokens + (0 if conflict else max_tokens)
+        report_store.append(
+            TokenReport(
+                request_tokens_estimated=counter.count_text(messages[-1]["content"]),
+                history_tokens_before_estimated=counter.count_messages(messages[:-1]),
+                prompt_tokens_estimated=prompt_tokens,
+                projected_total_tokens_estimated=projected,
+                context_window_tokens=context_window,
+                context_usage_ratio=prompt_tokens / context_window,
+                projected_usage_ratio=projected / context_window,
+                warn_threshold_reached=projected / context_window >= 0.8,
+                overflow_detected=projected > context_window,
+                overflow_policy="error",
+                invariants_active=active,
+                invariants_count=count,
+                invariants_prompt_tokens_estimated=tokens,
+                invariant_conflict=conflict,
+                invariant_conflict_count=conflict_count,
+                prompt_assembly_order=day14_prompt_order(messages),
+                response_tokens_estimated=counter.count_text(refusal) if conflict else None,
+                prompt_tokens_actual=0 if conflict else None,
+                completion_tokens_actual=0 if conflict else None,
+                total_tokens_actual=0 if conflict else None,
+                estimated_input_cost_usd=0.0 if conflict else None,
+                estimated_output_cost_usd=0.0 if conflict else None,
+                estimated_total_cost_usd=0.0 if conflict else None,
+                elapsed_seconds=0.0 if conflict else None,
+            )
+        )
+        rows.append(
+            (
+                name,
+                prompt_tokens,
+                projected,
+                conflict,
+                conflict_count,
+                deterministic_invariant_decision(messages, bool(conflicts)),
+            )
+        )
+
+    results_file.write_text(
+        build_day14_results_markdown(rows, output_dir, refusal),
+        encoding="utf-8",
+    )
+
+    print("# Day 14 state invariants demo")
+    print()
+    print("| variant | prompt tokens | projected tokens | conflict | conflicts | behavior |")
+    print("|---|---:|---:|---|---:|---|")
+    for name, prompt_tokens, projected, conflict, conflict_count, decision in rows:
+        print(
+            f"| {name} | {format_number(prompt_tokens)} | {format_number(projected)} | "
+            f"{conflict} | {conflict_count} | {decision} |"
+        )
+    print()
+    print(f"Artifacts: {output_dir}")
+    print(f"Results: {results_file}")
+    print("API calls: 0")
+
+
+def build_day14_demo_invariants() -> InvariantSet:
+    invariants = InvariantSet()
+    architecture = invariants.add("architecture", "Storage учебного агента остаётся JSON/JSONL.")
+    invariants.set_rationale(
+        architecture.id,
+        "JSON/JSONL проще инспектировать в artifacts и snapshot без внешней базы.",
+    )
+    invariants.add_reject_pattern(architecture.id, "перейти на sqlite")
+    invariants.add_reject_pattern(architecture.id, "удалить json storage")
+    decision = invariants.add(
+        "technical_decision",
+        "Invariants проверяются deterministic guard до любых LLM-вызовов.",
+    )
+    invariants.add_reject_pattern(decision.id, "проверим после llm")
+    stack = invariants.add("stack_constraint", "Offline-сценарии не требуют DEEPSEEK_API_KEY.")
+    invariants.add_reject_pattern(stack.id, "нужен api key")
+    business = invariants.add(
+        "business_rule",
+        "Приватные learning notes и memory-bank не публикуются в public export.",
+    )
+    invariants.add_reject_pattern(business.id, "опубликовать memory-bank")
+    return invariants
+
+
+def day14_prompt_order(messages: list[Message]) -> list[str]:
+    order: list[str] = []
+    checks = [
+        ("system", lambda message: message["content"] == DEFAULT_SYSTEM_PROMPT),
+        ("invariants", lambda message: message["content"].startswith("State invariants:")),
+        (
+            "user_profile",
+            lambda message: message["content"].startswith("User profile preferences."),
+        ),
+        ("long_term_memory", lambda message: message["content"].startswith("Long-term memory:")),
+        ("working_memory", lambda message: message["content"].startswith("Working memory:")),
+        ("task_state", lambda message: message["content"].startswith("Task state:")),
+        ("short_term_memory", lambda message: message["content"].startswith("Short-term memory:")),
+    ]
+    for label, predicate in checks:
+        if any(predicate(message) for message in messages):
+            order.append(label)
+    if messages and messages[-1]["role"] == "user":
+        order.append("current_user")
+    return order
+
+
+def deterministic_invariant_decision(messages: list[Message], has_conflicts: bool) -> str:
+    prompt = "\n".join(message["content"].lower() for message in messages)
+    if "перейти на sqlite" in prompt and has_conflicts:
+        return "локальный отказ; LLM API не вызывается"
+    if "state invariants:" in prompt:
+        return "ответ следует hard constraints до profile/memory/task"
+    return "обычный prompt без hard invariant layer"
+
+
+def build_day14_results_markdown(
+    rows: list[tuple[str, int, int, bool, int, str]],
+    output_dir: Path,
+    refusal: str,
+) -> str:
+    table_rows = "\n".join(
+        f"| `{name}` | {format_number(prompt_tokens)} | {format_number(projected)} | "
+        f"{conflict} | {conflict_count} | {decision} |"
+        for name, prompt_tokens, projected, conflict, conflict_count, decision in rows
+    )
+    return f"""# Day 14 — State Invariants
+
+Сценарий выполнен offline, без API-вызовов:
+
+```bash
+uv run --project packages/ai_advent_agent ai-advent-scenarios state-invariants-demo
+```
+
+## Prompt assembly
+
+Day 14 добавляет hard invariant layer сразу после system prompt:
+
+```text
+system -> invariants -> user_profile -> long_term_memory -> working_memory
+       -> task_state -> short_term_memory -> current_user
+```
+
+## Сравнение вариантов
+
+| Вариант | Prompt tokens | Projected tokens | Conflict | Conflicts | Иллюстрируемое поведение |
+|---|---:|---:|---|---:|---|
+{table_rows}
+
+## Local refusal
+
+```text
+{refusal}
+```
+
+## Артефакты
+
+Файлы сохранены в `{output_dir}`:
+
+- `invariants.json`
+- `invariant_events.jsonl`
+- `token_reports.jsonl`
+- `prompt_without_invariants.json`
+- `prompt_with_invariants.json`
+- `prompt_conflict_preflight.json`
+- `local_refusal.txt`
+
+## Выводы
+
+- Invariants отделены от profile, memory и task state: это hard constraints, а не preference
+  guidance.
+- Conflict guard выполняется до sticky facts extraction и до основного LLM-вызова.
+- При конфликте сохраняются invariant event и token report, но обычная история диалога не
+  пополняется user/assistant turn.
+- Offline-сценарий показывает оба уровня защиты: deterministic preflight и prompt-level
+  instructions для неконфликтных запросов.
+"""
+
+
+def scenario_controlled_state_transitions_demo(
+    *,
+    output_dir: Path,
+    results_file: Path,
+    context_window: int,
+    max_tokens: int,
+) -> None:
+    counter = ApproxTokenCounter()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    results_file.parent.mkdir(parents=True, exist_ok=True)
+
+    task_title = "Реализовать controlled transitions для task state"
+    state = TaskState()
+    state_store = JsonTaskStateStore(output_dir / "task_state.json")
+    event_store = TaskEventStore(output_dir / "task_events.jsonl")
+    report_store = TokenReportStore(output_dir / "token_reports.jsonl")
+    event_store.clear()
+    report_store.clear()
+
+    base_system: Message = {"role": "system", "content": DEFAULT_SYSTEM_PROMPT}
+    working_memory: Message = {
+        "role": "system",
+        "content": "Working memory:\n- task: проверить controlled lifecycle и audit trail",
+    }
+    next_user: Message = {"role": "user", "content": "Что разрешено делать дальше?"}
+    prompt_snapshots: list[tuple[str, TaskState]] = []
+    invalid_results: list[tuple[str, TaskTransitionResult]] = []
+
+    prompt_snapshots.append(("empty", TaskState()))
+
+    state = TaskState(
+        stage="planning",
+        title=task_title,
+        current_step="Согласовать план",
+        expected_action="Утвердить план перед реализацией",
+        updated_at=now_utc(),
+    )
+    event_store.append(action="start_task", state=state)
+    prompt_snapshots.append(("planning_unapproved", clone_task_state(state)))
+
+    rejected = validate_task_transition(state, "execution")
+    event_store.append(action="invalid_transition", state=state, transition=rejected)
+    write_invalid_transition(output_dir / "invalid_transition_execution_before_plan.json", rejected)
+    invalid_results.append(("execution_before_plan", rejected))
+
+    state.plan_approved = True
+    state.updated_at = now_utc()
+    event_store.append(action="approve_plan", state=state)
+    prompt_snapshots.append(("planning_approved", clone_task_state(state)))
+
+    applied = apply_task_transition(state, "execution")
+    event_store.append(action="transition_task", state=state, transition=applied)
+    prompt_snapshots.append(("execution", clone_task_state(state)))
+
+    rejected = validate_task_transition(state, "done")
+    event_store.append(action="invalid_transition", state=state, transition=rejected)
+    write_invalid_transition(
+        output_dir / "invalid_transition_done_before_validation.json", rejected
+    )
+    invalid_results.append(("done_before_validation", rejected))
+
+    state.paused = True
+    state.updated_at = now_utc()
+    event_store.append(action="pause_task", state=state)
+    prompt_snapshots.append(("paused_execution", clone_task_state(state)))
+
+    rejected = validate_task_transition(state, "validation")
+    event_store.append(action="invalid_transition", state=state, transition=rejected)
+    write_invalid_transition(output_dir / "invalid_transition_while_paused.json", rejected)
+    invalid_results.append(("while_paused", rejected))
+
+    state.paused = False
+    state.updated_at = now_utc()
+    event_store.append(action="resume_task", state=state)
+
+    applied = apply_task_transition(state, "validation")
+    event_store.append(action="transition_task", state=state, transition=applied)
+    prompt_snapshots.append(("validation", clone_task_state(state)))
+
+    rejected = validate_task_transition(state, "done")
+    event_store.append(action="invalid_transition", state=state, transition=rejected)
+    invalid_results.append(("done_before_pass_validation", rejected))
+
+    state.validation_passed = True
+    state.updated_at = now_utc()
+    event_store.append(action="pass_validation", state=state)
+
+    applied = apply_task_transition(state, "done")
+    event_store.append(action="transition_task", state=state, transition=applied)
+    event_store.append(action="complete_task", state=state, transition=applied)
+    prompt_snapshots.append(("done", clone_task_state(state)))
+    state_store.save(state)
+
+    rows: list[tuple[str, str, bool, bool, bool, bool, str, int]] = []
+    for name, snapshot_state in prompt_snapshots:
+        task_message, task_tokens = build_task_state_prompt_message(snapshot_state, counter)
+        messages = [base_system]
+        if snapshot_state.active:
+            messages.append(working_memory)
+        if task_message is not None:
+            messages.append(task_message)
+        messages.append(next_user)
+        write_messages(output_dir / f"prompt_{name}.json", messages)
+        prompt_tokens = counter.count_messages(messages)
+        report_store.append(
+            TokenReport(
+                request_tokens_estimated=counter.count_text(next_user["content"]),
+                history_tokens_before_estimated=counter.count_messages(messages[:-1]),
+                prompt_tokens_estimated=prompt_tokens,
+                projected_total_tokens_estimated=prompt_tokens + max_tokens,
+                context_window_tokens=context_window,
+                context_usage_ratio=prompt_tokens / context_window,
+                projected_usage_ratio=(prompt_tokens + max_tokens) / context_window,
+                warn_threshold_reached=(prompt_tokens + max_tokens) / context_window >= 0.8,
+                overflow_detected=prompt_tokens + max_tokens > context_window,
+                overflow_policy="error",
+                memory_layers_active=snapshot_state.active,
+                memory_layer_entries={"working": 1} if snapshot_state.active else {},
+                memory_layer_tokens_estimated={"working": counter.count_message(working_memory)}
+                if snapshot_state.active
+                else {},
+                memory_prompt_tokens_estimated=counter.count_message(working_memory)
+                if snapshot_state.active
+                else 0,
+                task_state_active=snapshot_state.active,
+                task_stage=snapshot_state.stage or None,
+                task_done=snapshot_state.done,
+                task_paused=snapshot_state.paused,
+                task_plan_approved=snapshot_state.plan_approved,
+                task_validation_passed=snapshot_state.validation_passed,
+                task_allowed_next_stages=allowed_next_task_stages(snapshot_state),
+                task_last_transition_allowed=None,
+                task_prompt_tokens_estimated=task_tokens,
+                prompt_assembly_order=day15_prompt_order(messages),
+            )
+        )
+        rows.append(
+            (
+                name,
+                snapshot_state.stage or "-",
+                snapshot_state.plan_approved,
+                snapshot_state.validation_passed,
+                snapshot_state.paused,
+                snapshot_state.done,
+                ", ".join(allowed_next_task_stages(snapshot_state)) or "-",
+                prompt_tokens,
+            )
+        )
+
+    results_file.write_text(
+        build_day15_results_markdown(rows, invalid_results, output_dir),
+        encoding="utf-8",
+    )
+
+    print("# Day 15 controlled state transitions demo")
+    print()
+    print("| snapshot | stage | plan approved | validation passed | paused | done | allowed next |")
+    print("|---|---|---:|---:|---:|---:|---|")
+    for name, stage, plan_approved, validation_passed, paused, done, allowed, _tokens in rows:
+        print(
+            f"| {name} | {stage} | {plan_approved} | {validation_passed} | "
+            f"{paused} | {done} | {allowed} |"
+        )
+    print()
+    print(f"Artifacts: {output_dir}")
+    print(f"Results: {results_file}")
+    print("API calls: 0")
+
+
+def clone_task_state(state: TaskState) -> TaskState:
+    return TaskState.from_dict(state.to_dict())
+
+
+def write_invalid_transition(path: Path, result: TaskTransitionResult) -> None:
+    payload = {
+        "allowed": result.allowed,
+        "from_stage": result.from_stage,
+        "target_stage": result.to_stage,
+        "reason": result.reason,
+        "required_action": result.required_action,
+        "refusal": format_task_transition_refusal(result),
+    }
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def day15_prompt_order(messages: list[Message]) -> list[str]:
+    order: list[str] = []
+    if messages and messages[0].get("role") == "system":
+        order.append("system")
+    if any(message["content"].startswith("Working memory:") for message in messages):
+        order.append("working_memory")
+    if any(message["content"].startswith("Task state:") for message in messages):
+        order.append("task_state")
+    if messages and messages[-1]["role"] == "user":
+        order.append("current_user")
+    return order
+
+
+def build_day15_results_markdown(
+    rows: list[tuple[str, str, bool, bool, bool, bool, str, int]],
+    invalid_results: list[tuple[str, TaskTransitionResult]],
+    output_dir: Path,
+) -> str:
+    state_rows = "\n".join(
+        f"| `{name}` | `{stage}` | {plan_approved} | {validation_passed} | {paused} | "
+        f"{done} | `{allowed}` | {format_number(prompt_tokens)} |"
+        for (
+            name,
+            stage,
+            plan_approved,
+            validation_passed,
+            paused,
+            done,
+            allowed,
+            prompt_tokens,
+        ) in rows
+    )
+    invalid_rows = "\n".join(
+        f"| `{name}` | `{result.from_stage}` -> `{result.to_stage}` | {result.allowed} | "
+        f"{result.reason} | `{result.required_action}` |"
+        for name, result in invalid_results
+    )
+    return f"""# Day 15 — Controlled State Transitions
+
+Сценарий выполнен offline, без API-вызовов:
+
+```bash
+uv run --project packages/ai_advent_agent ai-advent-scenarios controlled-state-transitions-demo
+```
+
+## States
+
+| Snapshot | Stage | Plan approved | Validation | Paused | Done | Allowed next | Tokens |
+|---|---|---:|---:|---:|---:|---|---:|
+{state_rows}
+
+## Allowed transitions
+
+| From | To | Guard |
+|---|---|---|
+| `planning` | `execution` | `plan_approved=true` |
+| `execution` | `validation` | task is not paused |
+| `validation` | `done` | `validation_passed=true` |
+| active stage | same stage | rejected |
+| `done` | any stage | rejected; start a new task with `/task start <title>` |
+
+## Invalid transition checks
+
+| Check | Transition | Allowed | Reason | Required action |
+|---|---|---:|---|---|
+{invalid_rows}
+
+## Prompt assembly order
+
+Актуальный агент сохраняет порядок Day 14:
+
+```text
+system -> invariants -> user_profile -> long_term_memory -> working_memory
+       -> task_state -> short_term_memory -> current_user
+```
+
+В этом offline-сценарии используется минимальный проверочный prompt:
+
+```text
+system -> working_memory -> task_state -> current_user
+```
+
+## Артефакты
+
+Файлы сохранены в `{output_dir}`:
+
+- `task_state.json`
+- `task_events.jsonl`
+- `token_reports.jsonl`
+- `prompt_empty.json`
+- `prompt_planning_unapproved.json`
+- `prompt_planning_approved.json`
+- `prompt_execution.json`
+- `prompt_paused_execution.json`
+- `prompt_validation.json`
+- `prompt_done.json`
+- `invalid_transition_execution_before_plan.json`
+- `invalid_transition_done_before_validation.json`
+- `invalid_transition_while_paused.json`
+
+## Выводы
+
+- Нельзя перейти к `execution` без утверждённого плана.
+- Нельзя перейти к `done` напрямую из `execution`.
+- Нельзя завершить задачу из `validation`, пока validation не отмечена как passed.
+- Нельзя менять stage, пока задача на паузе.
+- После `/task resume` переходы продолжаются с сохранённого stage.
+- Invalid transitions сохраняются в `task_events.jsonl` как audit trail и не меняют stage.
+"""
+
+
+def write_messages(path: Path, messages: list[Message]) -> None:
+    payload = {"message_count": len(messages), "messages": messages}
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def default_context_artifacts_dir() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../artifacts/agent-context")
+    return Path("artifacts/agent-context")
+
+
+def default_day11_context_artifacts_dir() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../artifacts/agent-context")
+    day_dir = Path("weeks/week-03/day-11-memory-layers")
+    if day_dir.exists():
+        return day_dir / "artifacts/agent-context"
+    return Path("artifacts/agent-context")
+
+
+def default_day11_results_file() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../results/day-11-memory-layers.md")
+    day_dir = Path("weeks/week-03/day-11-memory-layers")
+    if day_dir.exists():
+        return day_dir / "results/day-11-memory-layers.md"
+    return Path("results/day-11-memory-layers.md")
+
+
+def default_day12_context_artifacts_dir() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../artifacts/agent-context")
+    day_dir = Path("weeks/week-03/day-12-assistant-personalization")
+    if day_dir.exists():
+        return day_dir / "artifacts/agent-context"
+    return Path("artifacts/agent-context")
+
+
+def default_day12_results_file() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../results/day-12-assistant-personalization.md")
+    day_dir = Path("weeks/week-03/day-12-assistant-personalization")
+    if day_dir.exists():
+        return day_dir / "results/day-12-assistant-personalization.md"
+    return Path("results/day-12-assistant-personalization.md")
+
+
+def default_day13_context_artifacts_dir() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../artifacts/agent-context")
+    day_dir = Path("weeks/week-03/day-13-task-state-machine")
+    if day_dir.exists():
+        return day_dir / "artifacts/agent-context"
+    return Path("artifacts/agent-context")
+
+
+def default_day13_results_file() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../results/day-13-task-state-machine.md")
+    day_dir = Path("weeks/week-03/day-13-task-state-machine")
+    if day_dir.exists():
+        return day_dir / "results/day-13-task-state-machine.md"
+    return Path("results/day-13-task-state-machine.md")
+
+
+def default_day14_context_artifacts_dir() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../artifacts/agent-context")
+    day_dir = Path("weeks/week-03/day-14-state-invariants")
+    if day_dir.exists():
+        return day_dir / "artifacts/agent-context"
+    return Path("artifacts/agent-context")
+
+
+def default_day14_results_file() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../results/day-14-state-invariants.md")
+    day_dir = Path("weeks/week-03/day-14-state-invariants")
+    if day_dir.exists():
+        return day_dir / "results/day-14-state-invariants.md"
+    return Path("results/day-14-state-invariants.md")
+
+
+def default_day15_context_artifacts_dir() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../artifacts/agent-context")
+    day_dir = Path("weeks/week-03/day-15-controlled-state-transitions")
+    if day_dir.exists():
+        return day_dir / "artifacts/agent-context"
+    return Path("artifacts/agent-context")
+
+
+def default_day15_results_file() -> Path:
+    cwd = Path.cwd()
+    if cwd.name == "snapshot":
+        return Path("../results/day-15-controlled-state-transitions.md")
+    day_dir = Path("weeks/week-03/day-15-controlled-state-transitions")
+    if day_dir.exists():
+        return day_dir / "results/day-15-controlled-state-transitions.md"
+    return Path("results/day-15-controlled-state-transitions.md")
+
+
+def main(argv: list[str] | None = None) -> None:
+    args = parse_args(argv)
+    if args.scenario == "short":
+        scenario_short(args.context_window_tokens, args.max_tokens)
+    elif args.scenario == "long":
+        scenario_long(args.turns, args.context_window_tokens, args.max_tokens)
+    elif args.scenario == "overflow-file":
+        scenario_overflow_file(args.path, args.context_window_tokens, args.max_tokens)
+    elif args.scenario == "summary-comparison":
+        scenario_summary_comparison(
+            turns=args.turns,
+            recent_messages_limit=args.recent_messages_limit,
+            max_tokens=args.max_tokens,
+        )
+    elif args.scenario == "context-strategies-comparison":
+        scenario_context_strategies_comparison(
+            recent_messages_limit=args.recent_messages_limit,
+            context_window=args.context_window_tokens,
+            max_tokens=args.max_tokens,
+            output_dir=args.output_dir or default_context_artifacts_dir(),
+        )
+    elif args.scenario == "memory-layers-demo":
+        scenario_memory_layers_demo(
+            output_dir=args.output_dir or default_day11_context_artifacts_dir(),
+            results_file=args.results_file or default_day11_results_file(),
+            context_window=args.context_window_tokens,
+            max_tokens=args.max_tokens,
+        )
+    elif args.scenario == "assistant-personalization-demo":
+        scenario_assistant_personalization_demo(
+            output_dir=args.output_dir or default_day12_context_artifacts_dir(),
+            results_file=args.results_file or default_day12_results_file(),
+            context_window=args.context_window_tokens,
+            max_tokens=args.max_tokens,
+        )
+    elif args.scenario == "task-state-machine-demo":
+        scenario_task_state_machine_demo(
+            output_dir=args.output_dir or default_day13_context_artifacts_dir(),
+            results_file=args.results_file or default_day13_results_file(),
+            context_window=args.context_window_tokens,
+            max_tokens=args.max_tokens,
+        )
+    elif args.scenario == "state-invariants-demo":
+        scenario_state_invariants_demo(
+            output_dir=args.output_dir or default_day14_context_artifacts_dir(),
+            results_file=args.results_file or default_day14_results_file(),
+            context_window=args.context_window_tokens,
+            max_tokens=args.max_tokens,
+        )
+    elif args.scenario == "controlled-state-transitions-demo":
+        scenario_controlled_state_transitions_demo(
+            output_dir=args.output_dir or default_day15_context_artifacts_dir(),
+            results_file=args.results_file or default_day15_results_file(),
+            context_window=args.context_window_tokens,
+            max_tokens=args.max_tokens,
+        )
+    else:
+        raise SystemExit(f"Unknown scenario: {args.scenario}")
+
+
+if __name__ == "__main__":
+    main()
