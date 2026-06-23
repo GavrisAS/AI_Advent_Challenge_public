@@ -1,0 +1,84 @@
+{
+  "server_url": "https://mcp.deepwiki.com/mcp",
+  "transport": "streamable-http",
+  "connected": true,
+  "initialized": true,
+  "timestamp_utc": "2026-06-23T04:47:18Z",
+  "sdk_package": "mcp",
+  "sdk_version": "1.28.0",
+  "protocol_version": "2025-11-25",
+  "server_info": {
+    "name": "DeepWiki",
+    "version": "2.14.3"
+  },
+  "tool_count": 3,
+  "expected_tools": [
+    "ask_question",
+    "read_wiki_contents",
+    "read_wiki_structure"
+  ],
+  "expected_tools_present": true,
+  "missing_expected_tools": [],
+  "extra_tools": [],
+  "tools": [
+    {
+      "name": "ask_question",
+      "description": "Ask any question about a GitHub repository and get an AI-powered, context-grounded response.\n\nArgs:\n    repoName: GitHub repository or list of repositories (max 10) in owner/repo format\n    question: The question to ask about the repository",
+      "input_schema": {
+        "properties": {
+          "repoName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "question": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "repoName",
+          "question"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "read_wiki_contents",
+      "description": "View documentation about a GitHub repository.\n\nArgs:\n    repoName: GitHub repository in owner/repo format (e.g. \"facebook/react\")",
+      "input_schema": {
+        "properties": {
+          "repoName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "repoName"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "read_wiki_structure",
+      "description": "Get a list of documentation topics for a GitHub repository.\n\nArgs:\n    repoName: GitHub repository in owner/repo format (e.g. \"facebook/react\")",
+      "input_schema": {
+        "properties": {
+          "repoName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "repoName"
+        ],
+        "type": "object"
+      }
+    }
+  ]
+}
