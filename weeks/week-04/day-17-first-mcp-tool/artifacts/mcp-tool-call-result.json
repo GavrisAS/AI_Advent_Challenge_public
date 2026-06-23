@@ -1,0 +1,57 @@
+{
+  "transport": "stdio",
+  "tool_name": "get_tracker_issue",
+  "arguments": {
+    "issue_key": "AI-17",
+    "include_comments": true
+  },
+  "is_error": false,
+  "normalized_result": {
+    "issue_key": "AI-17",
+    "title": "Подключить первый MCP tool",
+    "status": "in_progress",
+    "assignee": "student",
+    "priority": "high",
+    "summary": "Реализовать локальный stdio MCP server поверх mock Tracker API и вызвать его из агента.",
+    "comments": [
+      {
+        "author": "mentor",
+        "text": "Сфокусироваться на registration, input schema и call_tool без реального внешнего API."
+      },
+      {
+        "author": "student",
+        "text": "Использовать read-only tool и сохранить воспроизводимые artifacts."
+      }
+    ]
+  },
+  "raw_call_result": {
+    "_meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"issue_key\": \"AI-17\",\n  \"title\": \"Подключить первый MCP tool\",\n  \"status\": \"in_progress\",\n  \"assignee\": \"student\",\n  \"priority\": \"high\",\n  \"summary\": \"Реализовать локальный stdio MCP server поверх mock Tracker API и вызвать его из агента.\",\n  \"comments\": [\n    {\n      \"author\": \"mentor\",\n      \"text\": \"Сфокусироваться на registration, input schema и call_tool без реального внешнего API.\"\n    },\n    {\n      \"author\": \"student\",\n      \"text\": \"Использовать read-only tool и сохранить воспроизводимые artifacts.\"\n    }\n  ]\n}",
+        "annotations": null,
+        "_meta": null
+      }
+    ],
+    "structuredContent": {
+      "issue_key": "AI-17",
+      "title": "Подключить первый MCP tool",
+      "status": "in_progress",
+      "assignee": "student",
+      "priority": "high",
+      "summary": "Реализовать локальный stdio MCP server поверх mock Tracker API и вызвать его из агента.",
+      "comments": [
+        {
+          "author": "mentor",
+          "text": "Сфокусироваться на registration, input schema и call_tool без реального внешнего API."
+        },
+        {
+          "author": "student",
+          "text": "Использовать read-only tool и сохранить воспроизводимые artifacts."
+        }
+      ]
+    },
+    "isError": false
+  }
+}

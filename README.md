@@ -33,6 +33,7 @@
 | Week 03 | 14 | State Invariants | ✅ done | [Открыть](weeks/week-03/day-14-state-invariants/) |
 | Week 03 | 15 | Controlled State Transitions | ✅ done | [Открыть](weeks/week-03/day-15-controlled-state-transitions/) |
 | Week 04 | 16 | MCP Connection | ✅ done | [Открыть](weeks/week-04/day-16-mcp-connection/) |
+| Week 04 | 17 | First MCP Tool | ✅ done | [Открыть](weeks/week-04/day-17-first-mcp-tool/) |
 
 ## Структура репозитория
 

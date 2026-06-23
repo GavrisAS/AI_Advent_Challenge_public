@@ -1,0 +1,35 @@
+{
+  "transport": "stdio",
+  "server_command": [
+    "python",
+    "-m",
+    "ai_advent_agent.mcp_tool_server"
+  ],
+  "tool_count": 1,
+  "tools": [
+    {
+      "name": "get_tracker_issue",
+      "description": "Return a mock tracker issue by key.\n\nArgs:\n    issue_key: Issue key, for example AI-17.\n    include_comments: Whether to include issue comments in the result.\n",
+      "input_schema": {
+        "properties": {
+          "issue_key": {
+            "description": "Issue key, for example AI-17.",
+            "title": "Issue Key",
+            "type": "string"
+          },
+          "include_comments": {
+            "default": false,
+            "description": "Whether to include issue comments in the result.",
+            "title": "Include Comments",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "issue_key"
+        ],
+        "title": "get_tracker_issueArguments",
+        "type": "object"
+      }
+    }
+  ]
+}
