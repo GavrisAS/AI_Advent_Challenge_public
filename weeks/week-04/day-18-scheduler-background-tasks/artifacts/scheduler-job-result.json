@@ -1,0 +1,57 @@
+{
+  "transport": "stdio",
+  "tool_name": "schedule_tracker_summary",
+  "arguments": {
+    "issue_keys": [
+      "AI-16",
+      "AI-17",
+      "AI-18"
+    ],
+    "interval_seconds": 5.0,
+    "max_runs": 3,
+    "storage_path": "../artifacts/tracker-summary.sqlite3"
+  },
+  "is_error": false,
+  "normalized_result": {
+    "job_id": "tracker-summary-1888def442ce",
+    "status": "completed",
+    "interval_seconds": 5.0,
+    "max_runs": 3,
+    "runs_completed": 3,
+    "issue_keys": [
+      "AI-16",
+      "AI-17",
+      "AI-18"
+    ],
+    "storage_path": "../artifacts/tracker-summary.sqlite3",
+    "started_at": "2026-06-24T18:11:51Z",
+    "completed_at": "2026-06-24T18:12:01Z"
+  },
+  "raw_call_result": {
+    "_meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"job_id\": \"tracker-summary-1888def442ce\",\n  \"status\": \"completed\",\n  \"interval_seconds\": 5.0,\n  \"max_runs\": 3,\n  \"runs_completed\": 3,\n  \"issue_keys\": [\n    \"AI-16\",\n    \"AI-17\",\n    \"AI-18\"\n  ],\n  \"storage_path\": \"../artifacts/tracker-summary.sqlite3\",\n  \"started_at\": \"2026-06-24T18:11:51Z\",\n  \"completed_at\": \"2026-06-24T18:12:01Z\"\n}",
+        "annotations": null,
+        "_meta": null
+      }
+    ],
+    "structuredContent": {
+      "job_id": "tracker-summary-1888def442ce",
+      "status": "completed",
+      "interval_seconds": 5.0,
+      "max_runs": 3,
+      "runs_completed": 3,
+      "issue_keys": [
+        "AI-16",
+        "AI-17",
+        "AI-18"
+      ],
+      "storage_path": "../artifacts/tracker-summary.sqlite3",
+      "started_at": "2026-06-24T18:11:51Z",
+      "completed_at": "2026-06-24T18:12:01Z"
+    },
+    "isError": false
+  }
+}

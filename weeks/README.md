@@ -15,6 +15,6 @@
 |---|---|---|---|
 | day-16 | MCP Connection | ✅ done | [week-04/day-16-mcp-connection](week-04/day-16-mcp-connection/) |
 | day-17 | First MCP Tool | ✅ done | [week-04/day-17-first-mcp-tool](week-04/day-17-first-mcp-tool/) |
-| day-18 | Задание не выдано | ⏳ planned | — |
+| day-18 | Scheduler Background Tasks | ✅ done | [week-04/day-18-scheduler-background-tasks](week-04/day-18-scheduler-background-tasks/) |
 | day-19 | Задание не выдано | ⏳ planned | — |
 | day-20 | Задание не выдано | ⏳ planned | — |

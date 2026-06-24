@@ -1,0 +1,133 @@
+{
+  "job_id": "tracker-summary-1888def442ce",
+  "storage_path": "../artifacts/tracker-summary.sqlite3",
+  "interval_seconds": 5.0,
+  "max_runs": 3,
+  "status": "completed",
+  "started_at": "2026-06-24T18:11:51Z",
+  "completed_at": "2026-06-24T18:12:01Z",
+  "issue_keys": [
+    "AI-16",
+    "AI-17",
+    "AI-18"
+  ],
+  "runs_total": 3,
+  "snapshots_total": 9,
+  "runs": [
+    {
+      "run_number": 1,
+      "started_at": "2026-06-24T18:11:51Z",
+      "completed_at": "2026-06-24T18:11:51Z",
+      "issue_count": 3,
+      "issue_keys": [
+        "AI-16",
+        "AI-17",
+        "AI-18"
+      ],
+      "status": "completed"
+    },
+    {
+      "run_number": 2,
+      "started_at": "2026-06-24T18:11:56Z",
+      "completed_at": "2026-06-24T18:11:56Z",
+      "issue_count": 3,
+      "issue_keys": [
+        "AI-16",
+        "AI-17",
+        "AI-18"
+      ],
+      "status": "completed"
+    },
+    {
+      "run_number": 3,
+      "started_at": "2026-06-24T18:12:01Z",
+      "completed_at": "2026-06-24T18:12:01Z",
+      "issue_count": 3,
+      "issue_keys": [
+        "AI-16",
+        "AI-17",
+        "AI-18"
+      ],
+      "status": "completed"
+    }
+  ],
+  "generated_at": "2026-06-24T18:12:01Z",
+  "empty": false,
+  "reason": null,
+  "transport": "stdio",
+  "tool_name": "get_scheduler_run_log",
+  "arguments": {
+    "storage_path": "../artifacts/tracker-summary.sqlite3",
+    "job_id": "tracker-summary-1888def442ce"
+  },
+  "is_error": false,
+  "raw_call_result": {
+    "_meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"job_id\": \"tracker-summary-1888def442ce\",\n  \"storage_path\": \"../artifacts/tracker-summary.sqlite3\",\n  \"interval_seconds\": 5.0,\n  \"max_runs\": 3,\n  \"status\": \"completed\",\n  \"started_at\": \"2026-06-24T18:11:51Z\",\n  \"completed_at\": \"2026-06-24T18:12:01Z\",\n  \"issue_keys\": [\n    \"AI-16\",\n    \"AI-17\",\n    \"AI-18\"\n  ],\n  \"runs_total\": 3,\n  \"snapshots_total\": 9,\n  \"runs\": [\n    {\n      \"run_number\": 1,\n      \"started_at\": \"2026-06-24T18:11:51Z\",\n      \"completed_at\": \"2026-06-24T18:11:51Z\",\n      \"issue_count\": 3,\n      \"issue_keys\": [\n        \"AI-16\",\n        \"AI-17\",\n        \"AI-18\"\n      ],\n      \"status\": \"completed\"\n    },\n    {\n      \"run_number\": 2,\n      \"started_at\": \"2026-06-24T18:11:56Z\",\n      \"completed_at\": \"2026-06-24T18:11:56Z\",\n      \"issue_count\": 3,\n      \"issue_keys\": [\n        \"AI-16\",\n        \"AI-17\",\n        \"AI-18\"\n      ],\n      \"status\": \"completed\"\n    },\n    {\n      \"run_number\": 3,\n      \"started_at\": \"2026-06-24T18:12:01Z\",\n      \"completed_at\": \"2026-06-24T18:12:01Z\",\n      \"issue_count\": 3,\n      \"issue_keys\": [\n        \"AI-16\",\n        \"AI-17\",\n        \"AI-18\"\n      ],\n      \"status\": \"completed\"\n    }\n  ],\n  \"generated_at\": \"2026-06-24T18:12:01Z\",\n  \"empty\": false,\n  \"reason\": null\n}",
+        "annotations": null,
+        "_meta": null
+      }
+    ],
+    "structuredContent": {
+      "job_id": "tracker-summary-1888def442ce",
+      "storage_path": "../artifacts/tracker-summary.sqlite3",
+      "interval_seconds": 5.0,
+      "max_runs": 3,
+      "status": "completed",
+      "started_at": "2026-06-24T18:11:51Z",
+      "completed_at": "2026-06-24T18:12:01Z",
+      "issue_keys": [
+        "AI-16",
+        "AI-17",
+        "AI-18"
+      ],
+      "runs_total": 3,
+      "snapshots_total": 9,
+      "runs": [
+        {
+          "run_number": 1,
+          "started_at": "2026-06-24T18:11:51Z",
+          "completed_at": "2026-06-24T18:11:51Z",
+          "issue_count": 3,
+          "issue_keys": [
+            "AI-16",
+            "AI-17",
+            "AI-18"
+          ],
+          "status": "completed"
+        },
+        {
+          "run_number": 2,
+          "started_at": "2026-06-24T18:11:56Z",
+          "completed_at": "2026-06-24T18:11:56Z",
+          "issue_count": 3,
+          "issue_keys": [
+            "AI-16",
+            "AI-17",
+            "AI-18"
+          ],
+          "status": "completed"
+        },
+        {
+          "run_number": 3,
+          "started_at": "2026-06-24T18:12:01Z",
+          "completed_at": "2026-06-24T18:12:01Z",
+          "issue_count": 3,
+          "issue_keys": [
+            "AI-16",
+            "AI-17",
+            "AI-18"
+          ],
+          "status": "completed"
+        }
+      ],
+      "generated_at": "2026-06-24T18:12:01Z",
+      "empty": false,
+      "reason": null
+    },
+    "isError": false
+  }
+}

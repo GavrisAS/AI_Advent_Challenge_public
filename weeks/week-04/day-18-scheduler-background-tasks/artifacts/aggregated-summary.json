@@ -1,0 +1,117 @@
+{
+  "transport": "stdio",
+  "tool_name": "get_tracker_summary",
+  "arguments": {
+    "storage_path": "../artifacts/tracker-summary.sqlite3",
+    "window_minutes": 60
+  },
+  "is_error": false,
+  "normalized_result": {
+    "storage_path": "../artifacts/tracker-summary.sqlite3",
+    "window_minutes": 60,
+    "runs_total": 3,
+    "snapshots_total": 9,
+    "issue_count": 3,
+    "status_counts": {
+      "done": 3
+    },
+    "priority_counts": {
+      "high": 1,
+      "medium": 2
+    },
+    "assignee_counts": {
+      "student": 3
+    },
+    "latest_issues": [
+      {
+        "issue_key": "AI-16",
+        "title": "Подключить MCP discovery",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "student",
+        "collected_at": "2026-06-24T18:12:01Z"
+      },
+      {
+        "issue_key": "AI-17",
+        "title": "Подключить первый MCP tool",
+        "status": "done",
+        "priority": "high",
+        "assignee": "student",
+        "collected_at": "2026-06-24T18:12:01Z"
+      },
+      {
+        "issue_key": "AI-18",
+        "title": "Расширить MCP orchestration",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "student",
+        "collected_at": "2026-06-24T18:12:01Z"
+      }
+    ],
+    "summary_text": "3 scheduled runs collected 9 issue snapshots for 3 unique issues in the last 60 minutes.",
+    "window_started_at": "2026-06-24T17:12:01Z",
+    "generated_at": "2026-06-24T18:12:01Z",
+    "empty": false,
+    "reason": null
+  },
+  "raw_call_result": {
+    "_meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"storage_path\": \"../artifacts/tracker-summary.sqlite3\",\n  \"window_minutes\": 60,\n  \"runs_total\": 3,\n  \"snapshots_total\": 9,\n  \"issue_count\": 3,\n  \"status_counts\": {\n    \"done\": 3\n  },\n  \"priority_counts\": {\n    \"high\": 1,\n    \"medium\": 2\n  },\n  \"assignee_counts\": {\n    \"student\": 3\n  },\n  \"latest_issues\": [\n    {\n      \"issue_key\": \"AI-16\",\n      \"title\": \"Подключить MCP discovery\",\n      \"status\": \"done\",\n      \"priority\": \"medium\",\n      \"assignee\": \"student\",\n      \"collected_at\": \"2026-06-24T18:12:01Z\"\n    },\n    {\n      \"issue_key\": \"AI-17\",\n      \"title\": \"Подключить первый MCP tool\",\n      \"status\": \"done\",\n      \"priority\": \"high\",\n      \"assignee\": \"student\",\n      \"collected_at\": \"2026-06-24T18:12:01Z\"\n    },\n    {\n      \"issue_key\": \"AI-18\",\n      \"title\": \"Расширить MCP orchestration\",\n      \"status\": \"done\",\n      \"priority\": \"medium\",\n      \"assignee\": \"student\",\n      \"collected_at\": \"2026-06-24T18:12:01Z\"\n    }\n  ],\n  \"summary_text\": \"3 scheduled runs collected 9 issue snapshots for 3 unique issues in the last 60 minutes.\",\n  \"window_started_at\": \"2026-06-24T17:12:01Z\",\n  \"generated_at\": \"2026-06-24T18:12:01Z\",\n  \"empty\": false,\n  \"reason\": null\n}",
+        "annotations": null,
+        "_meta": null
+      }
+    ],
+    "structuredContent": {
+      "storage_path": "../artifacts/tracker-summary.sqlite3",
+      "window_minutes": 60,
+      "runs_total": 3,
+      "snapshots_total": 9,
+      "issue_count": 3,
+      "status_counts": {
+        "done": 3
+      },
+      "priority_counts": {
+        "high": 1,
+        "medium": 2
+      },
+      "assignee_counts": {
+        "student": 3
+      },
+      "latest_issues": [
+        {
+          "issue_key": "AI-16",
+          "title": "Подключить MCP discovery",
+          "status": "done",
+          "priority": "medium",
+          "assignee": "student",
+          "collected_at": "2026-06-24T18:12:01Z"
+        },
+        {
+          "issue_key": "AI-17",
+          "title": "Подключить первый MCP tool",
+          "status": "done",
+          "priority": "high",
+          "assignee": "student",
+          "collected_at": "2026-06-24T18:12:01Z"
+        },
+        {
+          "issue_key": "AI-18",
+          "title": "Расширить MCP orchestration",
+          "status": "done",
+          "priority": "medium",
+          "assignee": "student",
+          "collected_at": "2026-06-24T18:12:01Z"
+        }
+      ],
+      "summary_text": "3 scheduled runs collected 9 issue snapshots for 3 unique issues in the last 60 minutes.",
+      "window_started_at": "2026-06-24T17:12:01Z",
+      "generated_at": "2026-06-24T18:12:01Z",
+      "empty": false,
+      "reason": null
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "transport": "stdio",
+  "server_command": [
+    "python",
+    "-m",
+    "ai_advent_agent.mcp_scheduler_server"
+  ],
+  "tool_count": 3,
+  "tools": [
+    {
+      "name": "get_scheduler_run_log",
+      "description": "Return ordered scheduled run timeline from SQLite without collecting new snapshots.",
+      "input_schema": {
+        "properties": {
+          "storage_path": {
+            "description": "SQLite file path produced by schedule_tracker_summary.",
+            "title": "Storage Path",
+            "type": "string"
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional scheduler job id. When omitted, the latest stored job is used.",
+            "title": "Job Id"
+          }
+        },
+        "required": [
+          "storage_path"
+        ],
+        "title": "get_scheduler_run_logArguments",
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_tracker_summary",
+      "description": "Return aggregated summary from persisted Tracker snapshots.",
+      "input_schema": {
+        "properties": {
+          "storage_path": {
+            "description": "SQLite file path produced by schedule_tracker_summary.",
+            "title": "Storage Path",
+            "type": "string"
+          },
+          "window_minutes": {
+            "default": 60,
+            "description": "Aggregation window in minutes.",
+            "title": "Window Minutes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "storage_path"
+        ],
+        "title": "get_tracker_summaryArguments",
+        "type": "object"
+      }
+    },
+    {
+      "name": "schedule_tracker_summary",
+      "description": "Run scheduled mock Tracker collection and persist snapshots in SQLite.",
+      "input_schema": {
+        "properties": {
+          "issue_keys": {
+            "description": "Mock Tracker issue keys to collect, for example AI-16 AI-17 AI-18.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Issue Keys",
+            "type": "array"
+          },
+          "storage_path": {
+            "description": "SQLite file path used for scheduler persistence.",
+            "title": "Storage Path",
+            "type": "string"
+          },
+          "interval_seconds": {
+            "default": 1.0,
+            "description": "Delay between collection runs in seconds; use 5 for video/demo.",
+            "title": "Interval Seconds",
+            "type": "number"
+          },
+          "max_runs": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 3,
+            "description": "Number of bounded runs. Null means run until cancelled.",
+            "title": "Max Runs"
+          }
+        },
+        "required": [
+          "issue_keys",
+          "storage_path"
+        ],
+        "title": "schedule_tracker_summaryArguments",
+        "type": "object"
+      }
+    }
+  ]
+}

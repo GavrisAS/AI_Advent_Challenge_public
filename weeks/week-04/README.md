@@ -41,9 +41,12 @@ tool orchestration отдельным объектом измерения.
 |---|---|---|---|
 | day-16 | MCP Connection | ✅ done | [day-16-mcp-connection](day-16-mcp-connection/) |
 | day-17 | First MCP Tool | ✅ done | [day-17-first-mcp-tool](day-17-first-mcp-tool/) |
+| day-18 | Scheduler Background Tasks | ✅ done | [day-18-scheduler-background-tasks](day-18-scheduler-background-tasks/) |
 
 Day 16 реализован через публичный DeepWiki MCP: Streamable HTTP, initialization и `tools/list` без
 API key, LLM и вызова tools. Day 17 реализован как локальный stdio MCP server поверх mock Tracker
 API: зарегистрирован read-only tool `get_tracker_issue`, приложение получает `tools/list`,
-вызывает `call_tool` и использует structured result в Markdown artifact. Задания Day 18–20 пока не
-выданы.
+вызывает `call_tool` и использует structured result в Markdown artifact. Day 18 добавляет
+scheduler-aware MCP tools: bounded periodic collection, SQLite snapshots, read-only scheduler run
+log и aggregated summary.
+Задания Day 19–20 пока не выданы.
