@@ -1,0 +1,164 @@
+{
+  "transport": "stdio",
+  "server_command": [
+    "python",
+    "-m",
+    "ai_advent_agent.mcp_composition_server"
+  ],
+  "tool_count": 3,
+  "tools": [
+    {
+      "name": "build_tracker_report",
+      "description": "Build a deterministic Markdown report from Tracker issues without using an LLM.",
+      "input_schema": {
+        "$defs": {
+          "CompositionIssuePayload": {
+            "properties": {
+              "issue_key": {
+                "title": "Issue Key",
+                "type": "string"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "priority": {
+                "title": "Priority",
+                "type": "string"
+              },
+              "summary": {
+                "title": "Summary",
+                "type": "string"
+              }
+            },
+            "required": [
+              "issue_key",
+              "title",
+              "status",
+              "priority",
+              "summary"
+            ],
+            "title": "CompositionIssuePayload",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "issues": {
+            "description": "Issues returned by search_tracker_issues.",
+            "items": {
+              "$ref": "#/$defs/CompositionIssuePayload"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "report_title": {
+            "default": "Week 04 MCP progress report",
+            "description": "Markdown report title.",
+            "title": "Report Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues"
+        ],
+        "title": "build_tracker_reportArguments",
+        "type": "object"
+      }
+    },
+    {
+      "name": "save_report_to_file",
+      "description": "Save a Markdown report inside the configured local artifacts directory.",
+      "input_schema": {
+        "properties": {
+          "markdown": {
+            "description": "Markdown content produced by build_tracker_report.",
+            "title": "Markdown",
+            "type": "string"
+          },
+          "filename": {
+            "default": "tracker-composition-report.md",
+            "description": "Safe relative filename, for example tracker-composition-report.md.",
+            "title": "Filename",
+            "type": "string"
+          }
+        },
+        "required": [
+          "markdown"
+        ],
+        "title": "save_report_to_fileArguments",
+        "type": "object"
+      }
+    },
+    {
+      "name": "search_tracker_issues",
+      "description": "Return filtered mock Tracker issues for MCP tool composition demos.",
+      "input_schema": {
+        "properties": {
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "done",
+                  "in_progress",
+                  "planned"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional issue status filter: done, in_progress, planned or null.",
+            "title": "Status"
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional issue priority filter: high, medium, low or null.",
+            "title": "Priority"
+          },
+          "query": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional case-insensitive text filter, for example Week 04 or MCP.",
+            "title": "Query"
+          },
+          "limit": {
+            "default": 10,
+            "description": "Maximum number of issues to return.",
+            "maximum": 50,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "search_tracker_issuesArguments",
+        "type": "object"
+      }
+    }
+  ]
+}

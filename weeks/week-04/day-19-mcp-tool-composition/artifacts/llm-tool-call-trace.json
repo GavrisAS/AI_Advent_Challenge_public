@@ -1,0 +1,80 @@
+{
+  "planner": "llm",
+  "requested_by": "llm",
+  "hardcoded_pipeline": false,
+  "goal": "Найди завершённые MCP-задачи Week 04, собери итоговый отчёт и сохрани его в файл.",
+  "model": "deepseek-v4-flash",
+  "tool_call_sequence": [
+    {
+      "step": 1,
+      "requested_by": "llm",
+      "tool_name": "search_tracker_issues",
+      "arguments": {
+        "status": "done",
+        "query": "Week 04",
+        "limit": 20
+      },
+      "result_summary": {
+        "issue_count": 3,
+        "issues": [
+          "AI-16",
+          "AI-17",
+          "AI-18"
+        ]
+      }
+    },
+    {
+      "step": 2,
+      "requested_by": "llm",
+      "tool_name": "build_tracker_report",
+      "arguments": {
+        "report_title": "Week 04 MCP progress report",
+        "issues": [
+          "AI-16",
+          "AI-17",
+          "AI-18"
+        ]
+      },
+      "result_summary": {
+        "issue_count": 3,
+        "status_counts": {
+          "done": 3
+        },
+        "priority_counts": {
+          "high": 1,
+          "medium": 2
+        },
+        "markdown_length": 746
+      }
+    },
+    {
+      "step": 3,
+      "requested_by": "llm",
+      "tool_name": "save_report_to_file",
+      "arguments": {
+        "filename": "tracker-composition-report.md",
+        "markdown": {
+          "sha256": "a444cbf790abff719d1fc5ca54a58f04fdc931fa31bff00f48e4d9db1367070f",
+          "length": 746
+        }
+      },
+      "result_summary": {
+        "saved": true,
+        "path": "weeks/week-04/day-19-mcp-tool-composition/artifacts/tracker-composition-report.md",
+        "bytes_written": 947,
+        "sha256": "a444cbf790abff719d1fc5ca54a58f04fdc931fa31bff00f48e4d9db1367070f"
+      }
+    }
+  ],
+  "final_answer": "Готово! Все выполненные MCP-задачи Week 04 собраны, отчёт сформирован и сохранён.\n\n**Файл:** `tracker-composition-report.md` (947 байт)\n\n**Что внутри:**\n\n| Задача | Название | Приоритет |\n|--------|----------|-----------|\n| 🔹 `AI-16` | Подключить MCP discovery | medium |\n| 🔹 `AI-17` | Подключить первый MCP tool | high |\n| 🔹 `AI-18` | Расширить MCP orchestration | medium |\n\nВсе 3 задачи имеют статус **done**. Отчёт сохранён в артефакты.",
+  "llm_api_calls": 4,
+  "planner_calls": 4,
+  "usage": {
+    "prompt_tokens": 6902,
+    "completion_tokens": 988,
+    "total_tokens": 7890,
+    "planner_calls": 4,
+    "llm_api_calls": 4,
+    "model": "deepseek-v4-flash"
+  }
+}

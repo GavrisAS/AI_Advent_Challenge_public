@@ -1,4 +1,4 @@
-"""Deterministic mock Tracker API backend for Day 17."""
+"""Deterministic mock Tracker API backend for Week 04 MCP demos."""
 
 from __future__ import annotations
 
@@ -107,15 +107,14 @@ MOCK_TRACKER_ISSUES: dict[str, TrackerIssue] = {
         assignee="student",
         priority="medium",
         summary=(
-            "Следующим шагом проверить более сложный MCP workflow после первого локального "
-            "tool call."
+            "Реализовать scheduler-aware MCP tools с SQLite persistence, run log и aggregated "
+            "Tracker summary."
         ),
         comments=(
             TrackerComment(
                 author="mentor",
                 text=(
-                    "Не усложнять Day 17 несколькими tools: расширение оставить на "
-                    "следующий день."
+                    "Не усложнять Day 17 несколькими tools: расширение оставить на следующий день."
                 ),
             ),
         ),
