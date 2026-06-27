@@ -2,7 +2,7 @@
 
 ## Статус
 
-🚧 in_progress
+✅ done
 
 ## Ключевая тема недели
 
@@ -43,6 +43,7 @@ tool orchestration отдельным объектом измерения.
 | day-17 | First MCP Tool | ✅ done | [day-17-first-mcp-tool](day-17-first-mcp-tool/) |
 | day-18 | Scheduler Background Tasks | ✅ done | [day-18-scheduler-background-tasks](day-18-scheduler-background-tasks/) |
 | day-19 | MCP Tool Composition | ✅ done | [day-19-mcp-tool-composition](day-19-mcp-tool-composition/) |
+| day-20 | Orchestration MCP | ✅ done | [day-20-mcp-orchestration](day-20-mcp-orchestration/) |
 
 Day 16 реализован через публичный DeepWiki MCP: Streamable HTTP, initialization и `tools/list` без
 API key, LLM и вызова tools. Day 17 реализован как локальный stdio MCP server поверх mock Tracker
@@ -51,4 +52,5 @@ API: зарегистрирован read-only tool `get_tracker_issue`, прил
 scheduler-aware MCP tools: bounded periodic collection, SQLite snapshots, read-only scheduler run
 log и aggregated summary. Day 19 добавляет LLM-driven composition: planner получает schemas MCP
 tools, выбирает `tool_calls`, а host исполняет их через generic stdio MCP loop.
-Day 20 пока не выдан.
+Day 20 завершает неделю multi-server orchestration: четыре stdio server-а, normalized registry,
+neutral JSON planner, generic session routing, длинный 11-call online flow и safe Storage writes.

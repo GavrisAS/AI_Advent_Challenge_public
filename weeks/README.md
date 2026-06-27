@@ -7,7 +7,7 @@
 | [Week 01](week-01/) | day-01 — day-05 | Базовые вызовы LLM API и prompting | ✅ done |
 | [Week 02](week-02/) | day-06 — day-10 | Первый агент, persistence, token accounting, summary memory, context strategies | ✅ done |
 | [Week 03](week-03/) | day-11 — day-15 | Memory, personalization, task state, invariants и controlled transitions | ✅ done |
-| [Week 04](week-04/) | day-16 — day-20 | MCP | 🚧 in_progress |
+| [Week 04](week-04/) | day-16 — day-20 | MCP | ✅ done |
 
 ## Week 04 — MCP
 
@@ -17,4 +17,4 @@
 | day-17 | First MCP Tool | ✅ done | [week-04/day-17-first-mcp-tool](week-04/day-17-first-mcp-tool/) |
 | day-18 | Scheduler Background Tasks | ✅ done | [week-04/day-18-scheduler-background-tasks](week-04/day-18-scheduler-background-tasks/) |
 | day-19 | MCP Tool Composition | ✅ done | [week-04/day-19-mcp-tool-composition](week-04/day-19-mcp-tool-composition/) |
-| day-20 | Задание не выдано | ⏳ planned | — |
+| day-20 | Orchestration MCP | ✅ done | [week-04/day-20-mcp-orchestration](week-04/day-20-mcp-orchestration/) |

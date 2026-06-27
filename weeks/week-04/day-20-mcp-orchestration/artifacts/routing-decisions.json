@@ -1,0 +1,81 @@
+{
+  "decisions": [
+    {
+      "step": 1,
+      "requested_server": "tracker",
+      "requested_tool": "search_tracker_issues",
+      "resolved_session": "tracker",
+      "valid": true
+    },
+    {
+      "step": 2,
+      "requested_server": "tracker",
+      "requested_tool": "search_tracker_issues",
+      "resolved_session": "tracker",
+      "valid": true
+    },
+    {
+      "step": 3,
+      "requested_server": "knowledge",
+      "requested_tool": "get_mcp_day_context",
+      "resolved_session": "knowledge",
+      "valid": true
+    },
+    {
+      "step": 4,
+      "requested_server": "knowledge",
+      "requested_tool": "get_mcp_day_context",
+      "resolved_session": "knowledge",
+      "valid": true
+    },
+    {
+      "step": 5,
+      "requested_server": "knowledge",
+      "requested_tool": "get_mcp_day_context",
+      "resolved_session": "knowledge",
+      "valid": true
+    },
+    {
+      "step": 6,
+      "requested_server": "knowledge",
+      "requested_tool": "get_best_practice_note",
+      "resolved_session": "knowledge",
+      "valid": true
+    },
+    {
+      "step": 7,
+      "requested_server": "knowledge",
+      "requested_tool": "get_best_practice_note",
+      "resolved_session": "knowledge",
+      "valid": true
+    },
+    {
+      "step": 8,
+      "requested_server": "report",
+      "requested_tool": "build_orchestration_report",
+      "resolved_session": "report",
+      "valid": true
+    },
+    {
+      "step": 9,
+      "requested_server": "report",
+      "requested_tool": "build_next_steps",
+      "resolved_session": "report",
+      "valid": true
+    },
+    {
+      "step": 10,
+      "requested_server": "storage",
+      "requested_tool": "save_markdown_file",
+      "resolved_session": "storage",
+      "valid": true
+    },
+    {
+      "step": 11,
+      "requested_server": "storage",
+      "requested_tool": "save_json_file",
+      "resolved_session": "storage",
+      "valid": true
+    }
+  ]
+}

@@ -1,0 +1,277 @@
+{
+  "tools": [
+    {
+      "server_id": "knowledge",
+      "name": "get_best_practice_note",
+      "description": "Return a deterministic best-practice note for orchestration planning.",
+      "input_schema": {
+        "properties": {
+          "topic": {
+            "description": "Practice topic: multi-server-orchestration or model-agnostic-planning.",
+            "enum": [
+              "multi-server-orchestration",
+              "model-agnostic-planning"
+            ],
+            "title": "Topic",
+            "type": "string"
+          }
+        },
+        "required": [
+          "topic"
+        ],
+        "title": "get_best_practice_noteArguments",
+        "type": "object"
+      },
+      "read_only": true,
+      "write": false,
+      "destructive": false,
+      "routing_target": "knowledge"
+    },
+    {
+      "server_id": "knowledge",
+      "name": "get_mcp_day_context",
+      "description": "Return deterministic learning context for one Week 04 MCP day.",
+      "input_schema": {
+        "properties": {
+          "day": {
+            "description": "Week 04 day id: day-18, day-19 or day-20.",
+            "enum": [
+              "day-18",
+              "day-19",
+              "day-20"
+            ],
+            "title": "Day",
+            "type": "string"
+          }
+        },
+        "required": [
+          "day"
+        ],
+        "title": "get_mcp_day_contextArguments",
+        "type": "object"
+      },
+      "read_only": true,
+      "write": false,
+      "destructive": false,
+      "routing_target": "knowledge"
+    },
+    {
+      "server_id": "report",
+      "name": "build_next_steps",
+      "description": "Build deterministic follow-up recommendations from already gathered data.",
+      "input_schema": {
+        "properties": {
+          "tracker_data": {
+            "additionalProperties": true,
+            "description": "Accumulated Tracker search/get results.",
+            "title": "Tracker Data",
+            "type": "object"
+          },
+          "knowledge_context": {
+            "additionalProperties": true,
+            "description": "Accumulated knowledge results.",
+            "title": "Knowledge Context",
+            "type": "object"
+          },
+          "report_summary": {
+            "additionalProperties": true,
+            "description": "Summary returned by build_orchestration_report.",
+            "title": "Report Summary",
+            "type": "object"
+          }
+        },
+        "required": [
+          "tracker_data",
+          "knowledge_context",
+          "report_summary"
+        ],
+        "title": "build_next_stepsArguments",
+        "type": "object"
+      },
+      "read_only": true,
+      "write": false,
+      "destructive": false,
+      "routing_target": "report"
+    },
+    {
+      "server_id": "report",
+      "name": "build_orchestration_report",
+      "description": "Build a deterministic Markdown report from gathered orchestration data.",
+      "input_schema": {
+        "properties": {
+          "tracker_data": {
+            "additionalProperties": true,
+            "description": "Accumulated Tracker search/get results.",
+            "title": "Tracker Data",
+            "type": "object"
+          },
+          "knowledge_context": {
+            "additionalProperties": true,
+            "description": "Accumulated day contexts and practice notes.",
+            "title": "Knowledge Context",
+            "type": "object"
+          },
+          "flow_summary": {
+            "additionalProperties": true,
+            "description": "Compact orchestration state and counters.",
+            "title": "Flow Summary",
+            "type": "object"
+          },
+          "report_title": {
+            "default": "Week 04 MCP orchestration report",
+            "description": "Markdown H1 title.",
+            "title": "Report Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tracker_data",
+          "knowledge_context",
+          "flow_summary"
+        ],
+        "title": "build_orchestration_reportArguments",
+        "type": "object"
+      },
+      "read_only": true,
+      "write": false,
+      "destructive": false,
+      "routing_target": "report"
+    },
+    {
+      "server_id": "storage",
+      "name": "save_json_file",
+      "description": "Save a JSON object only inside the configured output directory.",
+      "input_schema": {
+        "properties": {
+          "filename": {
+            "description": "Flat relative .json filename.",
+            "title": "Filename",
+            "type": "string"
+          },
+          "data": {
+            "additionalProperties": true,
+            "description": "JSON object to save.",
+            "title": "Data",
+            "type": "object"
+          }
+        },
+        "required": [
+          "filename",
+          "data"
+        ],
+        "title": "save_json_fileArguments",
+        "type": "object"
+      },
+      "read_only": false,
+      "write": true,
+      "destructive": false,
+      "routing_target": "storage"
+    },
+    {
+      "server_id": "storage",
+      "name": "save_markdown_file",
+      "description": "Save Markdown only inside the configured output directory.",
+      "input_schema": {
+        "properties": {
+          "filename": {
+            "description": "Flat relative .md filename.",
+            "title": "Filename",
+            "type": "string"
+          },
+          "content": {
+            "description": "Markdown content to save.",
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "required": [
+          "filename",
+          "content"
+        ],
+        "title": "save_markdown_fileArguments",
+        "type": "object"
+      },
+      "read_only": false,
+      "write": true,
+      "destructive": false,
+      "routing_target": "storage"
+    },
+    {
+      "server_id": "tracker",
+      "name": "get_tracker_issue",
+      "description": "Return one deterministic mock Tracker issue.",
+      "input_schema": {
+        "properties": {
+          "issue_key": {
+            "description": "Mock Tracker key, for example AI-18.",
+            "title": "Issue Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "issue_key"
+        ],
+        "title": "get_tracker_issueArguments",
+        "type": "object"
+      },
+      "read_only": true,
+      "write": false,
+      "destructive": false,
+      "routing_target": "tracker"
+    },
+    {
+      "server_id": "tracker",
+      "name": "search_tracker_issues",
+      "description": "Search deterministic mock Tracker issues by status and tag.",
+      "input_schema": {
+        "properties": {
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "done",
+                  "in_progress",
+                  "planned"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional status filter: done, in_progress, planned or null.",
+            "title": "Status"
+          },
+          "tag": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional tag filter. Week 04 issues use the mcp tag.",
+            "title": "Tag"
+          },
+          "limit": {
+            "default": 10,
+            "description": "Maximum results.",
+            "maximum": 50,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "search_tracker_issuesArguments",
+        "type": "object"
+      },
+      "read_only": true,
+      "write": false,
+      "destructive": false,
+      "routing_target": "tracker"
+    }
+  ]
+}

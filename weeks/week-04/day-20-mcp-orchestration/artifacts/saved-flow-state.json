@@ -1,0 +1,204 @@
+{
+  "tracker": {
+    "search_done": {
+      "query": {
+        "status": "done",
+        "tag": "mcp",
+        "limit": 10
+      },
+      "issue_count": 4,
+      "issues": [
+        {
+          "issue_key": "AI-16",
+          "title": "Подключить MCP discovery",
+          "status": "done",
+          "priority": "medium",
+          "summary": "Подключить публичный DeepWiki MCP server, выполнить initialization и получить список tools без вызова инструментов.",
+          "tags": [
+            "mcp",
+            "week-04"
+          ]
+        },
+        {
+          "issue_key": "AI-17",
+          "title": "Подключить первый MCP tool",
+          "status": "done",
+          "priority": "high",
+          "summary": "Реализовать локальный stdio MCP server поверх mock Tracker API и вызвать его из агента.",
+          "tags": [
+            "mcp",
+            "week-04"
+          ]
+        },
+        {
+          "issue_key": "AI-18",
+          "title": "Расширить MCP orchestration",
+          "status": "done",
+          "priority": "medium",
+          "summary": "Реализовать scheduler-aware MCP tools с SQLite persistence, run log и aggregated Tracker summary.",
+          "tags": [
+            "mcp",
+            "week-04"
+          ]
+        },
+        {
+          "issue_key": "AI-19",
+          "title": "Реализовать композицию MCP tools",
+          "status": "done",
+          "priority": "high",
+          "summary": "Собрать LLM-driven pipeline search, deterministic report и safe file save внутри одного stdio MCP server.",
+          "tags": [
+            "mcp",
+            "week-04"
+          ]
+        }
+      ]
+    },
+    "search_planned": {
+      "query": {
+        "status": "planned",
+        "tag": "mcp",
+        "limit": 10
+      },
+      "issue_count": 1,
+      "issues": [
+        {
+          "issue_key": "AI-20",
+          "title": "Оркестрировать несколько MCP servers",
+          "status": "planned",
+          "priority": "high",
+          "summary": "Добавить discovery, normalized registry, neutral JSON planner и routing между четырьмя локальными stdio MCP servers.",
+          "tags": [
+            "mcp",
+            "week-04"
+          ]
+        }
+      ]
+    }
+  },
+  "knowledge": {
+    "day-18": {
+      "id": "day-18",
+      "title": "Scheduler-aware MCP tools",
+      "summary": "Bounded periodic collection with SQLite snapshots and deterministic tools.",
+      "key_points": [
+        "Фоновый цикл ограничен max-runs и timeout.",
+        "MCP tools отделены от scheduler service и persistence.",
+        "Offline flow не требует внешней сети или API key."
+      ]
+    },
+    "day-19": {
+      "id": "day-19",
+      "title": "Composition tools внутри одного MCP server",
+      "summary": "Planner выбирает search, report и save tools одного stdio server.",
+      "key_points": [
+        "Tool schemas обнаруживаются через tools/list.",
+        "Report строится детерминированно без LLM внутри tool.",
+        "Успех проверяется ordered subsequence, а не точным равенством sequence."
+      ]
+    },
+    "day-20": {
+      "id": "day-20",
+      "title": "Orchestration нескольких MCP servers",
+      "summary": "Host маршрутизирует neutral JSON actions между несколькими MCP sessions.",
+      "key_points": [
+        "Каждый server имеет отдельную ответственность и stdio session.",
+        "Normalized registry связывает tool с server и routing target.",
+        "Финальные report/state сохраняются только через storage MCP server."
+      ]
+    },
+    "multi-server-orchestration": {
+      "id": "multi-server-orchestration",
+      "title": "Multi-server orchestration",
+      "summary": "Discovery, validation and routing must be explicit and auditable.",
+      "key_points": [
+        "Использовать стабильные server ids и минимальные tool schemas.",
+        "Валидировать принадлежность tool выбранному server до call_tool.",
+        "Хранить trace и routing decisions без secrets и raw environment."
+      ]
+    },
+    "model-agnostic-planning": {
+      "id": "model-agnostic-planning",
+      "title": "Model-agnostic planning",
+      "summary": "Planner emits ordinary JSON actions instead of provider-native tool calls.",
+      "key_points": [
+        "Контракт action не зависит от конкретного LLM API.",
+        "Provider adapter отвечает только за text completion и usage.",
+        "Invalid JSON/actions проходят bounded repair loop и повторную validation."
+      ]
+    }
+  },
+  "report_summary": {
+    "orchestration_report": {
+      "title": "Week 04 MCP orchestration report",
+      "issue_count": 5,
+      "status_counts": {
+        "done": 4,
+        "planned": 1
+      },
+      "knowledge_items": 5,
+      "registered_servers": [
+        "knowledge",
+        "report",
+        "storage",
+        "tracker"
+      ],
+      "data_source_servers_used_before_report": [
+        "tracker",
+        "knowledge"
+      ],
+      "report_server": "report",
+      "storage_server": "storage"
+    },
+    "next_steps": {
+      "next_steps": [
+        "Завершить planned Tracker tasks: AI-20.",
+        "Проверить trace и routing decisions для каждого MCP tool call.",
+        "Сверить SHA-256 финального Markdown и JSON state после storage save.",
+        "Сохранить provider-neutral planner contract при замене LLM backend."
+      ],
+      "planned_issue_keys": [
+        "AI-20"
+      ],
+      "source_issue_count": 5,
+      "knowledge_item_count": 5,
+      "report_title": "Week 04 MCP orchestration report"
+    }
+  },
+  "saved_files": {
+    "final-orchestration-report.md": {
+      "saved": true,
+      "path": "final-orchestration-report.md",
+      "bytes_written": 2796,
+      "sha256": "dbeba2c67738b61b5a60ba0f8a5aaf9d77e27d72103c8e3bec71a050b7ceabbc"
+    }
+  },
+  "counts_by_server": {
+    "tracker": 2,
+    "knowledge": 5,
+    "report": 2,
+    "storage": 1
+  },
+  "counts_by_tool": {
+    "tracker.search_tracker_issues": 2,
+    "knowledge.get_mcp_day_context": 3,
+    "knowledge.get_best_practice_note": 2,
+    "report.build_orchestration_report": 1,
+    "report.build_next_steps": 1,
+    "storage.save_markdown_file": 1
+  },
+  "servers_used": [
+    "tracker",
+    "knowledge",
+    "report",
+    "storage"
+  ],
+  "tool_calls_total_before_json_save": 10,
+  "final_success_flags": {
+    "all_servers_used": true,
+    "minimum_tool_calls_reached": true,
+    "required_chain_found": true,
+    "final_report_saved_via_storage": true,
+    "flow_state_saved_via_storage": true
+  }
+}

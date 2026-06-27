@@ -1,0 +1,308 @@
+{
+  "planner": "llm-json",
+  "model": "deepseek-v4-flash",
+  "model_specific_tool_calling": false,
+  "hardcoded_pipeline": false,
+  "servers_registered": [
+    "tracker",
+    "knowledge",
+    "report",
+    "storage"
+  ],
+  "servers_used": [
+    "tracker",
+    "knowledge",
+    "report",
+    "storage"
+  ],
+  "tool_calls_total": 11,
+  "required_chain_found": true,
+  "completed": true,
+  "steps": [
+    {
+      "step": 1,
+      "chosen_by": "llm",
+      "server": "tracker",
+      "tool": "search_tracker_issues",
+      "arguments": {
+        "status": "done",
+        "tag": "mcp",
+        "limit": 10
+      },
+      "reason": "Собираем выполненные задачи Week 04 для отчёта.",
+      "routed_to_session": "tracker",
+      "result_summary": {
+        "issue_count": 4,
+        "issue_keys": [
+          "AI-16",
+          "AI-17",
+          "AI-18",
+          "AI-19"
+        ]
+      }
+    },
+    {
+      "step": 2,
+      "chosen_by": "llm",
+      "server": "tracker",
+      "tool": "search_tracker_issues",
+      "arguments": {
+        "status": "planned",
+        "tag": "mcp",
+        "limit": 10
+      },
+      "reason": "Найти планируемые MCP-задачи для полного трекера данных",
+      "routed_to_session": "tracker",
+      "result_summary": {
+        "issue_count": 1,
+        "issue_keys": [
+          "AI-20"
+        ]
+      }
+    },
+    {
+      "step": 3,
+      "chosen_by": "llm",
+      "server": "knowledge",
+      "tool": "get_mcp_day_context",
+      "arguments": {
+        "day": "day-18"
+      },
+      "reason": "Get Day 18 context for the report.",
+      "routed_to_session": "knowledge",
+      "result_summary": {
+        "id": "day-18",
+        "title": "Scheduler-aware MCP tools"
+      }
+    },
+    {
+      "step": 4,
+      "chosen_by": "llm",
+      "server": "knowledge",
+      "tool": "get_mcp_day_context",
+      "arguments": {
+        "day": "day-19"
+      },
+      "reason": "Day 19 context needed for report",
+      "routed_to_session": "knowledge",
+      "result_summary": {
+        "id": "day-19",
+        "title": "Composition tools внутри одного MCP server"
+      }
+    },
+    {
+      "step": 5,
+      "chosen_by": "llm",
+      "server": "knowledge",
+      "tool": "get_mcp_day_context",
+      "arguments": {
+        "day": "day-20"
+      },
+      "reason": "Need Day 20 context for report.",
+      "routed_to_session": "knowledge",
+      "result_summary": {
+        "id": "day-20",
+        "title": "Orchestration нескольких MCP servers"
+      }
+    },
+    {
+      "step": 6,
+      "chosen_by": "llm",
+      "server": "knowledge",
+      "tool": "get_best_practice_note",
+      "arguments": {
+        "topic": "multi-server-orchestration"
+      },
+      "reason": "Получить best practice по multi-server-orchestration для итогового отчёта",
+      "routed_to_session": "knowledge",
+      "result_summary": {
+        "id": "multi-server-orchestration",
+        "title": "Multi-server orchestration"
+      }
+    },
+    {
+      "step": 7,
+      "chosen_by": "llm",
+      "server": "knowledge",
+      "tool": "get_best_practice_note",
+      "arguments": {
+        "topic": "model-agnostic-planning"
+      },
+      "reason": "Need the second best practice note before building the report.",
+      "routed_to_session": "knowledge",
+      "result_summary": {
+        "id": "model-agnostic-planning",
+        "title": "Model-agnostic planning"
+      }
+    },
+    {
+      "step": 8,
+      "chosen_by": "llm",
+      "server": "report",
+      "tool": "build_orchestration_report",
+      "arguments": {
+        "tracker_data": {
+          "keys": [
+            "search_done",
+            "search_planned"
+          ],
+          "bytes": 1727,
+          "sha256": "a6eb6f4f069e904d741dfcdb1f1e2e020f2f6d228fd54e5e5ce3088d8a8f958a"
+        },
+        "knowledge_context": {
+          "keys": [
+            "day-18",
+            "day-19",
+            "day-20",
+            "model-agnostic-planning",
+            "multi-server-orchestration"
+          ],
+          "bytes": 2309,
+          "sha256": "3e8685f78d76c43f9e942a7647961bb918a10ef14f9d0f4230d6656e27719d7d"
+        },
+        "flow_summary": {
+          "registered_servers": [
+            "knowledge",
+            "report",
+            "storage",
+            "tracker"
+          ],
+          "data_source_servers_used_before_report": [
+            "tracker",
+            "knowledge"
+          ],
+          "report_server": "report",
+          "storage_server": "storage",
+          "flow_stage": "report_generation",
+          "tool_calls_total_before_report": 7
+        }
+      },
+      "reason": "Build orchestration report from collected data",
+      "routed_to_session": "report",
+      "result_summary": {
+        "title": "Week 04 MCP orchestration report",
+        "issue_count": 5,
+        "next_steps_count": 0,
+        "markdown_bytes": 2796
+      }
+    },
+    {
+      "step": 9,
+      "chosen_by": "llm",
+      "server": "report",
+      "tool": "build_next_steps",
+      "arguments": {
+        "tracker_data": {
+          "keys": [
+            "search_done",
+            "search_planned"
+          ],
+          "bytes": 1727,
+          "sha256": "a6eb6f4f069e904d741dfcdb1f1e2e020f2f6d228fd54e5e5ce3088d8a8f958a"
+        },
+        "knowledge_context": {
+          "keys": [
+            "day-18",
+            "day-19",
+            "day-20",
+            "model-agnostic-planning",
+            "multi-server-orchestration"
+          ],
+          "bytes": 2309,
+          "sha256": "3e8685f78d76c43f9e942a7647961bb918a10ef14f9d0f4230d6656e27719d7d"
+        },
+        "report_summary": {
+          "title": "Week 04 MCP orchestration report",
+          "issue_count": 5,
+          "status_counts": {
+            "done": 4,
+            "planned": 1
+          },
+          "knowledge_items": 5,
+          "registered_servers": [
+            "knowledge",
+            "report",
+            "storage",
+            "tracker"
+          ],
+          "data_source_servers_used_before_report": [
+            "tracker",
+            "knowledge"
+          ],
+          "report_server": "report",
+          "storage_server": "storage"
+        }
+      },
+      "reason": "Build follow-up recommendations after report generation before saving to storage.",
+      "routed_to_session": "report",
+      "result_summary": {
+        "title": "Week 04 MCP orchestration report",
+        "issue_count": 5,
+        "next_steps_count": 4,
+        "markdown_bytes": 0
+      }
+    },
+    {
+      "step": 10,
+      "chosen_by": "llm",
+      "server": "storage",
+      "tool": "save_markdown_file",
+      "arguments": {
+        "filename": "final-orchestration-report.md",
+        "content": {
+          "bytes": 2796,
+          "sha256": "dbeba2c67738b61b5a60ba0f8a5aaf9d77e27d72103c8e3bec71a050b7ceabbc"
+        }
+      },
+      "reason": "Save the final orchestration report as Markdown.",
+      "routed_to_session": "storage",
+      "result_summary": {
+        "saved": true,
+        "path": "final-orchestration-report.md",
+        "bytes_written": 2796,
+        "sha256": "dbeba2c67738b61b5a60ba0f8a5aaf9d77e27d72103c8e3bec71a050b7ceabbc"
+      }
+    },
+    {
+      "step": 11,
+      "chosen_by": "llm",
+      "server": "storage",
+      "tool": "save_json_file",
+      "arguments": {
+        "filename": "saved-flow-state.json",
+        "data": {
+          "keys": [
+            "counts_by_server",
+            "counts_by_tool",
+            "final_success_flags",
+            "knowledge",
+            "report_summary",
+            "saved_files",
+            "servers_used",
+            "tool_calls_total_before_json_save",
+            "tracker"
+          ],
+          "bytes": 5949,
+          "sha256": "d7a412d3a054bc79dffa70762afbd4c46afcdb174d96fb6e9495728169ebf41f"
+        }
+      },
+      "reason": "Save JSON state to storage.",
+      "routed_to_session": "storage",
+      "result_summary": {
+        "saved": true,
+        "path": "saved-flow-state.json",
+        "bytes_written": 7185,
+        "sha256": "bb64e88d9ff4eaf13e1e4b865256666a6d31048c6476066ea6aeb1d245ee5680"
+      }
+    }
+  ],
+  "usage": {
+    "planner_calls": 12,
+    "llm_api_calls": 12,
+    "prompt_tokens": 41302,
+    "completion_tokens": 10364,
+    "total_tokens": 51666,
+    "model": "deepseek-v4-flash"
+  },
+  "generated_at": "2026-06-27T15:37:20Z"
+}

@@ -11,7 +11,7 @@
 | Week 01 | ✅ done |
 | Week 02 | ✅ done |
 | Week 03 | ✅ done |
-| Week 04 | 🚧 in_progress |
+| Week 04 | ✅ done |
 
 ### Дни
 
@@ -36,6 +36,7 @@
 | Week 04 | 17 | First MCP Tool | ✅ done | [Открыть](weeks/week-04/day-17-first-mcp-tool/) |
 | Week 04 | 18 | Scheduler Background Tasks | ✅ done | [Открыть](weeks/week-04/day-18-scheduler-background-tasks/) |
 | Week 04 | 19 | MCP Tool Composition | ✅ done | [Открыть](weeks/week-04/day-19-mcp-tool-composition/) |
+| Week 04 | 20 | Orchestration MCP | ✅ done | [Открыть](weeks/week-04/day-20-mcp-orchestration/) |
 
 ## Структура репозитория
 

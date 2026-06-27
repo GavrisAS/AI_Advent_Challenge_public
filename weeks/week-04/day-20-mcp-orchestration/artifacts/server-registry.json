@@ -1,0 +1,52 @@
+{
+  "servers": [
+    {
+      "server_id": "tracker",
+      "transport": "stdio",
+      "command": "python",
+      "module": "ai_advent_agent.mcp_orchestration_servers",
+      "module_argument": "tracker",
+      "status": "initialized",
+      "protocol_version": "2025-11-25",
+      "server_name": "AI Advent Orchestration Tracker",
+      "server_version": "1.28.0",
+      "tool_count": 2
+    },
+    {
+      "server_id": "knowledge",
+      "transport": "stdio",
+      "command": "python",
+      "module": "ai_advent_agent.mcp_orchestration_servers",
+      "module_argument": "knowledge",
+      "status": "initialized",
+      "protocol_version": "2025-11-25",
+      "server_name": "AI Advent Orchestration Knowledge",
+      "server_version": "1.28.0",
+      "tool_count": 2
+    },
+    {
+      "server_id": "report",
+      "transport": "stdio",
+      "command": "python",
+      "module": "ai_advent_agent.mcp_orchestration_servers",
+      "module_argument": "report",
+      "status": "initialized",
+      "protocol_version": "2025-11-25",
+      "server_name": "AI Advent Orchestration Report",
+      "server_version": "1.28.0",
+      "tool_count": 2
+    },
+    {
+      "server_id": "storage",
+      "transport": "stdio",
+      "command": "python",
+      "module": "ai_advent_agent.mcp_orchestration_servers",
+      "module_argument": "storage",
+      "status": "initialized",
+      "protocol_version": "2025-11-25",
+      "server_name": "AI Advent Orchestration Storage",
+      "server_version": "1.28.0",
+      "tool_count": 2
+    }
+  ]
+}
