@@ -124,7 +124,7 @@ weeks/week-04/day-19-mcp-tool-composition/
 
 - `mcp_composition_server.py`;
 - `mcp_composition_client.py`;
-- routing в `scenarios.py`;
+- historical runner в `snapshot/`; в актуальном package scenario layer удалён;
 - tests в `packages/ai_advent_agent/tests/test_mcp_tool_composition.py`.
 
 ## Как запустить
@@ -133,16 +133,8 @@ weeks/week-04/day-19-mcp-tool-composition/
 
 #### Offline-сценарий
 
-Offline fallback не требует интернета, API key, реального Tracker API или LLM API. Он нужен для
-tests/local checks и не является основным evidence Day 19. Чтобы не перезаписывать online artifacts,
-сохраняйте scripted output в `.tmp/...`.
-
-```bash
-uv run --project packages/ai_advent_agent ai-advent-scenarios mcp-tool-composition-demo \
-  --planner scripted \
-  --output-dir .tmp/day19-scripted-fallback \
-  --results-file .tmp/day19-scripted-fallback/day-19-mcp-tool-composition.md
-```
+Day-specific runner удалён из актуального package. Scripted planner и generic composition loop
+проверяются напрямую через core package tests без сети и API key.
 
 Тесты Day 19:
 
@@ -153,16 +145,8 @@ uv run --project packages/ai_advent_agent pytest \
 
 #### Online/interactive агент
 
-Основной LLM-driven demo требует `DEEPSEEK_API_KEY` в env или `.env`. Именно этот запуск создаёт
-final Day 19 artifacts/results.
-
-```bash
-uv run --project packages/ai_advent_agent ai-advent-scenarios mcp-tool-composition-demo \
-  --planner llm \
-  --goal "Найди завершённые MCP-задачи Week 04, собери итоговый отчёт и сохрани его в файл." \
-  --output-dir weeks/week-04/day-19-mcp-tool-composition/artifacts \
-  --results-file weeks/week-04/day-19-mcp-tool-composition/results/day-19-mcp-tool-composition.md
-```
+Новый online CLI для composition пока не спроектирован. Для воспроизведения LLM-driven demo с
+`DEEPSEEK_API_KEY` используйте `Snapshot Day 19` ниже.
 
 ### Snapshot Day 19
 
@@ -204,19 +188,11 @@ uv run ai-advent-scenarios mcp-tool-composition-demo \
 3. Показать, что `build_tracker_report` строит deterministic report и не вызывает LLM.
 4. Открыть `mcp_composition_client.py`: показать generic loop `initialize -> list_tools -> planner
    tool_calls -> session.call_tool -> tool result -> planner`.
-5. Показать, что agent scenario не содержит hardcoded `search -> build -> save` sequence из прямых
-   `await call_tool(...)`.
+5. Показать в snapshot runner, что orchestration не содержит hardcoded `search -> build -> save`
+   sequence из прямых `await call_tool(...)`.
 6. Показать наличие `DEEPSEEK_API_KEY` без вывода значения ключа, например только статусом
    `env-present` или `dotenv-present`.
-7. Запустить online scenario:
-
-   ```bash
-   uv run --project packages/ai_advent_agent ai-advent-scenarios mcp-tool-composition-demo \
-     --planner llm \
-     --goal "Найди завершённые MCP-задачи Week 04, собери итоговый отчёт и сохрани его в файл." \
-     --output-dir weeks/week-04/day-19-mcp-tool-composition/artifacts \
-     --results-file weeks/week-04/day-19-mcp-tool-composition/results/day-19-mcp-tool-composition.md
-   ```
+7. Запустить online scenario из `Snapshot Day 19` по команде раздела `Как запустить`.
 
 8. Открыть `artifacts/llm-tool-call-trace.json` и показать `planner=llm`, `requested_by=llm`,
    `llm_api_calls > 0`, `hardcoded_pipeline=false` и последовательность MCP tool calls.

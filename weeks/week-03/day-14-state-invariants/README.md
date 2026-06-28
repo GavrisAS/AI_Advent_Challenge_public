@@ -117,41 +117,14 @@ Autocomplete поддерживает:
 
 #### Offline-сценарий
 
-Offline-сценарий не вызывает LLM API и не требует `DEEPSEEK_API_KEY`.
-
-```bash
-uv run --project packages/ai_advent_agent ai-advent-scenarios state-invariants-demo
-```
+Day-specific offline runner удалён из актуального package. Текущие invariants проверяются package
+tests; историческую демонстрацию запускайте из `Snapshot Day 14` ниже.
 
 #### Online/interactive агент
 
-Интерактивный агент вызывает DeepSeek API, поэтому нужен `DEEPSEEK_API_KEY` в окружении или
-локальном `.env`. Ключи не сохраняются в репозитории.
-
-Runtime-файлы online-демо актуального пакета держите вне дня, например в `.tmp/day14-online-demo`:
-
-```bash
-mkdir -p .tmp/day14-online-demo
-
-uv run --project packages/ai_advent_agent ai-advent-agent \
-  --context-file .tmp/day14-online-demo/messages.json \
-  --summary-file .tmp/day14-online-demo/summary.json \
-  --facts-file .tmp/day14-online-demo/facts.json \
-  --branches-file .tmp/day14-online-demo/branches.json \
-  --short-term-memory-file .tmp/day14-online-demo/short_term_memory.json \
-  --working-memory-file .tmp/day14-online-demo/working_memory.json \
-  --long-term-memory-file .tmp/day14-online-demo/long_term_memory.json \
-  --memory-events-file .tmp/day14-online-demo/memory_events.jsonl \
-  --user-profiles-file .tmp/day14-online-demo/user_profiles.json \
-  --profile-events-file .tmp/day14-online-demo/profile_events.jsonl \
-  --invariants-file .tmp/day14-online-demo/invariants.json \
-  --invariant-events-file .tmp/day14-online-demo/invariant_events.jsonl \
-  --task-state-file .tmp/day14-online-demo/task_state.json \
-  --task-events-file .tmp/day14-online-demo/task_events.jsonl \
-  --token-report-file .tmp/day14-online-demo/token_reports.jsonl \
-  --context-strategy sticky_facts \
-  --summary-mode off
-```
+Day-specific online/interactive walkthrough запускайте из `Snapshot Day 14` ниже. Актуальный
+`packages/ai_advent_agent` содержит интегрированный invariant CLI/runtime, но не используется как
+runner исторического сценария дня.
 
 ### Snapshot Day 14
 
@@ -201,8 +174,7 @@ uv run day14-agent \
 ## Сценарий демонстрации для видео
 
 1. Показать структуру Day 14: `README.md`, `snapshot/`, `results/`, `artifacts/agent-context/`.
-2. Запустить offline-сценарий:
-   `uv run --project packages/ai_advent_agent ai-advent-scenarios state-invariants-demo`.
+2. Запустить offline-сценарий из `Snapshot Day 14` по команде раздела `Как запустить`.
 3. Открыть artifacts: `invariants.json`, `invariant_events.jsonl`, `token_reports.jsonl`,
    `prompt_with_invariants.json`, `prompt_conflict_preflight.json`, `local_refusal.txt`.
 4. Показать в `results/day-14-state-invariants.md` строку `conflict_refusal` и `API calls: 0`.

@@ -126,7 +126,7 @@ weeks/week-04/day-18-scheduler-background-tasks/
 - `mcp_scheduler_service.py`;
 - `mcp_scheduler_server.py`;
 - `mcp_scheduler_client.py`;
-- routing в `scenarios.py`;
+- historical runner в `snapshot/`; в актуальном package scenario layer удалён;
 - tests в `packages/ai_advent_agent/tests/test_mcp_scheduler_demo.py`.
 
 ## Как запустить
@@ -135,16 +135,8 @@ weeks/week-04/day-18-scheduler-background-tasks/
 
 #### Offline-сценарий
 
-Команда не требует интернета, API key, внешнего Tracker API, LLM API, VPS или cron/systemd.
-
-```bash
-uv run --project packages/ai_advent_agent ai-advent-scenarios mcp-scheduler-demo \
-  --issue-keys AI-16 AI-17 AI-18 \
-  --interval-seconds 5 \
-  --max-runs 3 \
-  --output-dir weeks/week-04/day-18-scheduler-background-tasks/artifacts \
-  --results-file weeks/week-04/day-18-scheduler-background-tasks/results/day-18-scheduler-background-tasks.md
-```
+Day-specific runner удалён из актуального package. Core scheduler client, service, SQLite store и
+output helpers проверяются локальными tests без сети, API key, VPS или cron/systemd.
 
 Тесты Day 18:
 

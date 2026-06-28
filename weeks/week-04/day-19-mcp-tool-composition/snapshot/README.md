@@ -8,6 +8,7 @@ generic MCP tool-calling loop и локальный stdio MCP server с determin
 API key и интернет не требуются:
 
 ```bash
+cd weeks/week-04/day-19-mcp-tool-composition/snapshot
 uv sync
 uv run python -m pytest -q
 uv run ai-advent-scenarios mcp-tool-composition-demo \
@@ -21,6 +22,7 @@ uv run ai-advent-scenarios mcp-tool-composition-demo \
 Требуется `DEEPSEEK_API_KEY` в env или `.env`:
 
 ```bash
+cd weeks/week-04/day-19-mcp-tool-composition/snapshot
 uv run ai-advent-scenarios mcp-tool-composition-demo \
   --planner llm \
   --goal "Найди завершённые MCP-задачи Week 04, собери итоговый отчёт и сохрани его в файл." \

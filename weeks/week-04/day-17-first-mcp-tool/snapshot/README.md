@@ -9,6 +9,7 @@ API key, LLM API и интернет не требуются.
 ## Проверки
 
 ```bash
+cd weeks/week-04/day-17-first-mcp-tool/snapshot
 uv sync
 uv run python -m pytest -q
 uv run ruff check .
@@ -17,9 +18,10 @@ uv run ty check
 
 ## Offline-сценарий
 
-Из каталога `snapshot/`:
+Запуск выполняется из каталога snapshot:
 
 ```bash
+cd weeks/week-04/day-17-first-mcp-tool/snapshot
 uv run ai-advent-scenarios mcp-tool-demo \
   --issue-key AI-17 \
   --include-comments \

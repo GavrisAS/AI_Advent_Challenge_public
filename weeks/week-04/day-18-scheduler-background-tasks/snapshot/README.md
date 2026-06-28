@@ -9,6 +9,7 @@ API key, LLM API, интернет, VPS, cron/systemd, Celery, Redis и APSchedu
 ## Проверки
 
 ```bash
+cd weeks/week-04/day-18-scheduler-background-tasks/snapshot
 uv sync
 uv run python -m pytest -q
 uv run ruff check .
@@ -17,9 +18,10 @@ uv run ty check
 
 ## Offline-сценарий
 
-Из каталога `snapshot/`:
+Запуск выполняется из каталога snapshot:
 
 ```bash
+cd weeks/week-04/day-18-scheduler-background-tasks/snapshot
 uv run ai-advent-scenarios mcp-scheduler-demo \
   --issue-keys AI-16 AI-17 AI-18 \
   --interval-seconds 5 \

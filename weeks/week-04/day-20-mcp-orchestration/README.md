@@ -127,35 +127,17 @@ weeks/week-04/day-20-mcp-orchestration/
 
 ### Актуальный пакет
 
-#### Online/interactive агент — основной сценарий для видео
+#### Online/interactive агент
 
-Этот запуск идёт первым, потому что только `--planner llm-json` является финальным evidence Day 20.
-Требуется `DEEPSEEK_API_KEY`; ключ, headers и raw environment в artifacts не сохраняются.
-
-```bash
-uv run --project packages/ai_advent_agent ai-advent-scenarios mcp-orchestration-demo \
-  --planner llm-json \
-  --goal "Собери большой итоговый отчёт по MCP Week 04: найди выполненные и планируемые MCP-задачи, получи контекст Day 18, Day 19 и Day 20, добавь best practices по multi-server orchestration и model-agnostic planning, собери отчёт и сохрани Markdown и JSON состояние через storage MCP server." \
-  --output-dir weeks/week-04/day-20-mcp-orchestration/artifacts \
-  --results-file weeks/week-04/day-20-mcp-orchestration/results/day-20-mcp-orchestration.md \
-  --server-timeout-seconds 360 \
-  --max-steps 18
-```
-
-`--server-timeout-seconds` здесь означает общий timeout всего orchestration lifecycle: запуск и
-initialization четырёх MCP servers, все planner turns и MCP tool calls. Это не только startup timeout.
+Новый online CLI для orchestration пока не спроектирован. Для воспроизведения финального
+LLM-driven evidence с `DEEPSEEK_API_KEY` используйте `Snapshot Day 20` ниже.
 
 #### Offline-сценарий — только fallback/tests
 
-Scripted planner не требует сети или API key и проходит через те же четыре MCP sessions, registry,
-validation и router. Его output хранится только в `.tmp/` и не заменяет online artifacts.
+Scripted planner, четыре MCP sessions, registry, validation и router проверяются напрямую через
+package tests без сети или API key.
 
 ```bash
-uv run --project packages/ai_advent_agent ai-advent-scenarios mcp-orchestration-demo \
-  --planner scripted \
-  --output-dir .tmp/day20-scripted/artifacts \
-  --results-file .tmp/day20-scripted/day-20-mcp-orchestration.md
-
 uv run --project packages/ai_advent_agent pytest \
   packages/ai_advent_agent/tests/test_mcp_orchestration.py -q
 ```
@@ -244,10 +226,12 @@ validated action в нужную session.
 
 ### 4. Запустить online scenario
 
-Показать команду  из snapshot-каталога. Это основной сценарий для видео; он требует
+Показать команду из snapshot-каталога. Это основной сценарий для видео; он требует
 `DEEPSEEK_API_KEY`, но значение ключа не показывать.
 
 ```bash
+cd weeks/week-04/day-20-mcp-orchestration/snapshot
+
 uv run ai-advent-scenarios mcp-orchestration-demo \
   --planner llm-json \
   --goal "Собери большой итоговый отчёт по MCP Week 04: найди выполненные и планируемые MCP-задачи, получи контекст Day 18, Day 19 и Day 20, добавь best practices по multi-server orchestration и model-agnostic planning, собери отчёт и сохрани Markdown и JSON состояние через storage MCP server." \

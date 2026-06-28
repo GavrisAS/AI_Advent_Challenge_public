@@ -69,40 +69,10 @@ Summary memory Day 09 сохранена, но Day 10 comparison запуска�
 
 ## Как запустить
 
-Актуальный пакет:
-
-```bash
-uv run --project packages/ai_advent_agent ai-advent-scenarios \
-  context-strategies-comparison \
-  --output-dir weeks/week-02/day-10-context-management-strategies/artifacts/agent-context
-```
-
-Интерактивный агент из актуального пакета:
-
-```bash
-uv run --project packages/ai_advent_agent ai-advent-agent \
-  --context-strategy sticky_facts \
-  --summary-mode off \
-  --recent-messages-limit 6 \
-  --context-file weeks/week-02/day-10-context-management-strategies/artifacts/agent-context/messages.json \
-  --facts-file weeks/week-02/day-10-context-management-strategies/artifacts/agent-context/facts.json \
-  --branches-file weeks/week-02/day-10-context-management-strategies/artifacts/agent-context/branches.json \
-  --token-report-file weeks/week-02/day-10-context-management-strategies/artifacts/agent-context/token_reports.jsonl
-```
-
-Команды внутри интерактивного CLI:
-
-```text
-/context
-/tokens
-/facts
-/branches
-/checkpoint base
-/branch option-a
-/switch option-a
-/reset
-/help
-```
+Day-specific runner удалён из актуального package. Для воспроизведения сравнения используйте
+`Snapshot Day 10` ниже. Актуальный `packages/ai_advent_agent` остаётся интегрированным harness,
+а не runner-ом исторических day-specific сценариев; его общий CLI описан в
+`packages/docs/cli.md`.
 
 Snapshot:
 
@@ -129,6 +99,9 @@ uv run day10-scenarios \
 Интерактивный агент для видео:
 
 ```bash
+cd weeks/week-02/day-10-context-management-strategies/snapshot
+mkdir -p ../artifacts/agent-context
+
 uv run day10-agent \
   --context-strategy sticky_facts \
   --summary-mode off \

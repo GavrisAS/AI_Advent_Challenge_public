@@ -104,7 +104,7 @@ weeks/week-04/day-17-first-mcp-tool/
 - `mcp_mock_api.py`;
 - `mcp_tool_server.py`;
 - `mcp_tool_client.py`;
-- routing в `scenarios.py`;
+- historical runner в `snapshot/`; в актуальном package scenario layer удалён;
 - tests в `packages/ai_advent_agent/tests/test_mcp_tool_demo.py`.
 
 ## Как запустить
@@ -113,15 +113,8 @@ weeks/week-04/day-17-first-mcp-tool/
 
 #### Offline-сценарий
 
-Команда не требует интернета, API key, внешнего Tracker API или LLM API.
-
-```bash
-uv run --project packages/ai_advent_agent ai-advent-scenarios mcp-tool-demo \
-  --issue-key AI-17 \
-  --include-comments \
-  --output-dir weeks/week-04/day-17-first-mcp-tool/artifacts \
-  --results-file weeks/week-04/day-17-first-mcp-tool/results/day-17-first-mcp-tool.md
-```
+Day-specific runner удалён из актуального package. Core MCP client и output helpers проверяются
+локальными tests без интернета, API key, внешнего Tracker API или LLM API.
 
 Тесты Day 17:
 

@@ -126,42 +126,14 @@ Autocomplete поддерживает:
 
 #### Offline-сценарий
 
-Offline-сценарий не вызывает LLM API и не требует `DEEPSEEK_API_KEY`.
-
-```bash
-uv run --project packages/ai_advent_agent ai-advent-scenarios controlled-state-transitions-demo
-```
+Day-specific offline runner удалён из актуального package. Текущие controlled transitions
+проверяются package tests; историческую демонстрацию запускайте из `Snapshot Day 15` ниже.
 
 #### Online/interactive агент
 
-Интерактивный агент вызывает DeepSeek API, поэтому нужен `DEEPSEEK_API_KEY` в окружении или
-локальном `.env`. Ключи не сохраняются в репозитории.
-
-Runtime-файлы online-демо актуального пакета держите вне дня, например в
-`.tmp/day15-online-demo`:
-
-```bash
-mkdir -p .tmp/day15-online-demo
-
-uv run --project packages/ai_advent_agent ai-advent-agent \
-  --context-file .tmp/day15-online-demo/messages.json \
-  --summary-file .tmp/day15-online-demo/summary.json \
-  --facts-file .tmp/day15-online-demo/facts.json \
-  --branches-file .tmp/day15-online-demo/branches.json \
-  --short-term-memory-file .tmp/day15-online-demo/short_term_memory.json \
-  --working-memory-file .tmp/day15-online-demo/working_memory.json \
-  --long-term-memory-file .tmp/day15-online-demo/long_term_memory.json \
-  --memory-events-file .tmp/day15-online-demo/memory_events.jsonl \
-  --user-profiles-file .tmp/day15-online-demo/user_profiles.json \
-  --profile-events-file .tmp/day15-online-demo/profile_events.jsonl \
-  --task-state-file .tmp/day15-online-demo/task_state.json \
-  --task-events-file .tmp/day15-online-demo/task_events.jsonl \
-  --invariants-file .tmp/day15-online-demo/invariants.json \
-  --invariant-events-file .tmp/day15-online-demo/invariant_events.jsonl \
-  --token-report-file .tmp/day15-online-demo/token_reports.jsonl \
-  --context-strategy sticky_facts \
-  --summary-mode off
-```
+Day-specific online/interactive walkthrough запускайте из `Snapshot Day 15` ниже. Актуальный
+`packages/ai_advent_agent` содержит интегрированный controlled-state harness, но не используется
+как runner исторического сценария дня.
 
 ### Snapshot Day 15
 
@@ -211,8 +183,7 @@ uv run day15-agent \
 ## Сценарий демонстрации для видео
 
 1. Показать структуру Day 15: `README.md`, `snapshot/`, `results/`, `artifacts/agent-context/`.
-2. Запустить offline-сценарий:
-   `uv run --project packages/ai_advent_agent ai-advent-scenarios controlled-state-transitions-demo`.
+2. Запустить offline-сценарий из `Snapshot Day 15` по команде раздела `Как запустить`.
 3. Открыть artifacts: `task_state.json`, `task_events.jsonl`, invalid transition JSON files,
    `token_reports.jsonl` и prompt snapshots.
 4. Запустить interactive snapshot agent.
