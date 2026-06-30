@@ -1,0 +1,412 @@
+{
+  "embedding_backend": "ollama",
+  "embedding_model": "nomic-embed-text",
+  "top_k": 3,
+  "queries": [
+    {
+      "query": "Как запускать historical day-specific сценарии?",
+      "strategies": {
+        "fixed": [
+          {
+            "rank": 1,
+            "chunk_id": "fixed:docs-development-rules.md:0001",
+            "score": 0.691067,
+            "source": "corpus/docs-development-rules.md",
+            "section": "Правила развития актуального AI harness",
+            "line_range": [
+              39,
+              76
+            ],
+            "text_preview": "Старые команды можно удалять или заменять более последовательным интерфейсом.  CLI можно унифицировать и группировать по устойчивым namespace-командам.  Большие модули можно разделять по ответственности.  Повторяющуюся логику можно объединя"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "fixed:week-02-day-readmes.md:0010",
+            "score": 0.665594,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Public README документов Week 02",
+            "line_range": [
+              458,
+              495
+            ],
+            "text_preview": "Протестируйте на одном и том же сценарии: собираем ТЗ 10–15 сообщений. Сравните качество ответа, стабильность важных деталей, расход токенов и удобство пользователя.  Результат: агент с 3 стратегиями управления контекстом (Sliding Window / "
+          },
+          {
+            "rank": 3,
+            "chunk_id": "fixed:week-02-day-readmes.md:0011",
+            "score": 0.66414,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Public README документов Week 02",
+            "line_range": [
+              484,
+              543
+            ],
+            "text_preview": "## Структура файлов  ```text . ├── README.md ├── codex-log.md ├── snapshot/ ├── results/ │   └── day-10-context-strategies-comparison.md └── artifacts/     └── agent-context/         ├── branching_active_messages.json         ├── branches.j"
+          }
+        ],
+        "structure": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:docs-development-rules.md:0001",
+            "score": 0.750865,
+            "source": "corpus/docs-development-rules.md",
+            "section": "Правила развития актуального AI harness > Разделение ответственности > Snapshots дней",
+            "line_range": [
+              11,
+              26
+            ],
+            "text_preview": "### Snapshots дней  Каталоги `weeks/week-XX/day-YY-topic/snapshot/` — исторические слепки.  После завершения дня snapshot считается неизменяемым.  Он сохраняет архитектуру, команды, зависимости и ограничения конкретного дня.  В snapshot мог"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-02-day-readmes.md:0023",
+            "score": 0.744474,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Day 08 — Tokens Accounting > Цель задания",
+            "line_range": [
+              213,
+              216
+            ],
+            "text_preview": "## Цель задания  Сделать контекст агента наблюдаемым: считать токены текущего запроса, истории и ответа, оценивать стоимость и проверять поведение при переполнении контекстного окна."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-02-day-readmes.md:0013",
+            "score": 0.743628,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Day 07 — Save Context > Цель задания",
+            "line_range": [
+              120,
+              123
+            ],
+            "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+          }
+        ]
+      }
+    },
+    {
+      "query": "Какие правила public export?",
+      "strategies": {
+        "fixed": [
+          {
+            "rank": 1,
+            "chunk_id": "fixed:docs-cli.md:0000",
+            "score": 0.692068,
+            "source": "corpus/docs-cli.md",
+            "section": "CLI актуального harness",
+            "line_range": [
+              1,
+              44
+            ],
+            "text_preview": "# CLI актуального harness  ## Текущий entry point  Актуальный package устанавливает один пользовательский entry point:  ```text ai-advent-agent ```  Команда `ai-advent-scenarios` в `packages/` не поддерживается. Исторические day-specific ru"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "fixed:week-02-day-readmes.md:0000",
+            "score": 0.681726,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Public README документов Week 02",
+            "line_range": [
+              1,
+              52
+            ],
+            "text_preview": "# Public README документов Week 02  Стабильная копия public-safe README завершённых дней для corpus Day 21.  <!-- source: weeks/week-02/day-06-first-agent/README.md -->  # Day 06 — First Agent ## 🎥 Видео-отчёт  > [▶️ Смотреть видео-отчёт](h"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "fixed:docs-cli.md:0024",
+            "score": 0.680639,
+            "source": "corpus/docs-cli.md",
+            "section": "CLI актуального harness",
+            "line_range": [
+              560,
+              568
+            ],
+            "text_preview": "## Правила обратной совместимости  Текущий canonical contract определяется этим документом, `ai-advent-agent --help` и `/help`. Legacy aliases поддерживаются временно и уже выводят deprecation warning.  При реорганизации интерфейса функцион"
+          }
+        ],
+        "structure": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0080",
+            "score": 0.730498,
+            "source": "corpus/week-04-day-readmes.md",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки",
+            "line_range": [
+              1250,
+              1258
+            ],
+            "text_preview": "### 13. Финальные проверки  ```bash make clean make check make safety python scripts/export_public.py --dry-run ```"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:docs-development-rules.md:0000",
+            "score": 0.689912,
+            "source": "corpus/docs-development-rules.md",
+            "section": "Правила развития актуального AI harness > Назначение документа",
+            "line_range": [
+              3,
+              8
+            ],
+            "text_preview": "## Назначение документа  Этот документ описывает текущее правило развития кода в `packages/`.  Он относится к актуальному AI harness и не меняет историю уже завершённых дней курса."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:docs-cli.md:0000",
+            "score": 0.685437,
+            "source": "corpus/docs-cli.md",
+            "section": "CLI актуального harness > Текущий entry point",
+            "line_range": [
+              3,
+              18
+            ],
+            "text_preview": "## Текущий entry point  Актуальный package устанавливает один пользовательский entry point:  ```text ai-advent-agent ```  Команда `ai-advent-scenarios` в `packages/` не поддерживается. Исторические day-specific runners сохранены в `weeks/**"
+          }
+        ]
+      }
+    },
+    {
+      "query": "Что такое MCP orchestration?",
+      "strategies": {
+        "fixed": [
+          {
+            "rank": 1,
+            "chunk_id": "fixed:week-04-day-readmes.md:0024",
+            "score": 0.755732,
+            "source": "corpus/week-04-day-readmes.md",
+            "section": "Public README документов Week 04",
+            "line_range": [
+              899,
+              935
+            ],
+            "text_preview": "## Цель задания  Реализовать модель-агностичный host/orchestrator, который обнаруживает tools четырёх независимых stdio MCP servers, формирует normalized registry, получает от LLM следующий neutral JSON action, валидирует его, маршрутизируе"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "fixed:week-04-day-readmes.md:0029",
+            "score": 0.752572,
+            "source": "corpus/week-04-day-readmes.md",
+            "section": "Public README документов Week 04",
+            "line_range": [
+              1064,
+              1100
+            ],
+            "text_preview": "- четыре отдельных локальных stdio MCP server-а; - отдельную ответственность каждого server-а: Tracker читает issue data, Knowledge отдаёт учебный   контекст, Report строит deterministic отчёты, Storage пишет файлы в configured output bound"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "fixed:week-04-day-readmes.md:0026",
+            "score": 0.743562,
+            "source": "corpus/week-04-day-readmes.md",
+            "section": "Public README документов Week 04",
+            "line_range": [
+              953,
+              998
+            ],
+            "text_preview": "report — evidence самого процесса оркестрации.  ## Новые команды  | Команда | Назначение | |---|---| | `ai-advent-scenarios mcp-orchestration-demo` | Запустить orchestration flow через четыре stdio MCP servers | | `--planner {llm-json,scrip"
+          }
+        ],
+        "structure": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0058",
+            "score": 0.853025,
+            "source": "corpus/week-04-day-readmes.md",
+            "section": "Day 20 — Orchestration MCP > Исходное условие",
+            "line_range": [
+              878,
+              898
+            ],
+            "text_preview": "## Исходное условие  🔥 День 20. Orchestration MCP  Зарегистрируйте несколько MCP-серверов.  Сделайте так, чтобы: 👉 агент выбирал нужный инструмент 👉 корректно маршрутизировал запросы 👉 выполнял длинный флоу взаимодействия  Проверьте: 👉 сцен"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-04-day-readmes.md:0082",
+            "score": 0.822599,
+            "source": "corpus/week-04-day-readmes.md",
+            "section": "Day 20 — Orchestration MCP > Выводы",
+            "line_range": [
+              1271,
+              1276
+            ],
+            "text_preview": "## Выводы  Multi-server MCP orchestration — это ответственность host-а: servers публикуют маленькие deterministic capabilities, registry задаёт проверяемое пространство действий, planner выбирает следующий neutral JSON action, validator охр"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-04-day-readmes.md:0060",
+            "score": 0.811239,
+            "source": "corpus/week-04-day-readmes.md",
+            "section": "Day 20 — Orchestration MCP > Дополнительные учебные заметки",
+            "line_range": [
+              908,
+              911
+            ],
+            "text_preview": "## Дополнительные учебные заметки  - [Заметки по теме задания](../../../notes/task_notes/day-20-mcp-orchestration.md)"
+          }
+        ]
+      }
+    },
+    {
+      "query": "Как устроены context strategies?",
+      "strategies": {
+        "fixed": [
+          {
+            "rank": 1,
+            "chunk_id": "fixed:week-02-day-readmes.md:0010",
+            "score": 0.730239,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Public README документов Week 02",
+            "line_range": [
+              458,
+              495
+            ],
+            "text_preview": "Протестируйте на одном и том же сценарии: собираем ТЗ 10–15 сообщений. Сравните качество ответа, стабильность важных деталей, расход токенов и удобство пользователя.  Результат: агент с 3 стратегиями управления контекстом (Sliding Window / "
+          },
+          {
+            "rank": 2,
+            "chunk_id": "fixed:week-02-day-readmes.md:0012",
+            "score": 0.706667,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Public README документов Week 02",
+            "line_range": [
+              539,
+              569
+            ],
+            "text_preview": "--context-strategy sticky_facts \\   --summary-mode off \\   --context-file ../artifacts/agent-context/messages.json \\   --facts-file ../artifacts/agent-context/facts.json \\   --branches-file ../artifacts/agent-context/branches.json \\   --tok"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "fixed:week-02-day-readmes.md:0009",
+            "score": 0.696391,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Public README документов Week 02",
+            "line_range": [
+              425,
+              465
+            ],
+            "text_preview": "Summary memory экономит контекстное окно, но переносит часть ответственности на качество сжатия. Поэтому summary нужно хранить отдельно, явно маркировать в prompt, тестировать на ранних важных фактах и отражать в token reports.  <!-- source"
+          }
+        ],
+        "structure": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-02-day-readmes.md:0044",
+            "score": 0.784622,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Day 10 — Context Management Strategies > Дополнительные учебные заметки",
+            "line_range": [
+              468,
+              471
+            ],
+            "text_preview": "## Дополнительные учебные заметки  - [Заметки по теме задания](../../../notes/task_notes/day-10-context-management-strategies.md)"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-02-day-readmes.md:0045",
+            "score": 0.769897,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Day 10 — Context Management Strategies > Реализация",
+            "line_range": [
+              472,
+              483
+            ],
+            "text_preview": "## Реализация  В актуальный пакет `packages/ai_advent_agent/` добавлены три context strategy:  - `sliding_window` — сохраняет и отправляет system prompt + последние N сообщений. - `sticky_facts` — делает отдельный LLM extraction step, сохра"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-02-day-readmes.md:0049",
+            "score": 0.761277,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Day 10 — Context Management Strategies > Результаты",
+            "line_range": [
+              560,
+              566
+            ],
+            "text_preview": "## Результаты  - [Сравнение стратегий](results/day-10-context-strategies-comparison.md) - [Демонстрационные runtime-артефакты](artifacts/agent-context/)  Краткий вывод: sliding window дешевле, но теряет ранние требования; sticky facts устой"
+          }
+        ]
+      }
+    },
+    {
+      "query": "Какие проверки нужно запускать перед сдачей?",
+      "strategies": {
+        "fixed": [
+          {
+            "rank": 1,
+            "chunk_id": "fixed:week-01-day-readmes.md:0003",
+            "score": 0.729536,
+            "source": "corpus/week-01-day-readmes.md",
+            "section": "Public README документов Week 01",
+            "line_range": [
+              149,
+              201
+            ],
+            "text_preview": "🔥 День 3. Разные способы рассуждения  Возьмите одну задачу (логическую, алгоритмическую или аналитическую) и решите её через API четырьмя способами:  - получите прямой ответ без дополнительных инструкций; - добавьте в промпт инструкцию: «ре"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "fixed:week-02-day-readmes.md:0004",
+            "score": 0.711174,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Public README документов Week 02",
+            "line_range": [
+              194,
+              244
+            ],
+            "text_preview": "- для ответа модели.  Сравните:  - короткий диалог; - длинный диалог; - диалог, который превышает лимит модели.  Покажите:  - как растёт стоимость/токены по мере диалога; - что ломается при переполнении.  Речь про лимит контекстного окна. З"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "fixed:week-03-day-readmes.md:0023",
+            "score": 0.696306,
+            "source": "corpus/week-03-day-readmes.md",
+            "section": "Public README документов Week 03",
+            "line_range": [
+              864,
+              914
+            ],
+            "text_preview": "Добавьте в ассистента инварианты, которые он не имеет права нарушать.  Примеры инвариантов:  👉 выбранная архитектура 👉 принятые технические решения 👉 ограничения по стеку 👉 бизнес-правила  Сделайте так, чтобы:  👉 инварианты хранились отдель"
+          }
+        ],
+        "structure": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-02-day-readmes.md:0013",
+            "score": 0.818825,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Day 07 — Save Context > Цель задания",
+            "line_range": [
+              120,
+              123
+            ],
+            "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-01-day-readmes.md:0043",
+            "score": 0.803565,
+            "source": "corpus/week-01-day-readmes.md",
+            "section": "Day 05 — Model Versions > Цель задания",
+            "line_range": [
+              329,
+              332
+            ],
+            "text_preview": "## Цель задания  Научиться сравнивать модели не только по качеству текста, но и по задержке, расходу токенов и стоимости."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-02-day-readmes.md:0023",
+            "score": 0.796626,
+            "source": "corpus/week-02-day-readmes.md",
+            "section": "Day 08 — Tokens Accounting > Цель задания",
+            "line_range": [
+              213,
+              216
+            ],
+            "text_preview": "## Цель задания  Сделать контекст агента наблюдаемым: считать токены текущего запроса, истории и ответа, оценивать стоимость и проверять поведение при переполнении контекстного окна."
+          }
+        ]
+      }
+    }
+  ]
+}

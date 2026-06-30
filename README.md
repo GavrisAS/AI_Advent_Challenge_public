@@ -12,6 +12,7 @@
 | Week 02 | ✅ done |
 | Week 03 | ✅ done |
 | Week 04 | ✅ done |
+| Week 05 | ✅ done |
 
 ### Дни
 
@@ -37,6 +38,7 @@
 | Week 04 | 18 | Scheduler Background Tasks | ✅ done | [Открыть](weeks/week-04/day-18-scheduler-background-tasks/) |
 | Week 04 | 19 | MCP Tool Composition | ✅ done | [Открыть](weeks/week-04/day-19-mcp-tool-composition/) |
 | Week 04 | 20 | Orchestration MCP | ✅ done | [Открыть](weeks/week-04/day-20-mcp-orchestration/) |
+| Week 05 | 21 | Document Indexing | ✅ done | [Открыть](weeks/week-05/day-21-document-indexing/) |
 
 ## Структура репозитория
 

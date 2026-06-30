@@ -1,0 +1,109 @@
+{
+  "created_at": "2026-06-30T19:46:06.802731+00:00",
+  "corpus": {
+    "document_count": 10,
+    "word_count": 21578,
+    "char_count": 184292,
+    "sources": [
+      "corpus/README.md",
+      "corpus/docs-cli.md",
+      "corpus/docs-development-rules.md",
+      "corpus/docs-examples.md",
+      "corpus/package-readme.md",
+      "corpus/project-readme.md",
+      "corpus/week-01-day-readmes.md",
+      "corpus/week-02-day-readmes.md",
+      "corpus/week-03-day-readmes.md",
+      "corpus/week-04-day-readmes.md"
+    ]
+  },
+  "indexes": {
+    "fixed": {
+      "strategy": "fixed",
+      "embedding_backend": "ollama",
+      "embedding_model": "nomic-embed-text",
+      "created_at": "2026-06-30T19:46:06.802731+00:00",
+      "document_count": 10,
+      "chunk_count": 144,
+      "embedding_dim": 768,
+      "sources": [
+        "corpus/README.md",
+        "corpus/docs-cli.md",
+        "corpus/docs-development-rules.md",
+        "corpus/docs-examples.md",
+        "corpus/package-readme.md",
+        "corpus/project-readme.md",
+        "corpus/week-01-day-readmes.md",
+        "corpus/week-02-day-readmes.md",
+        "corpus/week-03-day-readmes.md",
+        "corpus/week-04-day-readmes.md"
+      ],
+      "settings": {
+        "chunk_size": 1600,
+        "overlap": 200
+      }
+    },
+    "structure": {
+      "strategy": "structure",
+      "embedding_backend": "ollama",
+      "embedding_model": "nomic-embed-text",
+      "created_at": "2026-06-30T19:46:06.802731+00:00",
+      "document_count": 10,
+      "chunk_count": 330,
+      "embedding_dim": 768,
+      "sources": [
+        "corpus/README.md",
+        "corpus/docs-cli.md",
+        "corpus/docs-development-rules.md",
+        "corpus/docs-examples.md",
+        "corpus/package-readme.md",
+        "corpus/project-readme.md",
+        "corpus/week-01-day-readmes.md",
+        "corpus/week-02-day-readmes.md",
+        "corpus/week-03-day-readmes.md",
+        "corpus/week-04-day-readmes.md"
+      ],
+      "settings": {
+        "max_chunk_size": 2400,
+        "overlap": 200
+      }
+    }
+  },
+  "statistics": {
+    "fixed": {
+      "chunk_count": 144,
+      "chars_min": 336,
+      "chars_avg": 1502.3,
+      "chars_max": 1599,
+      "words_min": 45,
+      "words_avg": 175.9,
+      "words_max": 281,
+      "section_chunks": 144,
+      "source_count": 10,
+      "json_bytes": 2742949,
+      "sqlite_bytes": 1867776
+    },
+    "structure": {
+      "chunk_count": 330,
+      "chars_min": 59,
+      "chars_avg": 556.0,
+      "chars_max": 2395,
+      "words_min": 5,
+      "words_avg": 65.2,
+      "words_max": 417,
+      "section_chunks": 330,
+      "source_count": 10,
+      "json_bytes": 5885026,
+      "sqlite_bytes": 4689920
+    }
+  },
+  "artifacts": [
+    "chunking-comparison.md",
+    "fixed-index.json",
+    "fixed-index.sqlite3",
+    "index-manifest.json",
+    "sample-search-results.json",
+    "structure-index.json",
+    "structure-index.sqlite3"
+  ]
+}
