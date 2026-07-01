@@ -39,6 +39,8 @@
 | Week 04 | 19 | MCP Tool Composition | ✅ done | [Открыть](weeks/week-04/day-19-mcp-tool-composition/) |
 | Week 04 | 20 | Orchestration MCP | ✅ done | [Открыть](weeks/week-04/day-20-mcp-orchestration/) |
 | Week 05 | 21 | Document Indexing | ✅ done | [Открыть](weeks/week-05/day-21-document-indexing/) |
+| Week 05 | 22 | First RAG Query | ✅ done | [Открыть](weeks/week-05/day-22-first-rag-query/) |
+| Week 05 | 23 | Reranking and Filtering | ✅ done | [Открыть](weeks/week-05/day-23-reranking-filtering/) |
 
 ## Структура репозитория
 

@@ -1,0 +1,49 @@
+{
+  "created_at": "2026-07-01T13:55:17.431731+00:00",
+  "corpus_dir": "../corpus",
+  "questions_json": "../eval/control-questions.json",
+  "embedding_backend": "ollama",
+  "embedding_model": "nomic-embed-text",
+  "llm_provider": "deepseek",
+  "llm_model": "deepseek-v4-flash",
+  "plain_top_k": 4,
+  "improved_top_k_before": 8,
+  "improved_top_k_after": 4,
+  "similarity_threshold": 0.25,
+  "rewrite_mode": "heuristic",
+  "rerank_mode": "heuristic",
+  "artifacts": [
+    "day23-comparison.json",
+    "day23-comparison.md",
+    "index-manifest.json",
+    "sample-improved-rag-answer.json",
+    "structure-index.json",
+    "structure-index.sqlite3"
+  ],
+  "index": {
+    "strategy": "structure",
+    "embedding_backend": "ollama",
+    "embedding_model": "nomic-embed-text",
+    "embedding_dim": 768,
+    "created_at": "2026-07-01T13:54:17.322824+00:00",
+    "document_count": 11,
+    "chunk_count": 336,
+    "sources": [
+      "corpus/README.md",
+      "corpus/day-21-document-indexing-readme.md",
+      "corpus/docs-cli.md",
+      "corpus/docs-development-rules.md",
+      "corpus/docs-examples.md",
+      "corpus/package-readme.md",
+      "corpus/project-readme.md",
+      "corpus/week-01-day-readmes.md",
+      "corpus/week-02-day-readmes.md",
+      "corpus/week-03-day-readmes.md",
+      "corpus/week-04-day-readmes.md"
+    ],
+    "settings": {
+      "max_chunk_size": 2400,
+      "overlap": 200
+    }
+  }
+}

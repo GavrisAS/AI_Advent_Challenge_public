@@ -1,0 +1,2851 @@
+{
+  "settings": {
+    "corpus_dir": "../corpus",
+    "questions_json": "../eval/control-questions.json",
+    "embedding_backend": "ollama",
+    "embedding_model": "nomic-embed-text",
+    "llm_provider": "deepseek",
+    "llm_model": "deepseek-v4-flash",
+    "plain_top_k": 4,
+    "improved_top_k_before": 8,
+    "improved_top_k_after": 4,
+    "similarity_threshold": 0.25,
+    "rewrite_mode": "heuristic",
+    "rerank_mode": "heuristic"
+  },
+  "index": {
+    "strategy": "structure",
+    "embedding_backend": "ollama",
+    "embedding_model": "nomic-embed-text",
+    "embedding_dim": 768,
+    "created_at": "2026-07-01T13:54:17.322824+00:00",
+    "document_count": 11,
+    "chunk_count": 336,
+    "sources": [
+      "corpus/README.md",
+      "corpus/day-21-document-indexing-readme.md",
+      "corpus/docs-cli.md",
+      "corpus/docs-development-rules.md",
+      "corpus/docs-examples.md",
+      "corpus/package-readme.md",
+      "corpus/project-readme.md",
+      "corpus/week-01-day-readmes.md",
+      "corpus/week-02-day-readmes.md",
+      "corpus/week-03-day-readmes.md",
+      "corpus/week-04-day-readmes.md"
+    ],
+    "settings": {
+      "max_chunk_size": 2400,
+      "overlap": 200
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "question": "Как запускать historical day-specific сценарии?",
+      "expected_points": [
+        "Запускать из snapshot соответствующего дня",
+        "Runtime artifacts хранить вне snapshot",
+        "Актуальный package не является historical runner"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md",
+        "docs-cli.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:docs-development-rules.md:0001",
+            "similarity_score": 0.750864,
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Разделение ответственности > Snapshots дней",
+            "line_range": [
+              11,
+              26
+            ],
+            "text_preview": "### Snapshots дней  Каталоги `weeks/week-XX/day-YY-topic/snapshot/` — исторические слепки.  После завершения дня snapshot считается неизменяемым.  Он сохраняет архитектуру, команды, зависимости и ограничения конкретного дня.  В snapshot могут оставаться старые CLI-команды, сценарии и runtime-результаты.  Новые улучшения актуального пакета не копируются в старые snapshots автоматически.  Исправление исторического snapshot допускается только по отдельной явной задаче. Если правится документация за"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-02-day-readmes.md:0023",
+            "similarity_score": 0.744594,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 08 — Tokens Accounting > Цель задания",
+            "line_range": [
+              213,
+              216
+            ],
+            "text_preview": "## Цель задания  Сделать контекст агента наблюдаемым: считать токены текущего запроса, истории и ответа, оценивать стоимость и проверять поведение при переполнении контекстного окна."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-02-day-readmes.md:0013",
+            "similarity_score": 0.74365,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 07 — Save Context > Цель задания",
+            "line_range": [
+              120,
+              123
+            ],
+            "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-01-day-readmes.md:0039",
+            "similarity_score": 0.716039,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              287,
+              291
+            ],
+            "text_preview": "## Результаты  - [Сырой отчёт запуска](results/day4_temperature_results_20260607_215421.md) - [Заполненный отчёт со сравнением](results/day4_temperature_results_20260607_215421_filled.md)"
+          }
+        ],
+        "answer": "На основе предоставленного контекста, для запуска historical day-specific сценариев необходимо использовать snapshot-local сценарии. Нельзя предлагать запуск исторического сценария через актуальный `packages/ai_advent_agent`. Если правится документация запуска, day-specific offline/online/video сценарии должны оставаться snapshot-local.\n\n**Источники:**\n- source: corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Разделение ответственности > Snapshots дней, chunk_id: structure:docs-development-rules.md:0001",
+        "expected_sources_found": true,
+        "expected_points_covered": 0
+      },
+      "improved_rag": {
+        "original_question": "Как запускать historical day-specific сценарии?",
+        "rewritten_query": "Как запускать historical day-specific сценарии? snapshot historical runner ai-advent-scenarios актуальный package development rules",
+        "rewrite_mode": "heuristic",
+        "added_terms": [
+          "snapshot",
+          "historical runner",
+          "ai-advent-scenarios",
+          "актуальный package",
+          "development rules"
+        ],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-02-day-readmes.md:0047",
+            "similarity_score": 0.860866,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 10 — Context Management Strategies > Как запустить",
+            "line_range": [
+              503,
+              516
+            ],
+            "text_preview": "## Как запустить  Day-specific runner удалён из актуального package. Для воспроизведения сравнения используйте `Snapshot Day 10` ниже. Актуальный `packages/ai_advent_agent` остаётся интегрированным harness, а не runner-ом исторических day-specific сценариев; его общий CLI описан в `packages/docs/cli.md`.  Snapshot:  ```bash cd weeks/week-02/day-10-context-management-strategies/snapshot uv run day10-scenarios context-strategies-comparison ```"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:docs-cli.md:0000",
+            "similarity_score": 0.833539,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Текущий entry point",
+            "line_range": [
+              3,
+              18
+            ],
+            "text_preview": "## Текущий entry point  Актуальный package устанавливает один пользовательский entry point:  ```text ai-advent-agent ```  Команда `ai-advent-scenarios` в `packages/` не поддерживается. Исторические day-specific runners сохранены в `weeks/**/snapshot/**` и не определяют интерфейс текущего harness.  Document indexing доступен как Python API `ai_advent_agent.rag`; отдельный current-package scenario CLI для Day 21 не добавлен. Historical demo запускается только из snapshot Day 21.  Практические безо"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-03-day-readmes.md:0053",
+            "similarity_score": 0.828479,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 14 — State Invariants > Как запустить > Актуальный пакет > Online/interactive агент",
+            "line_range": [
+              981,
+              986
+            ],
+            "text_preview": "#### Online/interactive агент  Day-specific online/interactive walkthrough запускайте из `Snapshot Day 14` ниже. Актуальный `packages/ai_advent_agent` содержит интегрированный invariant CLI/runtime, но не используется как runner исторического сценария дня."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-03-day-readmes.md:0039",
+            "similarity_score": 0.826037,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 13 — Состояние задачи > Как запустить > Актуальный пакет > Online/interactive агент",
+            "line_range": [
+              738,
+              743
+            ],
+            "text_preview": "#### Online/interactive агент  Day-specific online/interactive walkthrough запускайте из `Snapshot Day 13` ниже. Актуальный `packages/ai_advent_agent` содержит интегрированный task CLI/runtime, но не используется как runner исторического сценария дня."
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:week-03-day-readmes.md:0025",
+            "similarity_score": 0.824105,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 12 — Персонализация ассистента > Как запустить > Актуальный пакет > Online/interactive агент",
+            "line_range": [
+              507,
+              512
+            ],
+            "text_preview": "#### Online/interactive агент  Day-specific online/interactive walkthrough запускайте из `Snapshot Day 12` ниже. Актуальный `packages/ai_advent_agent` содержит интегрированный profile CLI/runtime, но не используется как runner исторического сценария дня."
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:docs-cli.md:0023",
+            "similarity_score": 0.818185,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Что больше не поддерживается",
+            "line_range": [
+              550,
+              559
+            ],
+            "text_preview": "## Что больше не поддерживается  - console entry point `ai-advent-scenarios`; - импорт `ai_advent_agent.scenarios`; - day-specific commands актуального package; - предположение, что интерфейс любого snapshot обязан существовать в `packages/`; - undocumented compatibility aliases как бессрочный публичный contract.  Исторические команды и runners доступны в соответствующих `weeks/**/snapshot/**`."
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:week-03-day-readmes.md:0067",
+            "similarity_score": 0.814113,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 15 — Контролируемые переходы состояний > Как запустить > Актуальный пакет > Online/interactive агент",
+            "line_range": [
+              1220,
+              1225
+            ],
+            "text_preview": "#### Online/interactive агент  Day-specific online/interactive walkthrough запускайте из `Snapshot Day 15` ниже. Актуальный `packages/ai_advent_agent` содержит интегрированный controlled-state harness, но не используется как runner исторического сценария дня."
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:project-readme.md:0005",
+            "similarity_score": 0.80872,
+            "source": "corpus/project-readme.md",
+            "title": "AI Advent Challenge",
+            "section": "AI Advent Challenge > Актуальный пакет",
+            "line_range": [
+              63,
+              89
+            ],
+            "text_preview": "## Актуальный пакет  Текущая рабочая версия агента находится в `packages/ai_advent_agent/`. Пакет развивается накопительно отдельно от historical snapshots и сейчас включает interactive/chat режим, single-shot `ask`, grouped diagnostics, cleanup/reset, semantic memory/profile/task/invariant CLI и MCP CLI.  Краткая архитектура актуального harness:  | Компонент | Назначение | |---|---| | `ai_advent_agent.agent` | `SimpleAgent` как public facade. | | `ai_advent_agent.cli` | Entry point `ai-advent-a"
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:docs-cli.md:0000",
+            "similarity_score": 0.833539,
+            "final_rerank_score": 0.948084,
+            "score_components": {
+              "similarity_score": 0.833539,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.114545
+            },
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Текущий entry point",
+            "line_range": [
+              3,
+              18
+            ],
+            "text_preview": "## Текущий entry point  Актуальный package устанавливает один пользовательский entry point:  ```text ai-advent-agent ```  Команда `ai-advent-scenarios` в `packages/` не поддерживается. Исторические day-specific runners сохранены в `weeks/**/snapshot/**` и не определяют интерфейс текущего harness.  Document indexing доступен как Python API `ai_advent_agent.rag`; отдельный current-package scenario CLI для Day 21 не добавлен. Historical demo запускается только из snapshot Day 21.  Практические безо"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:project-readme.md:0005",
+            "similarity_score": 0.80872,
+            "final_rerank_score": 0.931902,
+            "score_components": {
+              "similarity_score": 0.80872,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.098182
+            },
+            "source": "corpus/project-readme.md",
+            "title": "AI Advent Challenge",
+            "section": "AI Advent Challenge > Актуальный пакет",
+            "line_range": [
+              63,
+              89
+            ],
+            "text_preview": "## Актуальный пакет  Текущая рабочая версия агента находится в `packages/ai_advent_agent/`. Пакет развивается накопительно отдельно от historical snapshots и сейчас включает interactive/chat режим, single-shot `ask`, grouped diagnostics, cleanup/reset, semantic memory/profile/task/invariant CLI и MCP CLI.  Краткая архитектура актуального harness:  | Компонент | Назначение | |---|---| | `ai_advent_agent.agent` | `SimpleAgent` как public facade. | | `ai_advent_agent.cli` | Entry point `ai-advent-a"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-02-day-readmes.md:0047",
+            "similarity_score": 0.860866,
+            "final_rerank_score": 0.926321,
+            "score_components": {
+              "similarity_score": 0.860866,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.065455
+            },
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 10 — Context Management Strategies > Как запустить",
+            "line_range": [
+              503,
+              516
+            ],
+            "text_preview": "## Как запустить  Day-specific runner удалён из актуального package. Для воспроизведения сравнения используйте `Snapshot Day 10` ниже. Актуальный `packages/ai_advent_agent` остаётся интегрированным harness, а не runner-ом исторических day-specific сценариев; его общий CLI описан в `packages/docs/cli.md`.  Snapshot:  ```bash cd weeks/week-02/day-10-context-management-strategies/snapshot uv run day10-scenarios context-strategies-comparison ```"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-03-day-readmes.md:0053",
+            "similarity_score": 0.828479,
+            "final_rerank_score": 0.918933,
+            "score_components": {
+              "similarity_score": 0.828479,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.065455
+            },
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 14 — State Invariants > Как запустить > Актуальный пакет > Online/interactive агент",
+            "line_range": [
+              981,
+              986
+            ],
+            "text_preview": "#### Online/interactive агент  Day-specific online/interactive walkthrough запускайте из `Snapshot Day 14` ниже. Актуальный `packages/ai_advent_agent` содержит интегрированный invariant CLI/runtime, но не используется как runner исторического сценария дня."
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "На основе предоставленного контекста, для запуска historical day-specific сценариев необходимо:\n\n1. Использовать соответствующий snapshot дня, который сохранён в `weeks/**/snapshot/**`.\n2. Следовать инструкциям README конкретного дня и его snapshot.\n3. Запускать команду из директории snapshot.\n\nПример для Day 10:\n```bash\ncd weeks/week-02/day-10-context-management-strategies/snapshot\nuv run day10-scenarios context-strategies-comparison\n```\n\nАктуальный пакет `packages/ai_advent_agent` не используется как runner исторических day-specific сценариев.\n\n**Источники:**\n- corpus/docs-cli.md, section: CLI актуального harness > Текущий entry point, chunk_id: structure:docs-cli.md:0000\n- corpus/project-readme.md, section: AI Advent Challenge > Актуальный пакет, chunk_id: structure:project-readme.md:0005\n- corpus/week-02-day-readmes.md, section: Day 10 — Context Management Strategies > Как запустить, chunk_id: structure:week-02-day-readmes.md:0047\n- corpus/week-03-day-readmes.md, section: Day 14 — State Invariants > Как запустить > Актуальный пакет > Online/interactive агент, chunk_id: structure:week-03-day-readmes.md:0053",
+        "expected_sources_found": true,
+        "expected_points_covered": 2,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": 0,
+        "expected_points_delta": 2,
+        "summary": "Improved RAG улучшил попадание в источники или покрытие ожидаемых пунктов."
+      }
+    },
+    {
+      "id": "q02",
+      "question": "Почему day-specific сценарии не должны запускаться из актуального package?",
+      "expected_points": [
+        "Актуальный package является интегрированным развивающимся harness",
+        "Историческую воспроизводимость обеспечивает snapshot",
+        "В package не нужен ai-advent-scenarios"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md",
+        "docs-cli.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-02-day-readmes.md:0047",
+            "similarity_score": 0.82422,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 10 — Context Management Strategies > Как запустить",
+            "line_range": [
+              503,
+              516
+            ],
+            "text_preview": "## Как запустить  Day-specific runner удалён из актуального package. Для воспроизведения сравнения используйте `Snapshot Day 10` ниже. Актуальный `packages/ai_advent_agent` остаётся интегрированным harness, а не runner-ом исторических day-specific сценариев; его общий CLI описан в `packages/docs/cli.md`.  Snapshot:  ```bash cd weeks/week-02/day-10-context-management-strategies/snapshot uv run day10-scenarios context-strategies-comparison ```"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-03-day-readmes.md:0052",
+            "similarity_score": 0.797955,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 14 — State Invariants > Как запустить > Актуальный пакет > Offline-сценарий",
+            "line_range": [
+              976,
+              980
+            ],
+            "text_preview": "#### Offline-сценарий  Day-specific offline runner удалён из актуального package. Текущие invariants проверяются package tests; историческую демонстрацию запускайте из `Snapshot Day 14` ниже."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-03-day-readmes.md:0024",
+            "similarity_score": 0.797715,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 12 — Персонализация ассистента > Как запустить > Актуальный пакет > Offline-сценарий",
+            "line_range": [
+              502,
+              506
+            ],
+            "text_preview": "#### Offline-сценарий  Day-specific offline runner удалён из актуального package. Текущие profile APIs проверяются package tests; историческую демонстрацию запускайте из `Snapshot Day 12` ниже."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-03-day-readmes.md:0066",
+            "similarity_score": 0.795732,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 15 — Контролируемые переходы состояний > Как запустить > Актуальный пакет > Offline-сценарий",
+            "line_range": [
+              1215,
+              1219
+            ],
+            "text_preview": "#### Offline-сценарий  Day-specific offline runner удалён из актуального package. Текущие controlled transitions проверяются package tests; историческую демонстрацию запускайте из `Snapshot Day 15` ниже."
+          }
+        ],
+        "answer": "На основе предоставленного контекста, day-specific сценарии не должны запускаться из актуального package, потому что актуальный `packages/ai_advent_agent` остаётся интегрированным harness, а не runner-ом исторических day-specific сценариев (источник: corpus/week-02-day-readmes.md, section: Day 10 — Context Management Strategies, chunk_id: structure:week-02-day-readmes.md:0047). Кроме того, day-specific runner (в том числе offline runner) удалён из актуального package, а текущие проверки выполняются package tests; историческую демонстрацию следует запускать из соответствующего Snapshot (источники: corpus/week-03-day-readmes.md, sections: Day 14 — State Invariants, Day 12 — Персонализация ассистента, Day 15 — Контролируемые переходы состояний; chunk_id: structure:week-03-day-readmes.md:0052, 0024, 0066).\n\n**Источники**  \n- corpus/week-02-day-readmes.md, section: Day 10 — Context Management Strategies, chunk_id: structure:week-02-day-readmes.md:0047  \n- corpus/week-03-day-readmes.md, section: Day 14 — State Invariants, chunk_id: structure:week-03-day-readmes.md:0052  \n- corpus/week-03-day-readmes.md, section: Day 12 — Персонализация ассистента, chunk_id: structure:week-03-day-readmes.md:0024  \n- corpus/week-03-day-readmes.md, section: Day 15 — Контролируемые переходы состояний, chunk_id: structure:week-03-day-readmes.md:0066",
+        "expected_sources_found": false,
+        "expected_points_covered": 2
+      },
+      "improved_rag": {
+        "original_question": "Почему day-specific сценарии не должны запускаться из актуального package?",
+        "rewritten_query": "Почему day-specific сценарии не должны запускаться из актуального package? snapshot historical runner ai-advent-scenarios актуальный package development rules",
+        "rewrite_mode": "heuristic",
+        "added_terms": [
+          "snapshot",
+          "historical runner",
+          "ai-advent-scenarios",
+          "актуальный package",
+          "development rules"
+        ],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-02-day-readmes.md:0047",
+            "similarity_score": 0.900801,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 10 — Context Management Strategies > Как запустить",
+            "line_range": [
+              503,
+              516
+            ],
+            "text_preview": "## Как запустить  Day-specific runner удалён из актуального package. Для воспроизведения сравнения используйте `Snapshot Day 10` ниже. Актуальный `packages/ai_advent_agent` остаётся интегрированным harness, а не runner-ом исторических day-specific сценариев; его общий CLI описан в `packages/docs/cli.md`.  Snapshot:  ```bash cd weeks/week-02/day-10-context-management-strategies/snapshot uv run day10-scenarios context-strategies-comparison ```"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:docs-cli.md:0000",
+            "similarity_score": 0.868488,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Текущий entry point",
+            "line_range": [
+              3,
+              18
+            ],
+            "text_preview": "## Текущий entry point  Актуальный package устанавливает один пользовательский entry point:  ```text ai-advent-agent ```  Команда `ai-advent-scenarios` в `packages/` не поддерживается. Исторические day-specific runners сохранены в `weeks/**/snapshot/**` и не определяют интерфейс текущего harness.  Document indexing доступен как Python API `ai_advent_agent.rag`; отдельный current-package scenario CLI для Day 21 не добавлен. Historical demo запускается только из snapshot Day 21.  Практические безо"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:docs-cli.md:0023",
+            "similarity_score": 0.864691,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Что больше не поддерживается",
+            "line_range": [
+              550,
+              559
+            ],
+            "text_preview": "## Что больше не поддерживается  - console entry point `ai-advent-scenarios`; - импорт `ai_advent_agent.scenarios`; - day-specific commands актуального package; - предположение, что интерфейс любого snapshot обязан существовать в `packages/`; - undocumented compatibility aliases как бессрочный публичный contract.  Исторические команды и runners доступны в соответствующих `weeks/**/snapshot/**`."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-03-day-readmes.md:0053",
+            "similarity_score": 0.855697,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 14 — State Invariants > Как запустить > Актуальный пакет > Online/interactive агент",
+            "line_range": [
+              981,
+              986
+            ],
+            "text_preview": "#### Online/interactive агент  Day-specific online/interactive walkthrough запускайте из `Snapshot Day 14` ниже. Актуальный `packages/ai_advent_agent` содержит интегрированный invariant CLI/runtime, но не используется как runner исторического сценария дня."
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:week-03-day-readmes.md:0039",
+            "similarity_score": 0.851198,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 13 — Состояние задачи > Как запустить > Актуальный пакет > Online/interactive агент",
+            "line_range": [
+              738,
+              743
+            ],
+            "text_preview": "#### Online/interactive агент  Day-specific online/interactive walkthrough запускайте из `Snapshot Day 13` ниже. Актуальный `packages/ai_advent_agent` содержит интегрированный task CLI/runtime, но не используется как runner исторического сценария дня."
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:week-03-day-readmes.md:0025",
+            "similarity_score": 0.849673,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 12 — Персонализация ассистента > Как запустить > Актуальный пакет > Online/interactive агент",
+            "line_range": [
+              507,
+              512
+            ],
+            "text_preview": "#### Online/interactive агент  Day-specific online/interactive walkthrough запускайте из `Snapshot Day 12` ниже. Актуальный `packages/ai_advent_agent` содержит интегрированный profile CLI/runtime, но не используется как runner исторического сценария дня."
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:project-readme.md:0005",
+            "similarity_score": 0.839651,
+            "source": "corpus/project-readme.md",
+            "title": "AI Advent Challenge",
+            "section": "AI Advent Challenge > Актуальный пакет",
+            "line_range": [
+              63,
+              89
+            ],
+            "text_preview": "## Актуальный пакет  Текущая рабочая версия агента находится в `packages/ai_advent_agent/`. Пакет развивается накопительно отдельно от historical snapshots и сейчас включает interactive/chat режим, single-shot `ask`, grouped diagnostics, cleanup/reset, semantic memory/profile/task/invariant CLI и MCP CLI.  Краткая архитектура актуального harness:  | Компонент | Назначение | |---|---| | `ai_advent_agent.agent` | `SimpleAgent` как public facade. | | `ai_advent_agent.cli` | Entry point `ai-advent-a"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:week-03-day-readmes.md:0067",
+            "similarity_score": 0.834611,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 15 — Контролируемые переходы состояний > Как запустить > Актуальный пакет > Online/interactive агент",
+            "line_range": [
+              1220,
+              1225
+            ],
+            "text_preview": "#### Online/interactive агент  Day-specific online/interactive walkthrough запускайте из `Snapshot Day 15` ниже. Актуальный `packages/ai_advent_agent` содержит интегрированный controlled-state harness, но не используется как runner исторического сценария дня."
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:docs-cli.md:0000",
+            "similarity_score": 0.868488,
+            "final_rerank_score": 0.998488,
+            "score_components": {
+              "similarity_score": 0.868488,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.105
+            },
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Текущий entry point",
+            "line_range": [
+              3,
+              18
+            ],
+            "text_preview": "## Текущий entry point  Актуальный package устанавливает один пользовательский entry point:  ```text ai-advent-agent ```  Команда `ai-advent-scenarios` в `packages/` не поддерживается. Исторические day-specific runners сохранены в `weeks/**/snapshot/**` и не определяют интерфейс текущего harness.  Document indexing доступен как Python API `ai_advent_agent.rag`; отдельный current-package scenario CLI для Day 21 не добавлен. Historical demo запускается только из snapshot Day 21.  Практические безо"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-02-day-readmes.md:0047",
+            "similarity_score": 0.900801,
+            "final_rerank_score": 0.975801,
+            "score_components": {
+              "similarity_score": 0.900801,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.075
+            },
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 10 — Context Management Strategies > Как запустить",
+            "line_range": [
+              503,
+              516
+            ],
+            "text_preview": "## Как запустить  Day-specific runner удалён из актуального package. Для воспроизведения сравнения используйте `Snapshot Day 10` ниже. Актуальный `packages/ai_advent_agent` остаётся интегрированным harness, а не runner-ом исторических day-specific сценариев; его общий CLI описан в `packages/docs/cli.md`.  Snapshot:  ```bash cd weeks/week-02/day-10-context-management-strategies/snapshot uv run day10-scenarios context-strategies-comparison ```"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:project-readme.md:0005",
+            "similarity_score": 0.839651,
+            "final_rerank_score": 0.969651,
+            "score_components": {
+              "similarity_score": 0.839651,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.105
+            },
+            "source": "corpus/project-readme.md",
+            "title": "AI Advent Challenge",
+            "section": "AI Advent Challenge > Актуальный пакет",
+            "line_range": [
+              63,
+              89
+            ],
+            "text_preview": "## Актуальный пакет  Текущая рабочая версия агента находится в `packages/ai_advent_agent/`. Пакет развивается накопительно отдельно от historical snapshots и сейчас включает interactive/chat режим, single-shot `ask`, grouped diagnostics, cleanup/reset, semantic memory/profile/task/invariant CLI и MCP CLI.  Краткая архитектура актуального harness:  | Компонент | Назначение | |---|---| | `ai_advent_agent.agent` | `SimpleAgent` как public facade. | | `ai_advent_agent.cli` | Entry point `ai-advent-a"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:docs-cli.md:0023",
+            "similarity_score": 0.864691,
+            "final_rerank_score": 0.964691,
+            "score_components": {
+              "similarity_score": 0.864691,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.075
+            },
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Что больше не поддерживается",
+            "line_range": [
+              550,
+              559
+            ],
+            "text_preview": "## Что больше не поддерживается  - console entry point `ai-advent-scenarios`; - импорт `ai_advent_agent.scenarios`; - day-specific commands актуального package; - предположение, что интерфейс любого snapshot обязан существовать в `packages/`; - undocumented compatibility aliases как бессрочный публичный contract.  Исторические команды и runners доступны в соответствующих `weeks/**/snapshot/**`."
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "Day-specific сценарии не должны запускаться из актуального package, потому что актуальный package является интегрированным harness, а не runner-ом исторических day-specific сценариев. Day-specific runners удалены из актуального package и сохранены в `weeks/**/snapshot/**`, где они не определяют интерфейс текущего harness.\n\nИсточники:\n- corpus/docs-cli.md, section: CLI актуального harness > Текущий entry point, chunk_id: structure:docs-cli.md:0000\n- corpus/week-02-day-readmes.md, section: Day 10 — Context Management Strategies > Как запустить, chunk_id: structure:week-02-day-readmes.md:0047\n- corpus/project-readme.md, section: AI Advent Challenge > Актуальный пакет, chunk_id: structure:project-readme.md:0005",
+        "expected_sources_found": true,
+        "expected_points_covered": 1,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": 1,
+        "expected_points_delta": -1,
+        "summary": "Improved RAG улучшил попадание в источники или покрытие ожидаемых пунктов."
+      }
+    },
+    {
+      "id": "q03",
+      "question": "Какие проверки нужно запускать перед сдачей изменений с Python-кодом?",
+      "expected_points": [
+        "Запустить make check",
+        "Запустить make safety",
+        "Проверить Python-модули через py_compile"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-01-day-readmes.md:0002",
+            "similarity_score": 0.784579,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Day 01 — LLM REST API > Исходное условие",
+            "line_range": [
+              12,
+              29
+            ],
+            "text_preview": "## Исходное условие  🔥 День 1. Первый запрос к LLM через API  СНАЧАЛА ПОСМОТРИТЕ ВИДЕО  Напишите минимальный код, который:  - отправляет запрос в LLM через API; - получает ответ; - выводит его в консоль или простой интерфейс (CLI / Web).  Результат: код, который отправляет запрос в LLM через API и получает ответ.  Формат: видео + код.  Видео к заданию: https://disk.yandex.ru/i/iDqQAsdBVg8y7g"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-02-day-readmes.md:0013",
+            "similarity_score": 0.778409,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 07 — Save Context > Цель задания",
+            "line_range": [
+              120,
+              123
+            ],
+            "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-04-day-readmes.md:0003",
+            "similarity_score": 0.773367,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 16 — Подключение MCP > Цель задания",
+            "line_range": [
+              37,
+              43
+            ],
+            "text_preview": "## Цель задания  Научиться подключать Python-клиент к публичному remote MCP server, выполнять protocol initialization и получать список tools через discovery. Day 16 проверяет только транспорт и `tools/list`: инструменты не вызываются, LLM API не используется, собственный MCP server не создаётся."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-02-day-readmes.md:0023",
+            "similarity_score": 0.770605,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 08 — Tokens Accounting > Цель задания",
+            "line_range": [
+              213,
+              216
+            ],
+            "text_preview": "## Цель задания  Сделать контекст агента наблюдаемым: считать токены текущего запроса, истории и ответа, оценивать стоимость и проверять поведение при переполнении контекстного окна."
+          }
+        ],
+        "answer": "Найденных источников недостаточно.\n\n**Источники**  \n- corpus/week-01-day-readmes.md, section: Day 01 — LLM REST API > Исходное условие, chunk_id: structure:week-01-day-readmes.md:0002  \n- corpus/week-02-day-readmes.md, section: Day 07 — Save Context > Цель задания, chunk_id: structure:week-02-day-readmes.md:0013  \n- corpus/week-04-day-readmes.md, section: Day 16 — Подключение MCP > Цель задания, chunk_id: structure:week-04-day-readmes.md:0003  \n- corpus/week-02-day-readmes.md, section: Day 08 — Tokens Accounting > Цель задания, chunk_id: structure:week-02-day-readmes.md:0023",
+        "expected_sources_found": false,
+        "expected_points_covered": 0
+      },
+      "improved_rag": {
+        "original_question": "Какие проверки нужно запускать перед сдачей изменений с Python-кодом?",
+        "rewritten_query": "Какие проверки нужно запускать перед сдачей изменений с Python-кодом? make check make safety pytest py_compile export_public check_repo_safety development rules",
+        "rewrite_mode": "heuristic",
+        "added_terms": [
+          "make check",
+          "make safety",
+          "pytest",
+          "py_compile",
+          "export_public",
+          "check_repo_safety",
+          "development rules"
+        ],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0080",
+            "similarity_score": 0.819417,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки",
+            "line_range": [
+              1250,
+              1258
+            ],
+            "text_preview": "### 13. Финальные проверки  ```bash make clean make check make safety python scripts/export_public.py --dry-run ```"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:package-readme.md:0013",
+            "similarity_score": 0.786868,
+            "source": "corpus/package-readme.md",
+            "title": "ai_advent_agent",
+            "section": "ai_advent_agent > Проверки",
+            "line_range": [
+              235,
+              255
+            ],
+            "text_preview": "## Проверки  Из корня репозитория:  ```bash make check make safety ```  Package tests без обязательной сети:  ```bash uv run pytest packages/ai_advent_agent/tests -q ```  Remote MCP integration остаётся opt-in:  ```bash AI_ADVENT_RUN_MCP_INTEGRATION=1 \\ uv run pytest packages/ai_advent_agent/tests/test_mcp_connection.py -q ```"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:project-readme.md:0006",
+            "similarity_score": 0.781184,
+            "source": "corpus/project-readme.md",
+            "title": "AI Advent Challenge",
+            "section": "AI Advent Challenge > Проверки",
+            "line_range": [
+              90,
+              96
+            ],
+            "text_preview": "## Проверки  ```bash make format make check make safety ```"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:docs-development-rules.md:0011",
+            "similarity_score": 0.764224,
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Критерии готовности изменений",
+            "line_range": [
+              184,
+              194
+            ],
+            "text_preview": "## Критерии готовности изменений  Функциональность имеет локальные тесты без обязательного обращения к сети.  Документация соответствует фактическим интерфейсам.  Runtime-файлы не появляются в git status.  Завершённые snapshots и day artifacts отсутствуют в diff.  Перед сдачей выполняются `make check` и `make safety`."
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:week-01-day-readmes.md:0028",
+            "similarity_score": 0.744731,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env",
+            "line_range": [
+              204,
+              209
+            ],
+            "text_preview": "# Добавьте DEEPSEEK_API_KEY в .env python REASONING.py ```  Скрипт спросит лимиты токенов и задачу. Если задачу оставить пустой, используется демонстрационная задача про автомойку."
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:week-04-day-readmes.md:0003",
+            "similarity_score": 0.743805,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 16 — Подключение MCP > Цель задания",
+            "line_range": [
+              37,
+              43
+            ],
+            "text_preview": "## Цель задания  Научиться подключать Python-клиент к публичному remote MCP server, выполнять protocol initialization и получать список tools через discovery. Day 16 проверяет только транспорт и `tools/list`: инструменты не вызываются, LLM API не используется, собственный MCP server не создаётся."
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:week-04-day-readmes.md:0019",
+            "similarity_score": 0.738723,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 17 — Первый инструмент MCP > Реализация",
+            "line_range": [
+              252,
+              278
+            ],
+            "text_preview": "## Реализация  Статус: `✅ done`.  Day 17 продолжает Day 16, но меняет предмет проверки. Day 16 подключался к публичному remote DeepWiki MCP и только получал список tools. Day 17 создаёт собственный локальный MCP server, публикует один read-only tool и вызывает его из приложения.  Выбран mock Tracker API, а не реальный Яндекс.Трекер, Jira, GitHub или CRM. Это убирает OAuth, secrets, rate limits, внешнюю сеть и нестабильность интеграции. Backend полностью deterministic: в памяти есть задачи `AI-16"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:week-02-day-readmes.md:0025",
+            "similarity_score": 0.737537,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 08 — Tokens Accounting > Реализация",
+            "line_range": [
+              221,
+              232
+            ],
+            "text_preview": "## Реализация  День 8 расширяет агента дня 7. В `snapshot/` добавлены:  - `token_counter.py` — оценочный локальный подсчёт токенов; - `token_report.py` — структура отчёта и JSONL-лог; - `scenarios.py` — offline-сценарии роста контекста без API-вызовов; - политики переполнения `error`, `no_trim`, `sliding_window`; - CLI-команды `/tokens`, `/last-report`, `/analyze-file`, `/ask-file`, `/context-mode`.  Точный токенизатор зависит от модели и провайдера, поэтому локальный счётчик используется как оц"
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0080",
+            "similarity_score": 0.819417,
+            "final_rerank_score": 0.904417,
+            "score_components": {
+              "similarity_score": 0.819417,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.06
+            },
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки",
+            "line_range": [
+              1250,
+              1258
+            ],
+            "text_preview": "### 13. Финальные проверки  ```bash make clean make check make safety python scripts/export_public.py --dry-run ```"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:package-readme.md:0013",
+            "similarity_score": 0.786868,
+            "final_rerank_score": 0.886868,
+            "score_components": {
+              "similarity_score": 0.786868,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.075
+            },
+            "source": "corpus/package-readme.md",
+            "title": "ai_advent_agent",
+            "section": "ai_advent_agent > Проверки",
+            "line_range": [
+              235,
+              255
+            ],
+            "text_preview": "## Проверки  Из корня репозитория:  ```bash make check make safety ```  Package tests без обязательной сети:  ```bash uv run pytest packages/ai_advent_agent/tests -q ```  Remote MCP integration остаётся opt-in:  ```bash AI_ADVENT_RUN_MCP_INTEGRATION=1 \\ uv run pytest packages/ai_advent_agent/tests/test_mcp_connection.py -q ```"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:project-readme.md:0006",
+            "similarity_score": 0.781184,
+            "final_rerank_score": 0.866184,
+            "score_components": {
+              "similarity_score": 0.781184,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.06
+            },
+            "source": "corpus/project-readme.md",
+            "title": "AI Advent Challenge",
+            "section": "AI Advent Challenge > Проверки",
+            "line_range": [
+              90,
+              96
+            ],
+            "text_preview": "## Проверки  ```bash make format make check make safety ```"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:docs-development-rules.md:0011",
+            "similarity_score": 0.764224,
+            "final_rerank_score": 0.864224,
+            "score_components": {
+              "similarity_score": 0.764224,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.075
+            },
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Критерии готовности изменений",
+            "line_range": [
+              184,
+              194
+            ],
+            "text_preview": "## Критерии готовности изменений  Функциональность имеет локальные тесты без обязательного обращения к сети.  Документация соответствует фактическим интерфейсам.  Runtime-файлы не появляются в git status.  Завершённые snapshots и day artifacts отсутствуют в diff.  Перед сдачей выполняются `make check` и `make safety`."
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "Перед сдачей изменений с Python-кодом нужно запускать следующие проверки:\n\n- `make check`\n- `make safety`\n\nТакже рекомендуется запускать `make clean` и `python scripts/export_public.py --dry-run`.\n\n**Источники:**\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки, chunk_id: structure:week-04-day-readmes.md:0080\n- corpus/package-readme.md, section: ai_advent_agent > Проверки, chunk_id: structure:package-readme.md:0013\n- corpus/project-readme.md, section: AI Advent Challenge > Проверки, chunk_id: structure:project-readme.md:0006\n- corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Критерии готовности изменений, chunk_id: structure:docs-development-rules.md:0011",
+        "expected_sources_found": true,
+        "expected_points_covered": 2,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": 1,
+        "expected_points_delta": 2,
+        "summary": "Improved RAG улучшил попадание в источники или покрытие ожидаемых пунктов."
+      }
+    },
+    {
+      "id": "q04",
+      "question": "Какие приватные и временные материалы нельзя включать в public export?",
+      "expected_points": [
+        "Не публиковать learning notes и memory-bank",
+        "Не публиковать codex-log и секреты",
+        "Не публиковать .tmp cache и runtime state"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0080",
+            "similarity_score": 0.719541,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки",
+            "line_range": [
+              1250,
+              1258
+            ],
+            "text_preview": "### 13. Финальные проверки  ```bash make clean make check make safety python scripts/export_public.py --dry-run ```"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:docs-development-rules.md:0000",
+            "similarity_score": 0.71518,
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Назначение документа",
+            "line_range": [
+              3,
+              8
+            ],
+            "text_preview": "## Назначение документа  Этот документ описывает текущее правило развития кода в `packages/`.  Он относится к актуальному AI harness и не меняет историю уже завершённых дней курса."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-01-day-readmes.md:0043",
+            "similarity_score": 0.710625,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Day 05 — Model Versions > Цель задания",
+            "line_range": [
+              329,
+              332
+            ],
+            "text_preview": "## Цель задания  Научиться сравнивать модели не только по качеству текста, но и по задержке, расходу токенов и стоимости."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-02-day-readmes.md:0013",
+            "similarity_score": 0.710082,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 07 — Save Context > Цель задания",
+            "line_range": [
+              120,
+              123
+            ],
+            "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+          }
+        ],
+        "answer": "Найденных источников недостаточно.\n\n**Источники**\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки, chunk_id: structure:week-04-day-readmes.md:0080\n- corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Назначение документа, chunk_id: structure:docs-development-rules.md:0000\n- corpus/week-01-day-readmes.md, section: Day 05 — Model Versions > Цель задания, chunk_id: structure:week-01-day-readmes.md:0043\n- corpus/week-02-day-readmes.md, section: Day 07 — Save Context > Цель задания, chunk_id: structure:week-02-day-readmes.md:0013",
+        "expected_sources_found": true,
+        "expected_points_covered": 0
+      },
+      "improved_rag": {
+        "original_question": "Какие приватные и временные материалы нельзя включать в public export?",
+        "rewritten_query": "Какие приватные и временные материалы нельзя включать в public export? .tmp .env .agent_context scripts/export_public.py check_repo_safety development rules",
+        "rewrite_mode": "heuristic",
+        "added_terms": [
+          ".tmp",
+          ".env",
+          ".agent_context",
+          "scripts/export_public.py",
+          "check_repo_safety",
+          "development rules"
+        ],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0080",
+            "similarity_score": 0.800265,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки",
+            "line_range": [
+              1250,
+              1258
+            ],
+            "text_preview": "### 13. Финальные проверки  ```bash make clean make check make safety python scripts/export_public.py --dry-run ```"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:package-readme.md:0013",
+            "similarity_score": 0.76029,
+            "source": "corpus/package-readme.md",
+            "title": "ai_advent_agent",
+            "section": "ai_advent_agent > Проверки",
+            "line_range": [
+              235,
+              255
+            ],
+            "text_preview": "## Проверки  Из корня репозитория:  ```bash make check make safety ```  Package tests без обязательной сети:  ```bash uv run pytest packages/ai_advent_agent/tests -q ```  Remote MCP integration остаётся opt-in:  ```bash AI_ADVENT_RUN_MCP_INTEGRATION=1 \\ uv run pytest packages/ai_advent_agent/tests/test_mcp_connection.py -q ```"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:project-readme.md:0003",
+            "similarity_score": 0.755848,
+            "source": "corpus/project-readme.md",
+            "title": "AI Advent Challenge",
+            "section": "AI Advent Challenge > Структура",
+            "line_range": [
+              24,
+              37
+            ],
+            "text_preview": "## Структура  ```text weeks/             # задания по неделям и дням packages/          # актуальная рабочая версия общего кода learning/          # приватные лекции, конспекты и ссылки notes/task_notes/  # приватные подробные учебные конспекты по дням memory-bank/       # долговременная память проекта для Codex scripts/           # safety-check и public export templates/         # шаблоны README, заметок и логов .codex/prompts/    # промпты для Codex CLI .agents/skills/    # repo-scoped навыки "
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-02-day-readmes.md:0000",
+            "similarity_score": 0.742066,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Public README документов Week 02",
+            "line_range": [
+              1,
+              6
+            ],
+            "text_preview": "# Public README документов Week 02  Стабильная копия public-safe README завершённых дней для corpus Day 21.  <!-- source: weeks/week-02/day-06-first-agent/README.md -->"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:docs-cli.md:0024",
+            "similarity_score": 0.739863,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Правила обратной совместимости",
+            "line_range": [
+              560,
+              568
+            ],
+            "text_preview": "## Правила обратной совместимости  Текущий canonical contract определяется этим документом, `ai-advent-agent --help` и `/help`. Legacy aliases поддерживаются временно и уже выводят deprecation warning.  При реорганизации интерфейса функциональная возможность должна сохраниться, получить документированную замену либо быть явно снята с поддержки. Для rename/merge нужно обновить help, документацию и offline tests. Compatibility со snapshots не требуется: snapshots остаются самодостаточной immutable"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:docs-development-rules.md:0011",
+            "similarity_score": 0.739445,
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Критерии готовности изменений",
+            "line_range": [
+              184,
+              194
+            ],
+            "text_preview": "## Критерии готовности изменений  Функциональность имеет локальные тесты без обязательного обращения к сети.  Документация соответствует фактическим интерфейсам.  Runtime-файлы не появляются в git status.  Завершённые snapshots и day artifacts отсутствуют в diff.  Перед сдачей выполняются `make check` и `make safety`."
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:week-03-day-readmes.md:0063",
+            "similarity_score": 0.732913,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 15 — Контролируемые переходы состояний > Реализация",
+            "line_range": [
+              1131,
+              1152
+            ],
+            "text_preview": "## Реализация  Статус: `✅ done`.  В актуальном пакете `packages/ai_advent_agent/` task state расширен полями `plan_approved` и `validation_passed`. Переходы теперь проходят через explicit transition policy:  ```text planning -> execution -> validation -> done ```  Переход `planning -> execution` разрешён только после `/task approve-plan`, а `validation -> done` — только после `/task pass-validation`. Попытка перейти из `execution` сразу в `done` отклоняется, потому что пропускает validation. Фла"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:week-04-day-readmes.md:0019",
+            "similarity_score": 0.732358,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 17 — Первый инструмент MCP > Реализация",
+            "line_range": [
+              252,
+              278
+            ],
+            "text_preview": "## Реализация  Статус: `✅ done`.  Day 17 продолжает Day 16, но меняет предмет проверки. Day 16 подключался к публичному remote DeepWiki MCP и только получал список tools. Day 17 создаёт собственный локальный MCP server, публикует один read-only tool и вызывает его из приложения.  Выбран mock Tracker API, а не реальный Яндекс.Трекер, Jira, GitHub или CRM. Это убирает OAuth, secrets, rate limits, внешнюю сеть и нестабильность интеграции. Backend полностью deterministic: в памяти есть задачи `AI-16"
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0080",
+            "similarity_score": 0.800265,
+            "final_rerank_score": 0.855265,
+            "score_components": {
+              "similarity_score": 0.800265,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.03
+            },
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки",
+            "line_range": [
+              1250,
+              1258
+            ],
+            "text_preview": "### 13. Финальные проверки  ```bash make clean make check make safety python scripts/export_public.py --dry-run ```"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:project-readme.md:0003",
+            "similarity_score": 0.755848,
+            "final_rerank_score": 0.815848,
+            "score_components": {
+              "similarity_score": 0.755848,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.06
+            },
+            "source": "corpus/project-readme.md",
+            "title": "AI Advent Challenge",
+            "section": "AI Advent Challenge > Структура",
+            "line_range": [
+              24,
+              37
+            ],
+            "text_preview": "## Структура  ```text weeks/             # задания по неделям и дням packages/          # актуальная рабочая версия общего кода learning/          # приватные лекции, конспекты и ссылки notes/task_notes/  # приватные подробные учебные конспекты по дням memory-bank/       # долговременная память проекта для Codex scripts/           # safety-check и public export templates/         # шаблоны README, заметок и логов .codex/prompts/    # промпты для Codex CLI .agents/skills/    # repo-scoped навыки "
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-02-day-readmes.md:0000",
+            "similarity_score": 0.742066,
+            "final_rerank_score": 0.782066,
+            "score_components": {
+              "similarity_score": 0.742066,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.015
+            },
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Public README документов Week 02",
+            "line_range": [
+              1,
+              6
+            ],
+            "text_preview": "# Public README документов Week 02  Стабильная копия public-safe README завершённых дней для corpus Day 21.  <!-- source: weeks/week-02/day-06-first-agent/README.md -->"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:package-readme.md:0013",
+            "similarity_score": 0.76029,
+            "final_rerank_score": 0.76029,
+            "score_components": {
+              "similarity_score": 0.76029,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.0
+            },
+            "source": "corpus/package-readme.md",
+            "title": "ai_advent_agent",
+            "section": "ai_advent_agent > Проверки",
+            "line_range": [
+              235,
+              255
+            ],
+            "text_preview": "## Проверки  Из корня репозитория:  ```bash make check make safety ```  Package tests без обязательной сети:  ```bash uv run pytest packages/ai_advent_agent/tests -q ```  Remote MCP integration остаётся opt-in:  ```bash AI_ADVENT_RUN_MCP_INTEGRATION=1 \\ uv run pytest packages/ai_advent_agent/tests/test_mcp_connection.py -q ```"
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "На основе предоставленного контекста невозможно определить, какие приватные и временные материалы нельзя включать в public export. В контексте упоминается команда `python scripts/export_public.py --dry-run`, но не указаны критерии исключения материалов.\n\n**Найденных источников недостаточно**\n\n**Источники**\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки, chunk_id: structure:week-04-day-readmes.md:0080\n- corpus/project-readme.md, section: AI Advent Challenge > Структура, chunk_id: structure:project-readme.md:0003\n- corpus/week-02-day-readmes.md, section: Public README документов Week 02, chunk_id: structure:week-02-day-readmes.md:0000\n- corpus/package-readme.md, section: ai_advent_agent > Проверки, chunk_id: structure:package-readme.md:0013",
+        "expected_sources_found": false,
+        "expected_points_covered": 0,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": -1,
+        "expected_points_delta": 0,
+        "summary": "По deterministic-эвристике improved RAG регрессировал на этом вопросе."
+      }
+    },
+    {
+      "id": "q05",
+      "question": "Какие metadata сохраняются для chunk в локальном document index?",
+      "expected_points": [
+        "source title и section",
+        "chunk_id и стратегия chunking",
+        "line range и hash источника"
+      ],
+      "expected_sources": [
+        "day-21-document-indexing-readme.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0002",
+            "similarity_score": 0.878315,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk",
+            "line_range": [
+              24,
+              39
+            ],
+            "text_preview": "## Metadata каждого chunk  Каждая индексная запись хранит:  - `source` — относительный путь исходного документа; - `title` и `section` — заголовок документа и структурный путь раздела; - стабильный `chunk_id` и порядковый `chunk_index`; - `strategy` — `fixed` или `structure`; - `source_sha256` — hash исходного документа; - `start_line` и `end_line` — line range фрагмента; - `char_count` и `word_count`; - текст chunk и embedding vector.  Эти metadata нужны для воспроизводимости retrieval, проверк"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+            "similarity_score": 0.767544,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+            "line_range": [
+              7,
+              23
+            ],
+            "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отдельного server process.  Day 21 сравнивает две стратегии chunking:  1. **Fixed-size chunking** использует окно до 1600 символов и overlap 200 символов. Граница по    возможности переносится на конец ст"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:docs-cli.md:0013",
+            "similarity_score": 0.74493,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Интерактивный режим и slash-команды",
+            "line_range": [
+              356,
+              362
+            ],
+            "text_preview": "## Интерактивный режим и slash-команды  В колонке `current status` используются значения `active`, `group`, `compatibility` и `hidden`. Колонка `target status` фиксирует ранее принятое migration-намерение для slash aliases: `keep`, `rename`, `merge`, `remove` или `needs-docs`. Этот inventory не меняет текущий CLI контракт и не добавляет новых команд."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:README.md:0002",
+            "similarity_score": 0.738237,
+            "source": "corpus/README.md",
+            "title": "Corpus Day 22",
+            "section": "Corpus Day 22 > Объём",
+            "line_range": [
+              22,
+              34
+            ],
+            "text_preview": "## Объём  - Документов с основным содержимым: 10. - Символов: 187,330. - Слов: 21,994. - Грубая оценка при 500 словах на страницу: 44.0 страницы.  `README.md` также индексируется как manifest corpus. Snapshot Day 22 использует эту локальную копию напрямую; для воспроизведения не нужны файлы других дней.  `day-21-document-indexing-readme.md` — зафиксированная public-safe копия ключевого контекста индексации Day 21. Она добавлена специально для самодостаточных вопросов q05–q08; runtime не обращает"
+          }
+        ],
+        "answer": "На основе предоставленного контекста, для chunk в локальном document index сохраняются следующие metadata:\n\n- `source` — относительный путь исходного документа;\n- `title` и `section` — заголовок документа и структурный путь раздела;\n- стабильный `chunk_id` и порядковый `chunk_index`;\n- `strategy` — `fixed` или `structure`;\n- `source_sha256` — hash исходного документа;\n- `start_line` и `end_line` — line range фрагмента;\n- `char_count` и `word_count`;\n- текст chunk и embedding vector.\n\n**Источники:**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk, chunk_id: structure:day-21-document-indexing-readme.md:0002",
+        "expected_sources_found": true,
+        "expected_points_covered": 2
+      },
+      "improved_rag": {
+        "original_question": "Какие metadata сохраняются для chunk в локальном document index?",
+        "rewritten_query": "Какие metadata сохраняются для chunk в локальном document index? chunk_id source title section start_line end_line",
+        "rewrite_mode": "heuristic",
+        "added_terms": [
+          "chunk_id",
+          "source",
+          "title",
+          "section",
+          "start_line",
+          "end_line"
+        ],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0002",
+            "similarity_score": 0.885315,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk",
+            "line_range": [
+              24,
+              39
+            ],
+            "text_preview": "## Metadata каждого chunk  Каждая индексная запись хранит:  - `source` — относительный путь исходного документа; - `title` и `section` — заголовок документа и структурный путь раздела; - стабильный `chunk_id` и порядковый `chunk_index`; - `strategy` — `fixed` или `structure`; - `source_sha256` — hash исходного документа; - `start_line` и `end_line` — line range фрагмента; - `char_count` и `word_count`; - текст chunk и embedding vector.  Эти metadata нужны для воспроизводимости retrieval, проверк"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+            "similarity_score": 0.76461,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+            "line_range": [
+              7,
+              23
+            ],
+            "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отдельного server process.  Day 21 сравнивает две стратегии chunking:  1. **Fixed-size chunking** использует окно до 1600 символов и overlap 200 символов. Граница по    возможности переносится на конец ст"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-03-day-readmes.md:0006",
+            "similarity_score": 0.72361,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Реализация",
+            "line_range": [
+              96,
+              108
+            ],
+            "text_preview": "Legacy aliases доступны через `/help legacy`, работают при ручном вводе, но не показываются в основном autocomplete menu.  Prompt assembly собирается в порядке:  1. system prompt; 2. long-term memory; 3. working memory; 4. short-term memory; 5. текущий user message.  Token reports дополнены metadata по memory layers: активные слои, количество записей, оценка токенов по слоям и порядок сборки prompt."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-01-day-readmes.md:0015",
+            "similarity_score": 0.708521,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Day 02 — Answer Format > Реализация",
+            "line_range": [
+              106,
+              109
+            ],
+            "text_preview": "## Реализация  В `snapshot/ANSWER_FORMAT.py` один пользовательский запрос отправляется в нескольких вариантах: с явным форматом, с ограничением длины и с маркером завершения `###END###`. Скрипт выводит содержимое ответа и metadata API, включая `finish_reason` и `usage`, если провайдер их вернул."
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:week-01-day-readmes.md:0009",
+            "similarity_score": 0.706593,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              64,
+              67
+            ],
+            "text_preview": "## Результаты  Результат задания представлен кодом в `snapshot/` и видео-отчётом. Отдельные Markdown-результаты для дня 1 не создавались."
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:docs-cli.md:0000",
+            "similarity_score": 0.7025,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Текущий entry point",
+            "line_range": [
+              3,
+              18
+            ],
+            "text_preview": "## Текущий entry point  Актуальный package устанавливает один пользовательский entry point:  ```text ai-advent-agent ```  Команда `ai-advent-scenarios` в `packages/` не поддерживается. Исторические day-specific runners сохранены в `weeks/**/snapshot/**` и не определяют интерфейс текущего harness.  Document indexing доступен как Python API `ai_advent_agent.rag`; отдельный current-package scenario CLI для Day 21 не добавлен. Historical demo запускается только из snapshot Day 21.  Практические безо"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:README.md:0000",
+            "similarity_score": 0.697274,
+            "source": "corpus/README.md",
+            "title": "Corpus Day 22",
+            "section": "Corpus Day 22",
+            "line_range": [
+              1,
+              8
+            ],
+            "text_preview": "# Corpus Day 22  Curated corpus собран из документов, которые уже входят в разрешённую public-часть репозитория: корневого README, README актуального package, package docs и README завершённых дней Week 01–04.  В corpus намеренно не входят `learning/`, `notes/`, `memory-bank/`, `codex-log.md`, секреты, `.env`, runtime state и приватные artifacts. Файлы являются стабильными копиями на момент сдачи Day 22, поэтому snapshot demo не зависит от последующих изменений и от файлов Day 21."
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:README.md:0002",
+            "similarity_score": 0.696441,
+            "source": "corpus/README.md",
+            "title": "Corpus Day 22",
+            "section": "Corpus Day 22 > Объём",
+            "line_range": [
+              22,
+              34
+            ],
+            "text_preview": "## Объём  - Документов с основным содержимым: 10. - Символов: 187,330. - Слов: 21,994. - Грубая оценка при 500 словах на страницу: 44.0 страницы.  `README.md` также индексируется как manifest corpus. Snapshot Day 22 использует эту локальную копию напрямую; для воспроизведения не нужны файлы других дней.  `day-21-document-indexing-readme.md` — зафиксированная public-safe копия ключевого контекста индексации Day 21. Она добавлена специально для самодостаточных вопросов q05–q08; runtime не обращает"
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0002",
+            "similarity_score": 0.885315,
+            "final_rerank_score": 1.055315,
+            "score_components": {
+              "similarity_score": 0.885315,
+              "source_bonus": 0.0,
+              "section_bonus": 0.05,
+              "keyword_bonus": 0.12
+            },
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk",
+            "line_range": [
+              24,
+              39
+            ],
+            "text_preview": "## Metadata каждого chunk  Каждая индексная запись хранит:  - `source` — относительный путь исходного документа; - `title` и `section` — заголовок документа и структурный путь раздела; - стабильный `chunk_id` и порядковый `chunk_index`; - `strategy` — `fixed` или `structure`; - `source_sha256` — hash исходного документа; - `start_line` и `end_line` — line range фрагмента; - `char_count` и `word_count`; - текст chunk и embedding vector.  Эти metadata нужны для воспроизводимости retrieval, проверк"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+            "similarity_score": 0.76461,
+            "final_rerank_score": 0.80961,
+            "score_components": {
+              "similarity_score": 0.76461,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.045
+            },
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+            "line_range": [
+              7,
+              23
+            ],
+            "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отдельного server process.  Day 21 сравнивает две стратегии chunking:  1. **Fixed-size chunking** использует окно до 1600 символов и overlap 200 символов. Граница по    возможности переносится на конец ст"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-03-day-readmes.md:0006",
+            "similarity_score": 0.72361,
+            "final_rerank_score": 0.73861,
+            "score_components": {
+              "similarity_score": 0.72361,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.015
+            },
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Реализация",
+            "line_range": [
+              96,
+              108
+            ],
+            "text_preview": "Legacy aliases доступны через `/help legacy`, работают при ручном вводе, но не показываются в основном autocomplete menu.  Prompt assembly собирается в порядке:  1. system prompt; 2. long-term memory; 3. working memory; 4. short-term memory; 5. текущий user message.  Token reports дополнены metadata по memory layers: активные слои, количество записей, оценка токенов по слоям и порядок сборки prompt."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-01-day-readmes.md:0015",
+            "similarity_score": 0.708521,
+            "final_rerank_score": 0.723521,
+            "score_components": {
+              "similarity_score": 0.708521,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.015
+            },
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Day 02 — Answer Format > Реализация",
+            "line_range": [
+              106,
+              109
+            ],
+            "text_preview": "## Реализация  В `snapshot/ANSWER_FORMAT.py` один пользовательский запрос отправляется в нескольких вариантах: с явным форматом, с ограничением длины и с маркером завершения `###END###`. Скрипт выводит содержимое ответа и metadata API, включая `finish_reason` и `usage`, если провайдер их вернул."
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "На основе предоставленного контекста, для chunk в локальном document index сохраняются следующие metadata:\n\n- `source` — относительный путь исходного документа;\n- `title` и `section` — заголовок документа и структурный путь раздела;\n- стабильный `chunk_id` и порядковый `chunk_index`;\n- `strategy` — `fixed` или `structure`;\n- `source_sha256` — hash исходного документа;\n- `start_line` и `end_line` — line range фрагмента;\n- `char_count` и `word_count`;\n- текст chunk и embedding vector.\n\n**Источники:**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk, chunk_id: structure:day-21-document-indexing-readme.md:0002",
+        "expected_sources_found": true,
+        "expected_points_covered": 2,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": 0,
+        "expected_points_delta": 0,
+        "summary": "По deterministic-эвристике режимы дали одинаковый результат."
+      }
+    },
+    {
+      "id": "q06",
+      "question": "Чем fixed-size chunking отличается от structure-aware chunking?",
+      "expected_points": [
+        "Fixed-size режет по ограничению размера и overlap",
+        "Structure-aware учитывает заголовки Markdown и блоки Python",
+        "Structure-aware сохраняет section metadata"
+      ],
+      "expected_sources": [
+        "day-21-document-indexing-readme.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+            "similarity_score": 0.803372,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+            "line_range": [
+              7,
+              23
+            ],
+            "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отдельного server process.  Day 21 сравнивает две стратегии chunking:  1. **Fixed-size chunking** использует окно до 1600 символов и overlap 200 символов. Граница по    возможности переносится на конец ст"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0002",
+            "similarity_score": 0.757357,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk",
+            "line_range": [
+              24,
+              39
+            ],
+            "text_preview": "## Metadata каждого chunk  Каждая индексная запись хранит:  - `source` — относительный путь исходного документа; - `title` и `section` — заголовок документа и структурный путь раздела; - стабильный `chunk_id` и порядковый `chunk_index`; - `strategy` — `fixed` или `structure`; - `source_sha256` — hash исходного документа; - `start_line` и `end_line` — line range фрагмента; - `char_count` и `word_count`; - текст chunk и embedding vector.  Эти metadata нужны для воспроизводимости retrieval, проверк"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-03-day-readmes.md:0012",
+            "similarity_score": 0.698198,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Сценарий демонстрации для видео > C. Демонстрация интерактивного агента и меню команд",
+            "line_range": [
+              259,
+              312
+            ],
+            "text_preview": "10. Ввести `/memory set ` и показать, что argument completion предлагает `working` и `long`.     После выбора `working` строка становится `/memory set working `, дальше key-value вводится     вручную. 11. Ввести `/memory reset ` и показать, что argument completion предлагает `working` и     `all --yes`.  Отдельно показать fixed argument follow-up:  - `/config ` → выбрать `/config strategy` → увидеть `direct`, `step_by_step`; - `/config ` → выбрать `/config overflow` → увидеть `error`, `no_trim`,"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:docs-cli.md:0013",
+            "similarity_score": 0.685154,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Интерактивный режим и slash-команды",
+            "line_range": [
+              356,
+              362
+            ],
+            "text_preview": "## Интерактивный режим и slash-команды  В колонке `current status` используются значения `active`, `group`, `compatibility` и `hidden`. Колонка `target status` фиксирует ранее принятое migration-намерение для slash aliases: `keep`, `rename`, `merge`, `remove` или `needs-docs`. Этот inventory не меняет текущий CLI контракт и не добавляет новых команд."
+          }
+        ],
+        "answer": "Fixed-size chunking использует окно до 1600 символов и overlap 200 символов, граница по возможности переносится на конец строки. Эта стратегия проста и даёт сравнительно равномерные chunks, но может разрезать смысловой раздел или объединить соседние темы. Structure-aware chunking учитывает Markdown headings, top-level Python `class` / `def` и границы paragraphs. Для Markdown сохраняется полный section path; слишком крупные sections дополнительно режутся до 2400 символов с overlap 200. Эта стратегия лучше сохраняет смысловые границы документации и более информативную section metadata.\n\n**Источники**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации, chunk_id: structure:day-21-document-indexing-readme.md:0001",
+        "expected_sources_found": true,
+        "expected_points_covered": 2
+      },
+      "improved_rag": {
+        "original_question": "Чем fixed-size chunking отличается от structure-aware chunking?",
+        "rewritten_query": "Чем fixed-size chunking отличается от structure-aware chunking? chunk_id source title section start_line end_line",
+        "rewrite_mode": "heuristic",
+        "added_terms": [
+          "chunk_id",
+          "source",
+          "title",
+          "section",
+          "start_line",
+          "end_line"
+        ],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+            "similarity_score": 0.792043,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+            "line_range": [
+              7,
+              23
+            ],
+            "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отдельного server process.  Day 21 сравнивает две стратегии chunking:  1. **Fixed-size chunking** использует окно до 1600 символов и overlap 200 символов. Граница по    возможности переносится на конец ст"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0002",
+            "similarity_score": 0.789426,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk",
+            "line_range": [
+              24,
+              39
+            ],
+            "text_preview": "## Metadata каждого chunk  Каждая индексная запись хранит:  - `source` — относительный путь исходного документа; - `title` и `section` — заголовок документа и структурный путь раздела; - стабильный `chunk_id` и порядковый `chunk_index`; - `strategy` — `fixed` или `structure`; - `source_sha256` — hash исходного документа; - `start_line` и `end_line` — line range фрагмента; - `char_count` и `word_count`; - текст chunk и embedding vector.  Эти metadata нужны для воспроизводимости retrieval, проверк"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-03-day-readmes.md:0012",
+            "similarity_score": 0.68717,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Сценарий демонстрации для видео > C. Демонстрация интерактивного агента и меню команд",
+            "line_range": [
+              259,
+              312
+            ],
+            "text_preview": "10. Ввести `/memory set ` и показать, что argument completion предлагает `working` и `long`.     После выбора `working` строка становится `/memory set working `, дальше key-value вводится     вручную. 11. Ввести `/memory reset ` и показать, что argument completion предлагает `working` и     `all --yes`.  Отдельно показать fixed argument follow-up:  - `/config ` → выбрать `/config strategy` → увидеть `direct`, `step_by_step`; - `/config ` → выбрать `/config overflow` → увидеть `error`, `no_trim`,"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-01-day-readmes.md:0009",
+            "similarity_score": 0.677304,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              64,
+              67
+            ],
+            "text_preview": "## Результаты  Результат задания представлен кодом в `snapshot/` и видео-отчётом. Отдельные Markdown-результаты для дня 1 не создавались."
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:docs-cli.md:0013",
+            "similarity_score": 0.6705,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Интерактивный режим и slash-команды",
+            "line_range": [
+              356,
+              362
+            ],
+            "text_preview": "## Интерактивный режим и slash-команды  В колонке `current status` используются значения `active`, `group`, `compatibility` и `hidden`. Колонка `target status` фиксирует ранее принятое migration-намерение для slash aliases: `keep`, `rename`, `merge`, `remove` или `needs-docs`. Этот inventory не меняет текущий CLI контракт и не добавляет новых команд."
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:docs-development-rules.md:0005",
+            "similarity_score": 0.667705,
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Текущая модель harness > Slash-команды",
+            "line_range": [
+              81,
+              86
+            ],
+            "text_preview": "### Slash-команды  Slash-команды управляют сессией, конфигурацией, памятью и состоянием harness.  Команды группируются по namespace и не должны разрастаться в набор несвязанных aliases."
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:week-01-day-readmes.md:0006",
+            "similarity_score": 0.667002,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Day 01 — LLM REST API > Структура файлов",
+            "line_range": [
+              42,
+              54
+            ],
+            "text_preview": "## Структура файлов  ```text . ├── README.md ├── codex-log.md ├── snapshot/ │   ├── .env.example │   └── LLM_REST_API.py ├── results/ └── artifacts/ ```"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:week-03-day-readmes.md:0058",
+            "similarity_score": 0.666312,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 14 — State Invariants > Выводы",
+            "line_range": [
+              1074,
+              1083
+            ],
+            "text_preview": "## Выводы  State invariants полезны как отдельный слой hard constraints: они не конкурируют с profile, memory или task state и не зависят от качества ответа модели. Deterministic guard закрывает очевидные конфликты до LLM-вызова, а prompt-level invariant block оставляет явное правило для неконфликтных запросов. Token reports и event log делают это поведение наблюдаемым и воспроизводимым.  <!-- source: weeks/week-03/day-15-controlled-state-transitions/README.md -->"
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0002",
+            "similarity_score": 0.789426,
+            "final_rerank_score": 0.887608,
+            "score_components": {
+              "similarity_score": 0.789426,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.098182
+            },
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk",
+            "line_range": [
+              24,
+              39
+            ],
+            "text_preview": "## Metadata каждого chunk  Каждая индексная запись хранит:  - `source` — относительный путь исходного документа; - `title` и `section` — заголовок документа и структурный путь раздела; - стабильный `chunk_id` и порядковый `chunk_index`; - `strategy` — `fixed` или `structure`; - `source_sha256` — hash исходного документа; - `start_line` и `end_line` — line range фрагмента; - `char_count` и `word_count`; - текст chunk и embedding vector.  Эти metadata нужны для воспроизводимости retrieval, проверк"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+            "similarity_score": 0.792043,
+            "final_rerank_score": 0.857498,
+            "score_components": {
+              "similarity_score": 0.792043,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.065455
+            },
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+            "line_range": [
+              7,
+              23
+            ],
+            "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отдельного server process.  Day 21 сравнивает две стратегии chunking:  1. **Fixed-size chunking** использует окно до 1600 символов и overlap 200 символов. Граница по    возможности переносится на конец ст"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-03-day-readmes.md:0012",
+            "similarity_score": 0.68717,
+            "final_rerank_score": 0.68717,
+            "score_components": {
+              "similarity_score": 0.68717,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.0
+            },
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Сценарий демонстрации для видео > C. Демонстрация интерактивного агента и меню команд",
+            "line_range": [
+              259,
+              312
+            ],
+            "text_preview": "10. Ввести `/memory set ` и показать, что argument completion предлагает `working` и `long`.     После выбора `working` строка становится `/memory set working `, дальше key-value вводится     вручную. 11. Ввести `/memory reset ` и показать, что argument completion предлагает `working` и     `all --yes`.  Отдельно показать fixed argument follow-up:  - `/config ` → выбрать `/config strategy` → увидеть `direct`, `step_by_step`; - `/config ` → выбрать `/config overflow` → увидеть `error`, `no_trim`,"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-03-day-readmes.md:0058",
+            "similarity_score": 0.666312,
+            "final_rerank_score": 0.682676,
+            "score_components": {
+              "similarity_score": 0.666312,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.016364
+            },
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 14 — State Invariants > Выводы",
+            "line_range": [
+              1074,
+              1083
+            ],
+            "text_preview": "## Выводы  State invariants полезны как отдельный слой hard constraints: они не конкурируют с profile, memory или task state и не зависят от качества ответа модели. Deterministic guard закрывает очевидные конфликты до LLM-вызова, а prompt-level invariant block оставляет явное правило для неконфликтных запросов. Token reports и event log делают это поведение наблюдаемым и воспроизводимым.  <!-- source: weeks/week-03/day-15-controlled-state-transitions/README.md -->"
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "На основе предоставленного контекста, **fixed-size chunking** использует окно до 1600 символов и overlap 200 символов, граница по возможности переносится на конец строки. Эта стратегия проста и даёт сравнительно равномерные chunks, но может разрезать смысловой раздел или объединить соседние темы.\n\n**Structure-aware chunking** учитывает Markdown headings, top-level Python `class` / `def` и границы paragraphs. Для Markdown сохраняется полный section path; слишком крупные sections дополнительно режутся до 2400 символов с overlap 200. Эта стратегия лучше сохраняет смысловые границы документации и более информативную section metadata.\n\n**Источники**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации, chunk_id: structure:day-21-document-indexing-readme.md:0001",
+        "expected_sources_found": true,
+        "expected_points_covered": 2,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": 0,
+        "expected_points_delta": 0,
+        "summary": "По deterministic-эвристике режимы дали одинаковый результат."
+      }
+    },
+    {
+      "id": "q07",
+      "question": "Зачем нужен hash embedding backend и почему он не заменяет semantic model?",
+      "expected_points": [
+        "Hash backend deterministic и подходит для tests offline smoke",
+        "Он использует feature hashing",
+        "Он не является качественной semantic embedding model"
+      ],
+      "expected_sources": [
+        "day-21-document-indexing-readme.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0003",
+            "similarity_score": 0.892158,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Embedding backends",
+            "line_range": [
+              40,
+              51
+            ],
+            "text_preview": "## Embedding backends  Основной semantic backend для учебного demo — локальный Ollama с моделью `nomic-embed-text`. Одна и та же embedding model используется при индексации corpus и embedding query; найденные vectors ранжируются по cosine similarity. Ollama не требует API key, но требует запущенный локальный server и установленную модель.  Backend `hash` — deterministic normalized feature hashing. Он нужен для unit tests, CI и offline smoke, потому что не требует Ollama, сети или секретов и даёт"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:package-readme.md:0006",
+            "similarity_score": 0.757879,
+            "source": "corpus/package-readme.md",
+            "title": "ai_advent_agent",
+            "section": "ai_advent_agent > Semantic memory writes",
+            "line_range": [
+              115,
+              130
+            ],
+            "text_preview": "## Semantic memory writes  Explicit memory layers можно изменять grouped CLI-командами без `DEEPSEEK_API_KEY`, `SimpleAgent` и LLM call:  ```bash uv run --project packages/ai_advent_agent ai-advent-agent memory note add \"короткая заметка\" uv run --project packages/ai_advent_agent ai-advent-agent memory set working current_task \"docs-pass\" uv run --project packages/ai_advent_agent ai-advent-agent memory set long-term style \"кратко\" uv run --project packages/ai_advent_agent ai-advent-agent memory "
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:docs-cli.md:0004",
+            "similarity_score": 0.751993,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Semantic memory write grouped CLI",
+            "line_range": [
+              96,
+              122
+            ],
+            "text_preview": "## Semantic memory write grouped CLI  Semantic memory commands управляют explicit memory layers без API key:  ```text ai-advent-agent memory note add \"короткая заметка\" ai-advent-agent memory set working KEY VALUE ai-advent-agent memory set long-term KEY VALUE ai-advent-agent memory forget working KEY --yes ai-advent-agent memory forget long-term KEY --yes ```  Команды работают напрямую с локальными runtime-файлами, не создают `SimpleAgent`, не требуют `DEEPSEEK_API_KEY` и не вызывают LLM. Они у"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-04-day-readmes.md:0059",
+            "similarity_score": 0.747742,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Цель задания",
+            "line_range": [
+              899,
+              907
+            ],
+            "text_preview": "## Цель задания  Реализовать модель-агностичный host/orchestrator, который обнаруживает tools четырёх независимых stdio MCP servers, формирует normalized registry, получает от LLM следующий neutral JSON action, валидирует его, маршрутизирует в правильную `ClientSession` и повторяет цикл до сохранения итогов.  DeepSeek используется только как text/JSON completion provider. Архитектура не использует provider-native function calling как control plane и допускает замену LLM adapter-а."
+          }
+        ],
+        "answer": "На основе предоставленного контекста:\n\n**Hash embedding backend** нужен для unit tests, CI и offline smoke, потому что не требует Ollama, сети или секретов и даёт воспроизводимые векторы.\n\n**Hash backend не заменяет semantic model**, потому что он не является качественной semantic embedding model: он в основном отражает пересечение токенов и не должен использоваться как финальная оценка semantic retrieval.\n\n**Источники:**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Embedding backends, chunk_id: structure:day-21-document-indexing-readme.md:0003",
+        "expected_sources_found": true,
+        "expected_points_covered": 2
+      },
+      "improved_rag": {
+        "original_question": "Зачем нужен hash embedding backend и почему он не заменяет semantic model?",
+        "rewritten_query": "Зачем нужен hash embedding backend и почему он не заменяет semantic model? deterministic fallback offline tests semantic quality",
+        "rewrite_mode": "heuristic",
+        "added_terms": [
+          "deterministic fallback",
+          "offline tests",
+          "semantic quality"
+        ],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0003",
+            "similarity_score": 0.849257,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Embedding backends",
+            "line_range": [
+              40,
+              51
+            ],
+            "text_preview": "## Embedding backends  Основной semantic backend для учебного demo — локальный Ollama с моделью `nomic-embed-text`. Одна и та же embedding model используется при индексации corpus и embedding query; найденные vectors ранжируются по cosine similarity. Ollama не требует API key, но требует запущенный локальный server и установленную модель.  Backend `hash` — deterministic normalized feature hashing. Он нужен для unit tests, CI и offline smoke, потому что не требует Ollama, сети или секретов и даёт"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-04-day-readmes.md:0079",
+            "similarity_score": 0.742793,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 12. Offline/test fallback",
+            "line_range": [
+              1240,
+              1249
+            ],
+            "text_preview": "### 12. Offline/test fallback  Пояснить, что scripted planner используется только для deterministic tests/local checks, не как evidence для видео. Он пишет во временную `.tmp/` директорию и не заменяет финальные artifacts.  ```bash uv run --project packages/ai_advent_agent pytest \\   packages/ai_advent_agent/tests/test_mcp_orchestration.py -q ```"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:package-readme.md:0006",
+            "similarity_score": 0.734572,
+            "source": "corpus/package-readme.md",
+            "title": "ai_advent_agent",
+            "section": "ai_advent_agent > Semantic memory writes",
+            "line_range": [
+              115,
+              130
+            ],
+            "text_preview": "## Semantic memory writes  Explicit memory layers можно изменять grouped CLI-командами без `DEEPSEEK_API_KEY`, `SimpleAgent` и LLM call:  ```bash uv run --project packages/ai_advent_agent ai-advent-agent memory note add \"короткая заметка\" uv run --project packages/ai_advent_agent ai-advent-agent memory set working current_task \"docs-pass\" uv run --project packages/ai_advent_agent ai-advent-agent memory set long-term style \"кратко\" uv run --project packages/ai_advent_agent ai-advent-agent memory "
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-03-day-readmes.md:0054",
+            "similarity_score": 0.732693,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 14 — State Invariants > Как запустить > Snapshot Day 14 > Offline-сценарий",
+            "line_range": [
+              989,
+              998
+            ],
+            "text_preview": "#### Offline-сценарий  Snapshot-сценарий также offline и не требует `DEEPSEEK_API_KEY`. При запуске из `snapshot/` он сохраняет проверяемые артефакты вне snapshot, в `../artifacts/agent-context`.  ```bash cd weeks/week-03/day-14-state-invariants/snapshot uv run day14-scenarios state-invariants-demo ```"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:docs-cli.md:0004",
+            "similarity_score": 0.729286,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Semantic memory write grouped CLI",
+            "line_range": [
+              96,
+              122
+            ],
+            "text_preview": "## Semantic memory write grouped CLI  Semantic memory commands управляют explicit memory layers без API key:  ```text ai-advent-agent memory note add \"короткая заметка\" ai-advent-agent memory set working KEY VALUE ai-advent-agent memory set long-term KEY VALUE ai-advent-agent memory forget working KEY --yes ai-advent-agent memory forget long-term KEY --yes ```  Команды работают напрямую с локальными runtime-файлами, не создают `SimpleAgent`, не требуют `DEEPSEEK_API_KEY` и не вызывают LLM. Они у"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:week-03-day-readmes.md:0010",
+            "similarity_score": 0.729191,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Сценарий демонстрации для видео > B. Демонстрация offline-сценария",
+            "line_range": [
+              190,
+              221
+            ],
+            "text_preview": "### B. Демонстрация offline-сценария  Запустить:  ```bash cd snapshot uv run day11-scenarios memory-layers-demo ```  Показать в терминале таблицу:  - `no_memory` — общий ответ без персонализации и состояния; - `working_only` — ответ учитывает текущую задачу; - `all_layers` — ответ учитывает язык, стиль, задачу и последние уточнения.  Открыть файлы:  - `../artifacts/agent-context/short_term_memory.json`; - `../artifacts/agent-context/working_memory.json`; - `../artifacts/agent-context/long_term_m"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:week-04-day-readmes.md:0081",
+            "similarity_score": 0.729164,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Результаты",
+            "line_range": [
+              1259,
+              1270
+            ],
+            "text_preview": "## Результаты  Финальный snapshot online run создал полный набор evidence. В trace зафиксированы `planner=llm-json`, model `deepseek-v4-flash`, `model_specific_tool_calling=false`, `hardcoded_pipeline=false`, 11 tool calls, 12 planner calls / 12 LLM API calls, четыре registered/used server-а, `required_chain_found=true` и `completed=true`. Все 11 routing decisions валидны и направлены в session запрошенного server-а.  `final-orchestration-report.md` и `saved-flow-state.json` сохранены Storage MC"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:week-03-day-readmes.md:0040",
+            "similarity_score": 0.725398,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 13 — Состояние задачи > Как запустить > Snapshot Day 13 > Offline-сценарий",
+            "line_range": [
+              746,
+              755
+            ],
+            "text_preview": "#### Offline-сценарий  Snapshot-сценарий также offline и не требует `DEEPSEEK_API_KEY`. При запуске из `snapshot/` он сохраняет проверяемые артефакты вне snapshot, в `../artifacts/agent-context`.  ```bash cd weeks/week-03/day-13-task-state-machine/snapshot uv run day13-scenarios task-state-machine-demo ```"
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0003",
+            "similarity_score": 0.849257,
+            "final_rerank_score": 1.009257,
+            "score_components": {
+              "similarity_score": 0.849257,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.135
+            },
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Embedding backends",
+            "line_range": [
+              40,
+              51
+            ],
+            "text_preview": "## Embedding backends  Основной semantic backend для учебного demo — локальный Ollama с моделью `nomic-embed-text`. Одна и та же embedding model используется при индексации corpus и embedding query; найденные vectors ранжируются по cosine similarity. Ollama не требует API key, но требует запущенный локальный server и установленную модель.  Backend `hash` — deterministic normalized feature hashing. Он нужен для unit tests, CI и offline smoke, потому что не требует Ollama, сети или секретов и даёт"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-04-day-readmes.md:0079",
+            "similarity_score": 0.742793,
+            "final_rerank_score": 0.867793,
+            "score_components": {
+              "similarity_score": 0.742793,
+              "source_bonus": 0.0,
+              "section_bonus": 0.05,
+              "keyword_bonus": 0.075
+            },
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 12. Offline/test fallback",
+            "line_range": [
+              1240,
+              1249
+            ],
+            "text_preview": "### 12. Offline/test fallback  Пояснить, что scripted planner используется только для deterministic tests/local checks, не как evidence для видео. Он пишет во временную `.tmp/` директорию и не заменяет финальные artifacts.  ```bash uv run --project packages/ai_advent_agent pytest \\   packages/ai_advent_agent/tests/test_mcp_orchestration.py -q ```"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:package-readme.md:0006",
+            "similarity_score": 0.734572,
+            "final_rerank_score": 0.774572,
+            "score_components": {
+              "similarity_score": 0.734572,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.015
+            },
+            "source": "corpus/package-readme.md",
+            "title": "ai_advent_agent",
+            "section": "ai_advent_agent > Semantic memory writes",
+            "line_range": [
+              115,
+              130
+            ],
+            "text_preview": "## Semantic memory writes  Explicit memory layers можно изменять grouped CLI-командами без `DEEPSEEK_API_KEY`, `SimpleAgent` и LLM call:  ```bash uv run --project packages/ai_advent_agent ai-advent-agent memory note add \"короткая заметка\" uv run --project packages/ai_advent_agent ai-advent-agent memory set working current_task \"docs-pass\" uv run --project packages/ai_advent_agent ai-advent-agent memory set long-term style \"кратко\" uv run --project packages/ai_advent_agent ai-advent-agent memory "
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:docs-cli.md:0004",
+            "similarity_score": 0.729286,
+            "final_rerank_score": 0.769286,
+            "score_components": {
+              "similarity_score": 0.729286,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.015
+            },
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Semantic memory write grouped CLI",
+            "line_range": [
+              96,
+              122
+            ],
+            "text_preview": "## Semantic memory write grouped CLI  Semantic memory commands управляют explicit memory layers без API key:  ```text ai-advent-agent memory note add \"короткая заметка\" ai-advent-agent memory set working KEY VALUE ai-advent-agent memory set long-term KEY VALUE ai-advent-agent memory forget working KEY --yes ai-advent-agent memory forget long-term KEY --yes ```  Команды работают напрямую с локальными runtime-файлами, не создают `SimpleAgent`, не требуют `DEEPSEEK_API_KEY` и не вызывают LLM. Они у"
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "На основе предоставленного контекста:\n\nHash embedding backend нужен для unit tests, CI и offline smoke, потому что не требует Ollama, сети или секретов и даёт воспроизводимые векторы. Он не заменяет semantic model, потому что не является качественной semantic embedding model: он в основном отражает пересечение токенов и не должен использоваться как финальная оценка semantic retrieval.\n\n**Источники:**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Embedding backends, chunk_id: structure:day-21-document-indexing-readme.md:0003",
+        "expected_sources_found": true,
+        "expected_points_covered": 2,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": 0,
+        "expected_points_delta": 0,
+        "summary": "По deterministic-эвристике режимы дали одинаковый результат."
+      }
+    },
+    {
+      "id": "q08",
+      "question": "Какие artifacts создаёт pipeline индексации документов?",
+      "expected_points": [
+        "JSON index",
+        "SQLite index",
+        "Index manifest и sample search results"
+      ],
+      "expected_sources": [
+        "day-21-document-indexing-readme.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0004",
+            "similarity_score": 0.800288,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Artifacts индексирующего pipeline",
+            "line_range": [
+              52,
+              64
+            ],
+            "text_preview": "## Artifacts индексирующего pipeline  Day 21 создавал следующие типы artifacts:  - `fixed-index.json` и `fixed-index.sqlite3` — fixed-size index в двух форматах; - `structure-index.json` и `structure-index.sqlite3` — structure-aware index в двух форматах; - `chunking-comparison.md` — настройки и сравнение стратегий; - `sample-search-results.json` — sample top-k retrieval без генеративной LLM; - `index-manifest.json` — corpus statistics, index settings и точный список artifacts.  Day 22 используе"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-03-day-readmes.md:0015",
+            "similarity_score": 0.764919,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Результаты",
+            "line_range": [
+              370,
+              376
+            ],
+            "text_preview": "## Результаты  - [Отчёт Day 11](results/day-11-memory-layers.md) - [Демонстрационные artifacts](artifacts/agent-context/)  Краткий результат: агент получил явную модель памяти, где short-term, working и long-term данные хранятся отдельно, управляются командами и отражаются в token reports."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-02-day-readmes.md:0029",
+            "similarity_score": 0.761357,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              272,
+              277
+            ],
+            "text_preview": "## Результаты  - [Исторический JSON-контекст](artifacts/agent-context/messages.json) - [Исторические token reports](artifacts/agent-context/token_reports.jsonl) - [Большой файл для проверки переполнения](artifacts/skills-all.md)"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+            "similarity_score": 0.752802,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+            "line_range": [
+              7,
+              23
+            ],
+            "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отдельного server process.  Day 21 сравнивает две стратегии chunking:  1. **Fixed-size chunking** использует окно до 1600 символов и overlap 200 символов. Граница по    возможности переносится на конец ст"
+          }
+        ],
+        "answer": "На основе предоставленного контекста, pipeline индексации документов создаёт следующие типы artifacts:\n\n- `fixed-index.json` и `fixed-index.sqlite3` — fixed-size index в двух форматах;\n- `structure-index.json` и `structure-index.sqlite3` — structure-aware index в двух форматах;\n- `chunking-comparison.md` — настройки и сравнение стратегий;\n- `sample-search-results.json` — sample top-k retrieval без генеративной LLM;\n- `index-manifest.json` — corpus statistics, index settings и точный список artifacts.\n\n**Источники:**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Artifacts индексирующего pipeline, chunk_id: structure:day-21-document-indexing-readme.md:0004",
+        "expected_sources_found": true,
+        "expected_points_covered": 2
+      },
+      "improved_rag": {
+        "original_question": "Какие artifacts создаёт pipeline индексации документов?",
+        "rewritten_query": "Какие artifacts создаёт pipeline индексации документов?",
+        "rewrite_mode": "heuristic",
+        "added_terms": [],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0004",
+            "similarity_score": 0.800288,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Artifacts индексирующего pipeline",
+            "line_range": [
+              52,
+              64
+            ],
+            "text_preview": "## Artifacts индексирующего pipeline  Day 21 создавал следующие типы artifacts:  - `fixed-index.json` и `fixed-index.sqlite3` — fixed-size index в двух форматах; - `structure-index.json` и `structure-index.sqlite3` — structure-aware index в двух форматах; - `chunking-comparison.md` — настройки и сравнение стратегий; - `sample-search-results.json` — sample top-k retrieval без генеративной LLM; - `index-manifest.json` — corpus statistics, index settings и точный список artifacts.  Day 22 используе"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-03-day-readmes.md:0015",
+            "similarity_score": 0.764919,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Результаты",
+            "line_range": [
+              370,
+              376
+            ],
+            "text_preview": "## Результаты  - [Отчёт Day 11](results/day-11-memory-layers.md) - [Демонстрационные artifacts](artifacts/agent-context/)  Краткий результат: агент получил явную модель памяти, где short-term, working и long-term данные хранятся отдельно, управляются командами и отражаются в token reports."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-02-day-readmes.md:0029",
+            "similarity_score": 0.761357,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              272,
+              277
+            ],
+            "text_preview": "## Результаты  - [Исторический JSON-контекст](artifacts/agent-context/messages.json) - [Исторические token reports](artifacts/agent-context/token_reports.jsonl) - [Большой файл для проверки переполнения](artifacts/skills-all.md)"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+            "similarity_score": 0.752802,
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+            "line_range": [
+              7,
+              23
+            ],
+            "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отдельного server process.  Day 21 сравнивает две стратегии chunking:  1. **Fixed-size chunking** использует окно до 1600 символов и overlap 200 символов. Граница по    возможности переносится на конец ст"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:week-03-day-readmes.md:0009",
+            "similarity_score": 0.749301,
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Сценарий демонстрации для видео > A. Подготовка",
+            "line_range": [
+              168,
+              189
+            ],
+            "text_preview": "### A. Подготовка  Открыть папку дня:  ```bash cd weeks/week-03/day-11-memory-layers mkdir -p artifacts/agent-context ```  Перед записью можно оставить существующие demo-артефакты или очистить только runtime-файлы текущей демонстрации:  ```bash rm -f artifacts/agent-context/messages.json rm -f artifacts/agent-context/short_term_memory.json rm -f artifacts/agent-context/working_memory.json rm -f artifacts/agent-context/long_term_memory.json rm -f artifacts/agent-context/memory_events.jsonl rm -f "
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:week-01-day-readmes.md:0026",
+            "similarity_score": 0.746276,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Day 03 — Reasoning > Структура файлов",
+            "line_range": [
+              185,
+              198
+            ],
+            "text_preview": "## Структура файлов  ```text . ├── README.md ├── codex-log.md ├── snapshot/ │   ├── .env.example │   └── REASONING.py ├── results/ │   └── day3_results_20260607_204013.md └── artifacts/ ```"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:week-01-day-readmes.md:0016",
+            "similarity_score": 0.744803,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Day 02 — Answer Format > Структура файлов",
+            "line_range": [
+              110,
+              122
+            ],
+            "text_preview": "## Структура файлов  ```text . ├── README.md ├── codex-log.md ├── snapshot/ │   ├── .env.example │   └── ANSWER_FORMAT.py ├── results/ └── artifacts/ ```"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:week-02-day-readmes.md:0019",
+            "similarity_score": 0.74309,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              171,
+              174
+            ],
+            "text_preview": "## Результаты  - [Исторический JSON-контекст](artifacts/agent-context/messages.json)"
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0004",
+            "similarity_score": 0.800288,
+            "final_rerank_score": 0.983288,
+            "score_components": {
+              "similarity_score": 0.800288,
+              "source_bonus": 0.0,
+              "section_bonus": 0.075,
+              "keyword_bonus": 0.108
+            },
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Artifacts индексирующего pipeline",
+            "line_range": [
+              52,
+              64
+            ],
+            "text_preview": "## Artifacts индексирующего pipeline  Day 21 создавал следующие типы artifacts:  - `fixed-index.json` и `fixed-index.sqlite3` — fixed-size index в двух форматах; - `structure-index.json` и `structure-index.sqlite3` — structure-aware index в двух форматах; - `chunking-comparison.md` — настройки и сравнение стратегий; - `sample-search-results.json` — sample top-k retrieval без генеративной LLM; - `index-manifest.json` — corpus statistics, index settings и точный список artifacts.  Day 22 используе"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+            "similarity_score": 0.752802,
+            "final_rerank_score": 0.899802,
+            "score_components": {
+              "similarity_score": 0.752802,
+              "source_bonus": 0.0,
+              "section_bonus": 0.075,
+              "keyword_bonus": 0.072
+            },
+            "source": "corpus/day-21-document-indexing-readme.md",
+            "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+            "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+            "line_range": [
+              7,
+              23
+            ],
+            "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отдельного server process.  Day 21 сравнивает две стратегии chunking:  1. **Fixed-size chunking** использует окно до 1600 символов и overlap 200 символов. Граница по    возможности переносится на конец ст"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-03-day-readmes.md:0015",
+            "similarity_score": 0.764919,
+            "final_rerank_score": 0.825919,
+            "score_components": {
+              "similarity_score": 0.764919,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.036
+            },
+            "source": "corpus/week-03-day-readmes.md",
+            "title": "Public README документов Week 03",
+            "section": "Day 11 — Memory Layers > Результаты",
+            "line_range": [
+              370,
+              376
+            ],
+            "text_preview": "## Результаты  - [Отчёт Day 11](results/day-11-memory-layers.md) - [Демонстрационные artifacts](artifacts/agent-context/)  Краткий результат: агент получил явную модель памяти, где short-term, working и long-term данные хранятся отдельно, управляются командами и отражаются в token reports."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-02-day-readmes.md:0029",
+            "similarity_score": 0.761357,
+            "final_rerank_score": 0.822357,
+            "score_components": {
+              "similarity_score": 0.761357,
+              "source_bonus": 0.0,
+              "section_bonus": 0.025,
+              "keyword_bonus": 0.036
+            },
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              272,
+              277
+            ],
+            "text_preview": "## Результаты  - [Исторический JSON-контекст](artifacts/agent-context/messages.json) - [Исторические token reports](artifacts/agent-context/token_reports.jsonl) - [Большой файл для проверки переполнения](artifacts/skills-all.md)"
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "На основе предоставленного контекста, pipeline индексации документов создаёт следующие artifacts:\n\n- `fixed-index.json` и `fixed-index.sqlite3` — fixed-size index в двух форматах;\n- `structure-index.json` и `structure-index.sqlite3` — structure-aware index в двух форматах;\n- `chunking-comparison.md` — настройки и сравнение стратегий;\n- `sample-search-results.json` — sample top-k retrieval без генеративной LLM;\n- `index-manifest.json` — corpus statistics, index settings и точный список artifacts.\n\n**Источники:**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Artifacts индексирующего pipeline, chunk_id: structure:day-21-document-indexing-readme.md:0004",
+        "expected_sources_found": true,
+        "expected_points_covered": 2,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": 0,
+        "expected_points_delta": 0,
+        "summary": "По deterministic-эвристике режимы дали одинаковый результат."
+      }
+    },
+    {
+      "id": "q09",
+      "question": "Что означает MCP orchestration в контексте Week 4?",
+      "expected_points": [
+        "Клиент планирует цепочку вызовов нескольких MCP servers",
+        "Результат одного шага используется следующим",
+        "Сохраняются trace и итоговый отчёт"
+      ],
+      "expected_sources": [
+        "week-04-day-readmes.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0058",
+            "similarity_score": 0.814267,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Исходное условие",
+            "line_range": [
+              878,
+              898
+            ],
+            "text_preview": "## Исходное условие  🔥 День 20. Orchestration MCP  Зарегистрируйте несколько MCP-серверов.  Сделайте так, чтобы: 👉 агент выбирал нужный инструмент 👉 корректно маршрутизировал запросы 👉 выполнял длинный флоу взаимодействия  Проверьте: 👉 сценарий, в котором используются инструменты с разных серверов 👉 корректность выбора и порядка вызовов  Результат: Длинный флоу взаимодействия с несколькими MCP-серверами и инструментами  Формат: Видео + Код"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-04-day-readmes.md:0060",
+            "similarity_score": 0.805824,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Дополнительные учебные заметки",
+            "line_range": [
+              908,
+              911
+            ],
+            "text_preview": "## Дополнительные учебные заметки  - [Заметки по теме задания](../../../notes/task_notes/day-20-mcp-orchestration.md)"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-04-day-readmes.md:0082",
+            "similarity_score": 0.79767,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Выводы",
+            "line_range": [
+              1271,
+              1276
+            ],
+            "text_preview": "## Выводы  Multi-server MCP orchestration — это ответственность host-а: servers публикуют маленькие deterministic capabilities, registry задаёт проверяемое пространство действий, planner выбирает следующий neutral JSON action, validator охраняет границы, router вызывает правильную session, а evidence позволяет доказать выбор и порядок. Такая граница переносима между моделями и harness-ами."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-04-day-readmes.md:0071",
+            "similarity_score": 0.783403,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 4. Запустить online scenario",
+            "line_range": [
+              1103,
+              1126
+            ],
+            "text_preview": "### 4. Запустить online scenario  Показать команду из snapshot-каталога. Это основной сценарий для видео; он требует `DEEPSEEK_API_KEY`, но значение ключа не показывать.  ```bash cd weeks/week-04/day-20-mcp-orchestration/snapshot  uv run ai-advent-scenarios mcp-orchestration-demo \\   --planner llm-json \\   --goal \"Собери большой итоговый отчёт по MCP Week 04: найди выполненные и планируемые MCP-задачи, получи контекст Day 18, Day 19 и Day 20, добавь best practices по multi-server orchestration и"
+          }
+        ],
+        "answer": "На основе предоставленного контекста, **MCP orchestration** в контексте Week 4 означает:\n\n- Регистрацию нескольких MCP-серверов, где агент выбирает нужный инструмент, корректно маршрутизирует запросы и выполняет длинный флоу взаимодействия.\n- Это ответственность host-а: серверы публикуют маленькие deterministic capabilities, registry задаёт проверяемое пространство действий, planner выбирает следующий neutral JSON action, validator охраняет границы, router вызывает правильную session, а evidence позволяет доказать выбор и порядок.\n- Практическая реализация включает запуск сценария с использованием `--planner llm-json`, где online LLM planner и финальный evidence mode работают в рамках orchestration lifecycle: startup MCP servers, LLM planner turns, MCP tool calls и запись artifacts.\n\n**Источники:**\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Исходное условие, chunk_id: structure:week-04-day-readmes.md:0058\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Выводы, chunk_id: structure:week-04-day-readmes.md:0082\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 4. Запустить online scenario, chunk_id: structure:week-04-day-readmes.md:0071",
+        "expected_sources_found": true,
+        "expected_points_covered": 0
+      },
+      "improved_rag": {
+        "original_question": "Что означает MCP orchestration в контексте Week 4?",
+        "rewritten_query": "Что означает MCP orchestration в контексте Week 4?",
+        "rewrite_mode": "heuristic",
+        "added_terms": [],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0058",
+            "similarity_score": 0.814267,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Исходное условие",
+            "line_range": [
+              878,
+              898
+            ],
+            "text_preview": "## Исходное условие  🔥 День 20. Orchestration MCP  Зарегистрируйте несколько MCP-серверов.  Сделайте так, чтобы: 👉 агент выбирал нужный инструмент 👉 корректно маршрутизировал запросы 👉 выполнял длинный флоу взаимодействия  Проверьте: 👉 сценарий, в котором используются инструменты с разных серверов 👉 корректность выбора и порядка вызовов  Результат: Длинный флоу взаимодействия с несколькими MCP-серверами и инструментами  Формат: Видео + Код"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-04-day-readmes.md:0060",
+            "similarity_score": 0.805824,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Дополнительные учебные заметки",
+            "line_range": [
+              908,
+              911
+            ],
+            "text_preview": "## Дополнительные учебные заметки  - [Заметки по теме задания](../../../notes/task_notes/day-20-mcp-orchestration.md)"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-04-day-readmes.md:0082",
+            "similarity_score": 0.79767,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Выводы",
+            "line_range": [
+              1271,
+              1276
+            ],
+            "text_preview": "## Выводы  Multi-server MCP orchestration — это ответственность host-а: servers публикуют маленькие deterministic capabilities, registry задаёт проверяемое пространство действий, planner выбирает следующий neutral JSON action, validator охраняет границы, router вызывает правильную session, а evidence позволяет доказать выбор и порядок. Такая граница переносима между моделями и harness-ами."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-04-day-readmes.md:0071",
+            "similarity_score": 0.783403,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 4. Запустить online scenario",
+            "line_range": [
+              1103,
+              1126
+            ],
+            "text_preview": "### 4. Запустить online scenario  Показать команду из snapshot-каталога. Это основной сценарий для видео; он требует `DEEPSEEK_API_KEY`, но значение ключа не показывать.  ```bash cd weeks/week-04/day-20-mcp-orchestration/snapshot  uv run ai-advent-scenarios mcp-orchestration-demo \\   --planner llm-json \\   --goal \"Собери большой итоговый отчёт по MCP Week 04: найди выполненные и планируемые MCP-задачи, получи контекст Day 18, Day 19 и Day 20, добавь best practices по multi-server orchestration и"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:week-04-day-readmes.md:0076",
+            "similarity_score": 0.767904,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 9. Показать финальный Markdown report",
+            "line_range": [
+              1195,
+              1205
+            ],
+            "text_preview": "### 9. Показать финальный Markdown report  Открыть `weeks/week-04/day-20-mcp-orchestration/artifacts/final-orchestration-report.md`.  Показать:  - итоговый отчёт; - блок про MCP server topology; - registered servers: `tracker`, `knowledge`, `report`, `storage`; - что report собран через `report` MCP server, а не вручную в host."
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:week-04-day-readmes.md:0042",
+            "similarity_score": 0.766703,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 18 — Планировщик и фоновые задачи через MCP tools > Выводы",
+            "line_range": [
+              623,
+              631
+            ],
+            "text_preview": "## Выводы  Scheduled/background workflow удобно выражать через MCP tools как control plane: агент запускает работу и запрашивает summary через protocol boundary, а хранение, расписание и агрегация остаются на стороне server/service layer. Для учебного и тестового сценария bounded schedule безопаснее настоящего 24/7 daemon: он воспроизводим, не зависает и создаёт проверяемые artifacts.  <!-- source: weeks/week-04/day-19-mcp-tool-composition/README.md -->"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:week-04-day-readmes.md:0072",
+            "similarity_score": 0.761821,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 5. Показать server registry",
+            "line_range": [
+              1127,
+              1138
+            ],
+            "text_preview": "### 5. Показать server registry  Открыть `weeks/week-04/day-20-mcp-orchestration/artifacts/server-registry.json`.  Показать:  - 4 registered servers: `tracker`, `knowledge`, `report`, `storage`; - command/transport каждого server-а; - что все servers initialized.  Смысл фрагмента: host реально зарегистрировал несколько MCP endpoints до planner loop."
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:week-04-day-readmes.md:0074",
+            "similarity_score": 0.759062,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 7. Показать orchestration trace",
+            "line_range": [
+              1153,
+              1180
+            ],
+            "text_preview": "### 7. Показать orchestration trace  Открыть `weeks/week-04/day-20-mcp-orchestration/artifacts/orchestration-trace.json`.  Показать верхние поля:  - `planner=llm-json`; - `model=deepseek-v4-flash`; - `model_specific_tool_calling=false`; - `hardcoded_pipeline=false`; - `servers_registered`; - `servers_used`; - `tool_calls_total=11`; - `required_chain_found=true`; - `completed=true`; - `usage.llm_api_calls=12`; - `usage.planner_calls=12`.  Потом показать `steps`:  - шаги 1-2: `tracker` server; - ш"
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:week-04-day-readmes.md:0071",
+            "similarity_score": 0.783403,
+            "final_rerank_score": 0.966403,
+            "score_components": {
+              "similarity_score": 0.783403,
+              "source_bonus": 0.0,
+              "section_bonus": 0.075,
+              "keyword_bonus": 0.108
+            },
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 4. Запустить online scenario",
+            "line_range": [
+              1103,
+              1126
+            ],
+            "text_preview": "### 4. Запустить online scenario  Показать команду из snapshot-каталога. Это основной сценарий для видео; он требует `DEEPSEEK_API_KEY`, но значение ключа не показывать.  ```bash cd weeks/week-04/day-20-mcp-orchestration/snapshot  uv run ai-advent-scenarios mcp-orchestration-demo \\   --planner llm-json \\   --goal \"Собери большой итоговый отчёт по MCP Week 04: найди выполненные и планируемые MCP-задачи, получи контекст Day 18, Day 19 и Day 20, добавь best practices по multi-server orchestration и"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-04-day-readmes.md:0058",
+            "similarity_score": 0.814267,
+            "final_rerank_score": 0.961267,
+            "score_components": {
+              "similarity_score": 0.814267,
+              "source_bonus": 0.0,
+              "section_bonus": 0.075,
+              "keyword_bonus": 0.072
+            },
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Исходное условие",
+            "line_range": [
+              878,
+              898
+            ],
+            "text_preview": "## Исходное условие  🔥 День 20. Orchestration MCP  Зарегистрируйте несколько MCP-серверов.  Сделайте так, чтобы: 👉 агент выбирал нужный инструмент 👉 корректно маршрутизировал запросы 👉 выполнял длинный флоу взаимодействия  Проверьте: 👉 сценарий, в котором используются инструменты с разных серверов 👉 корректность выбора и порядка вызовов  Результат: Длинный флоу взаимодействия с несколькими MCP-серверами и инструментами  Формат: Видео + Код"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-04-day-readmes.md:0082",
+            "similarity_score": 0.79767,
+            "final_rerank_score": 0.94467,
+            "score_components": {
+              "similarity_score": 0.79767,
+              "source_bonus": 0.0,
+              "section_bonus": 0.075,
+              "keyword_bonus": 0.072
+            },
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Выводы",
+            "line_range": [
+              1271,
+              1276
+            ],
+            "text_preview": "## Выводы  Multi-server MCP orchestration — это ответственность host-а: servers публикуют маленькие deterministic capabilities, registry задаёт проверяемое пространство действий, planner выбирает следующий neutral JSON action, validator охраняет границы, router вызывает правильную session, а evidence позволяет доказать выбор и порядок. Такая граница переносима между моделями и harness-ами."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-04-day-readmes.md:0074",
+            "similarity_score": 0.759062,
+            "final_rerank_score": 0.906062,
+            "score_components": {
+              "similarity_score": 0.759062,
+              "source_bonus": 0.0,
+              "section_bonus": 0.075,
+              "keyword_bonus": 0.072
+            },
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 7. Показать orchestration trace",
+            "line_range": [
+              1153,
+              1180
+            ],
+            "text_preview": "### 7. Показать orchestration trace  Открыть `weeks/week-04/day-20-mcp-orchestration/artifacts/orchestration-trace.json`.  Показать верхние поля:  - `planner=llm-json`; - `model=deepseek-v4-flash`; - `model_specific_tool_calling=false`; - `hardcoded_pipeline=false`; - `servers_registered`; - `servers_used`; - `tool_calls_total=11`; - `required_chain_found=true`; - `completed=true`; - `usage.llm_api_calls=12`; - `usage.planner_calls=12`.  Потом показать `steps`:  - шаги 1-2: `tracker` server; - ш"
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "На основе предоставленного контекста, **MCP orchestration** в контексте Week 4 означает:\n\n- Регистрацию нескольких MCP-серверов, чтобы агент выбирал нужный инструмент, корректно маршрутизировал запросы и выполнял длинный флоу взаимодействия (Фрагмент 2).\n- Сценарий, в котором используются инструменты с разных серверов, с проверкой корректности выбора и порядка вызовов (Фрагмент 2).\n- Ответственность host-а за multi-server MCP orchestration: servers публикуют маленькие deterministic capabilities, registry задаёт проверяемое пространство действий, planner выбирает следующий neutral JSON action, validator охраняет границы, router вызывает правильную session, а evidence позволяет доказать выбор и порядок (Фрагмент 3).\n- Демонстрацию orchestration trace, который доказывает длинный flow и использование tools с разных MCP servers в правильном порядке (Фрагмент 4).\n\n**Источники:**\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Исходное условие, chunk_id: structure:week-04-day-readmes.md:0058\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Выводы, chunk_id: structure:week-04-day-readmes.md:0082\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 7. Показать orchestration trace, chunk_id: structure:week-04-day-readmes.md:0074",
+        "expected_sources_found": true,
+        "expected_points_covered": 1,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": 0,
+        "expected_points_delta": 1,
+        "summary": "Improved RAG улучшил попадание в источники или покрытие ожидаемых пунктов."
+      }
+    },
+    {
+      "id": "q10",
+      "question": "Как связаны актуальный package и snapshot каждого завершённого дня?",
+      "expected_points": [
+        "Package содержит актуальный переиспользуемый функционал",
+        "Snapshot фиксирует самодостаточное состояние конкретного дня",
+        "Старые snapshots не синхронизируются с будущими изменениями package"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md"
+      ],
+      "plain_rag": {
+        "retrieved_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:docs-development-rules.md:0001",
+            "similarity_score": 0.83186,
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Разделение ответственности > Snapshots дней",
+            "line_range": [
+              11,
+              26
+            ],
+            "text_preview": "### Snapshots дней  Каталоги `weeks/week-XX/day-YY-topic/snapshot/` — исторические слепки.  После завершения дня snapshot считается неизменяемым.  Он сохраняет архитектуру, команды, зависимости и ограничения конкретного дня.  В snapshot могут оставаться старые CLI-команды, сценарии и runtime-результаты.  Новые улучшения актуального пакета не копируются в старые snapshots автоматически.  Исправление исторического snapshot допускается только по отдельной явной задаче. Если правится документация за"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-01-day-readmes.md:0009",
+            "similarity_score": 0.807217,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              64,
+              67
+            ],
+            "text_preview": "## Результаты  Результат задания представлен кодом в `snapshot/` и видео-отчётом. Отдельные Markdown-результаты для дня 1 не создавались."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:docs-development-rules.md:0000",
+            "similarity_score": 0.803587,
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Назначение документа",
+            "line_range": [
+              3,
+              8
+            ],
+            "text_preview": "## Назначение документа  Этот документ описывает текущее правило развития кода в `packages/`.  Он относится к актуальному AI harness и не меняет историю уже завершённых дней курса."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-02-day-readmes.md:0009",
+            "similarity_score": 0.801962,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              85,
+              88
+            ],
+            "text_preview": "## Результаты  Результат задания представлен самодостаточным snapshot и видео-отчётом. Отдельные файлы результатов для дня 6 не создавались."
+          }
+        ],
+        "answer": "На основе предоставленного контекста, актуальный package и snapshot каждого завершённого дня связаны следующим образом: snapshot является историческим слепком, который сохраняет архитектуру, команды, зависимости и ограничения конкретного дня. Новые улучшения актуального пакета не копируются в старые snapshots автоматически. Исправление исторического snapshot допускается только по отдельной явной задаче, и нельзя предлагать запуск исторического сценария через актуальный `packages/ai_advent_agent`.\n\n**Источники**\n- source: corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Разделение ответственности > Snapshots дней, chunk_id: structure:docs-development-rules.md:0001\n- source: corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Назначение документа, chunk_id: structure:docs-development-rules.md:0000",
+        "expected_sources_found": true,
+        "expected_points_covered": 1
+      },
+      "improved_rag": {
+        "original_question": "Как связаны актуальный package и snapshot каждого завершённого дня?",
+        "rewritten_query": "Как связаны актуальный package и snapshot каждого завершённого дня?",
+        "rewrite_mode": "heuristic",
+        "added_terms": [],
+        "retrieved_before_filter": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:docs-development-rules.md:0001",
+            "similarity_score": 0.83186,
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Разделение ответственности > Snapshots дней",
+            "line_range": [
+              11,
+              26
+            ],
+            "text_preview": "### Snapshots дней  Каталоги `weeks/week-XX/day-YY-topic/snapshot/` — исторические слепки.  После завершения дня snapshot считается неизменяемым.  Он сохраняет архитектуру, команды, зависимости и ограничения конкретного дня.  В snapshot могут оставаться старые CLI-команды, сценарии и runtime-результаты.  Новые улучшения актуального пакета не копируются в старые snapshots автоматически.  Исправление исторического snapshot допускается только по отдельной явной задаче. Если правится документация за"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:week-01-day-readmes.md:0009",
+            "similarity_score": 0.807217,
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              64,
+              67
+            ],
+            "text_preview": "## Результаты  Результат задания представлен кодом в `snapshot/` и видео-отчётом. Отдельные Markdown-результаты для дня 1 не создавались."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:docs-development-rules.md:0000",
+            "similarity_score": 0.803587,
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Назначение документа",
+            "line_range": [
+              3,
+              8
+            ],
+            "text_preview": "## Назначение документа  Этот документ описывает текущее правило развития кода в `packages/`.  Он относится к актуальному AI harness и не меняет историю уже завершённых дней курса."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-02-day-readmes.md:0009",
+            "similarity_score": 0.801962,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              85,
+              88
+            ],
+            "text_preview": "## Результаты  Результат задания представлен самодостаточным snapshot и видео-отчётом. Отдельные файлы результатов для дня 6 не создавались."
+          },
+          {
+            "rank": 5,
+            "chunk_id": "structure:week-02-day-readmes.md:0047",
+            "similarity_score": 0.791129,
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Day 10 — Context Management Strategies > Как запустить",
+            "line_range": [
+              503,
+              516
+            ],
+            "text_preview": "## Как запустить  Day-specific runner удалён из актуального package. Для воспроизведения сравнения используйте `Snapshot Day 10` ниже. Актуальный `packages/ai_advent_agent` остаётся интегрированным harness, а не runner-ом исторических day-specific сценариев; его общий CLI описан в `packages/docs/cli.md`.  Snapshot:  ```bash cd weeks/week-02/day-10-context-management-strategies/snapshot uv run day10-scenarios context-strategies-comparison ```"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "structure:week-04-day-readmes.md:0025",
+            "similarity_score": 0.786469,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 17 — Первый инструмент MCP > Как запустить > Snapshot Day 17 > Online/interactive агент",
+            "line_range": [
+              363,
+              366
+            ],
+            "text_preview": "#### Online/interactive агент  Online/interactive запуск snapshot-а не предусмотрен."
+          },
+          {
+            "rank": 7,
+            "chunk_id": "structure:week-04-day-readmes.md:0039",
+            "similarity_score": 0.786469,
+            "source": "corpus/week-04-day-readmes.md",
+            "title": "Public README документов Week 04",
+            "section": "Day 18 — Планировщик и фоновые задачи через MCP tools > Как запустить > Snapshot Day 18 > Online/interactive агент",
+            "line_range": [
+              582,
+              585
+            ],
+            "text_preview": "#### Online/interactive агент  Online/interactive запуск snapshot-а не предусмотрен."
+          },
+          {
+            "rank": 8,
+            "chunk_id": "structure:docs-cli.md:0000",
+            "similarity_score": 0.782083,
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Текущий entry point",
+            "line_range": [
+              3,
+              18
+            ],
+            "text_preview": "## Текущий entry point  Актуальный package устанавливает один пользовательский entry point:  ```text ai-advent-agent ```  Команда `ai-advent-scenarios` в `packages/` не поддерживается. Исторические day-specific runners сохранены в `weeks/**/snapshot/**` и не определяют интерфейс текущего harness.  Document indexing доступен как Python API `ai_advent_agent.rag`; отдельный current-package scenario CLI для Day 21 не добавлен. Historical demo запускается только из snapshot Day 21.  Практические безо"
+          }
+        ],
+        "filtered_or_reranked_chunks": [
+          {
+            "rank": 1,
+            "chunk_id": "structure:docs-development-rules.md:0001",
+            "similarity_score": 0.83186,
+            "final_rerank_score": 0.909003,
+            "score_components": {
+              "similarity_score": 0.83186,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.077143
+            },
+            "source": "corpus/docs-development-rules.md",
+            "title": "Правила развития актуального AI harness",
+            "section": "Правила развития актуального AI harness > Разделение ответственности > Snapshots дней",
+            "line_range": [
+              11,
+              26
+            ],
+            "text_preview": "### Snapshots дней  Каталоги `weeks/week-XX/day-YY-topic/snapshot/` — исторические слепки.  После завершения дня snapshot считается неизменяемым.  Он сохраняет архитектуру, команды, зависимости и ограничения конкретного дня.  В snapshot могут оставаться старые CLI-команды, сценарии и runtime-результаты.  Новые улучшения актуального пакета не копируются в старые snapshots автоматически.  Исправление исторического snapshot допускается только по отдельной явной задаче. Если правится документация за"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "structure:docs-cli.md:0000",
+            "similarity_score": 0.782083,
+            "final_rerank_score": 0.859226,
+            "score_components": {
+              "similarity_score": 0.782083,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.077143
+            },
+            "source": "corpus/docs-cli.md",
+            "title": "CLI актуального harness",
+            "section": "CLI актуального harness > Текущий entry point",
+            "line_range": [
+              3,
+              18
+            ],
+            "text_preview": "## Текущий entry point  Актуальный package устанавливает один пользовательский entry point:  ```text ai-advent-agent ```  Команда `ai-advent-scenarios` в `packages/` не поддерживается. Исторические day-specific runners сохранены в `weeks/**/snapshot/**` и не определяют интерфейс текущего harness.  Document indexing доступен как Python API `ai_advent_agent.rag`; отдельный current-package scenario CLI для Day 21 не добавлен. Historical demo запускается только из snapshot Day 21.  Практические безо"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "structure:week-01-day-readmes.md:0009",
+            "similarity_score": 0.807217,
+            "final_rerank_score": 0.858646,
+            "score_components": {
+              "similarity_score": 0.807217,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.051429
+            },
+            "source": "corpus/week-01-day-readmes.md",
+            "title": "Public README документов Week 01",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              64,
+              67
+            ],
+            "text_preview": "## Результаты  Результат задания представлен кодом в `snapshot/` и видео-отчётом. Отдельные Markdown-результаты для дня 1 не создавались."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "structure:week-02-day-readmes.md:0009",
+            "similarity_score": 0.801962,
+            "final_rerank_score": 0.853391,
+            "score_components": {
+              "similarity_score": 0.801962,
+              "source_bonus": 0.0,
+              "section_bonus": 0.0,
+              "keyword_bonus": 0.051429
+            },
+            "source": "corpus/week-02-day-readmes.md",
+            "title": "Public README документов Week 02",
+            "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+            "line_range": [
+              85,
+              88
+            ],
+            "text_preview": "## Результаты  Результат задания представлен самодостаточным snapshot и видео-отчётом. Отдельные файлы результатов для дня 6 не создавались."
+          }
+        ],
+        "rejected_chunk_ids": [],
+        "answer": "На основе предоставленного контекста, актуальный package и snapshot каждого завершённого дня связаны следующим образом: snapshot является историческим слепком, который сохраняет архитектуру, команды, зависимости и ограничения конкретного дня. Новые улучшения актуального пакета не копируются в старые snapshots автоматически. Исправление исторического snapshot допускается только по отдельной явной задаче, и нельзя предлагать запуск исторического сценария через актуальный `packages/ai_advent_agent`. Кроме того, исторические day-specific runners сохранены в `weeks/**/snapshot/**` и не определяют интерфейс текущего harness.\n\n**Источники**\n- source: corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Разделение ответственности > Snapshots дней, chunk_id: structure:docs-development-rules.md:0001\n- source: corpus/docs-cli.md, section: CLI актуального harness > Текущий entry point, chunk_id: structure:docs-cli.md:0000",
+        "expected_sources_found": true,
+        "expected_points_covered": 1,
+        "fallback_used": false
+      },
+      "comparison": {
+        "source_hit_delta": 0,
+        "expected_points_delta": 0,
+        "summary": "По deterministic-эвристике режимы дали одинаковый результат."
+      }
+    }
+  ],
+  "aggregate": {
+    "plain_expected_source_hits": 8,
+    "improved_expected_source_hits": 9,
+    "plain_expected_points_covered": 11,
+    "improved_expected_points_covered": 15,
+    "questions_improved": 3,
+    "questions_regressed": 2,
+    "questions_same": 5
+  },
+  "evaluation_notes": "Source hits и expected point coverage считаются deterministic-эвристикой; expected_sources не участвуют в production-like reranker."
+}

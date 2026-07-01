@@ -1,0 +1,74 @@
+{
+  "id": "q01",
+  "question": "Как запускать historical day-specific сценарии?",
+  "expected_points": [
+    "Запускать из snapshot соответствующего дня",
+    "Runtime artifacts хранить вне snapshot",
+    "Актуальный package не является historical runner"
+  ],
+  "expected_sources": [
+    "docs-development-rules.md"
+  ],
+  "retrieved_chunks": [
+    {
+      "rank": 1,
+      "chunk_id": "structure:docs-development-rules.md:0001",
+      "score": 0.750864,
+      "source": "corpus/docs-development-rules.md",
+      "title": "Правила развития актуального AI harness",
+      "section": "Правила развития актуального AI harness > Разделение ответственности > Snapshots дней",
+      "line_range": [
+        11,
+        26
+      ],
+      "text_preview": "### Snapshots дней  Каталоги `weeks/week-XX/day-YY-topic/snapshot/` — исторические слепки.  После завершения дня snapshot считается неизменяемым.  Он сохраняет архитектуру, команды, зависимости и ограничения конкретного дня.  В snapshot могут оставаться старые CLI-команды, сценарии и runtime-результ"
+    },
+    {
+      "rank": 2,
+      "chunk_id": "structure:week-02-day-readmes.md:0023",
+      "score": 0.744594,
+      "source": "corpus/week-02-day-readmes.md",
+      "title": "Public README документов Week 02",
+      "section": "Day 08 — Tokens Accounting > Цель задания",
+      "line_range": [
+        213,
+        216
+      ],
+      "text_preview": "## Цель задания  Сделать контекст агента наблюдаемым: считать токены текущего запроса, истории и ответа, оценивать стоимость и проверять поведение при переполнении контекстного окна."
+    },
+    {
+      "rank": 3,
+      "chunk_id": "structure:week-02-day-readmes.md:0013",
+      "score": 0.74365,
+      "source": "corpus/week-02-day-readmes.md",
+      "title": "Public README документов Week 02",
+      "section": "Day 07 — Save Context > Цель задания",
+      "line_range": [
+        120,
+        123
+      ],
+      "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+    },
+    {
+      "rank": 4,
+      "chunk_id": "structure:week-01-day-readmes.md:0039",
+      "score": 0.716039,
+      "source": "corpus/week-01-day-readmes.md",
+      "title": "Public README документов Week 01",
+      "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+      "line_range": [
+        287,
+        291
+      ],
+      "text_preview": "## Результаты  - [Сырой отчёт запуска](results/day4_temperature_results_20260607_215421.md) - [Заполненный отчёт со сравнением](results/day4_temperature_results_20260607_215421_filled.md)"
+    }
+  ],
+  "baseline_answer": "Для точного ответа на ваш вопрос о запуске **historical day-specific сценариев** мне не хватает доступа к внутренней документации, структуре папок или конфигурации вашего конкретного проекта.\n\nОднако, исходя из общей практики работы с такими сценариями (например, в тестировании, аналитике или ETL-процессах), могу описать **наиболее вероятные способы**, которые используются в подобных системах. Пожалуйста, уточните детали вашего проекта, если это не то, что вы ищете.\n\n**Типичные варианты запуска (без привязки к вашему проекту):**\n\n1.  **Через аргументы командной строки (CLI):**\n    Чаще всего сценарий принимает дату как параметр.\n    ```bash\n    python run_scenario.py --date 2024-01-15\n    # или\n    ./run_historical.sh 2024-01-15\n    ```\n\n2.  **Через переменные окружения:**\n    Дата может быть задана до запуска.\n    ```bash\n    export SCENARIO_DATE=2024-01-15\n    python run_scenario.py\n    ```\n\n3.  **Через конфигурационный файл (YAML/JSON):**\n    В файле `config.yaml` указывается целевая дата, и сценарий читает её оттуда.\n    ```yaml\n    # config.yaml\n    historical_date: \"2024-01-15\"\n    ```\n\n4.  **Через API или веб-интерфейс (если проект имеет UI):**\n    Запрос к эндпоинту с параметром даты:\n    ```\n    POST /api/run/historical\n    Body: { \"date\": \"2024-01-15\" }\n    ```\n\n5.  **Автоматически (по расписанию):**\n    Если сценарий запускается для \"вчерашнего\" дня или по крону, он может сам вычислять дату (например, `today - 1`).\n\n**Что делать, если ни один из вариантов не подходит?**\n\nПожалуйста, уточните:\n- Какой язык/фреймворк используется (Python, Java, Airflow, dbt)?\n- Есть ли у вас файл `README.md` или `Makefile` в корне проекта?\n- Как обычно запускаются другие сценарии в этом проекте?\n\nБез этих данных я могу лишь предполагать общие шаблоны.",
+  "rag_answer": "На основе предоставленного контекста, для запуска historical day-specific сценариев необходимо использовать snapshot-local сценарии. Нельзя предлагать запуск исторического сценария через актуальный `packages/ai_advent_agent`. Если правится документация запуска, day-specific offline/online/video сценарии должны оставаться snapshot-local.\n\n**Источники:**\n- source: corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Разделение ответственности > Snapshots дней, chunk_id: structure:docs-development-rules.md:0001",
+  "quality": {
+    "baseline_expected_points_covered": 0,
+    "rag_expected_points_covered": 0,
+    "expected_sources_found": true,
+    "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+  }
+}

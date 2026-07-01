@@ -1,0 +1,41 @@
+{
+  "created_at": "2026-07-01T12:43:10.502809+00:00",
+  "embedding_backend": "ollama",
+  "embedding_model": "nomic-embed-text",
+  "llm_provider": "deepseek",
+  "llm_model": "deepseek-v4-flash",
+  "artifacts": [
+    "index-manifest.json",
+    "rag-comparison.json",
+    "rag-comparison.md",
+    "sample-rag-answer.json",
+    "structure-index.json",
+    "structure-index.sqlite3"
+  ],
+  "index": {
+    "strategy": "structure",
+    "embedding_backend": "ollama",
+    "embedding_model": "nomic-embed-text",
+    "embedding_dim": 768,
+    "created_at": "2026-07-01T12:41:34.725017+00:00",
+    "document_count": 11,
+    "chunk_count": 336,
+    "sources": [
+      "corpus/README.md",
+      "corpus/day-21-document-indexing-readme.md",
+      "corpus/docs-cli.md",
+      "corpus/docs-development-rules.md",
+      "corpus/docs-examples.md",
+      "corpus/package-readme.md",
+      "corpus/project-readme.md",
+      "corpus/week-01-day-readmes.md",
+      "corpus/week-02-day-readmes.md",
+      "corpus/week-03-day-readmes.md",
+      "corpus/week-04-day-readmes.md"
+    ],
+    "settings": {
+      "max_chunk_size": 2400,
+      "overlap": 200
+    }
+  }
+}

@@ -1,0 +1,779 @@
+{
+  "settings": {
+    "corpus_dir": "../corpus",
+    "index_json": "../artifacts/structure-index.json",
+    "embedding_backend": "ollama",
+    "embedding_model": "nomic-embed-text",
+    "llm_provider": "deepseek",
+    "llm_model": "deepseek-v4-flash",
+    "top_k": 4
+  },
+  "index": {
+    "strategy": "structure",
+    "embedding_backend": "ollama",
+    "embedding_model": "nomic-embed-text",
+    "embedding_dim": 768,
+    "created_at": "2026-07-01T12:41:34.725017+00:00",
+    "document_count": 11,
+    "chunk_count": 336,
+    "sources": [
+      "corpus/README.md",
+      "corpus/day-21-document-indexing-readme.md",
+      "corpus/docs-cli.md",
+      "corpus/docs-development-rules.md",
+      "corpus/docs-examples.md",
+      "corpus/package-readme.md",
+      "corpus/project-readme.md",
+      "corpus/week-01-day-readmes.md",
+      "corpus/week-02-day-readmes.md",
+      "corpus/week-03-day-readmes.md",
+      "corpus/week-04-day-readmes.md"
+    ],
+    "settings": {
+      "max_chunk_size": 2400,
+      "overlap": 200
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "question": "Как запускать historical day-specific сценарии?",
+      "expected_points": [
+        "Запускать из snapshot соответствующего дня",
+        "Runtime artifacts хранить вне snapshot",
+        "Актуальный package не является historical runner"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:docs-development-rules.md:0001",
+          "score": 0.750864,
+          "source": "corpus/docs-development-rules.md",
+          "title": "Правила развития актуального AI harness",
+          "section": "Правила развития актуального AI harness > Разделение ответственности > Snapshots дней",
+          "line_range": [
+            11,
+            26
+          ],
+          "text_preview": "### Snapshots дней  Каталоги `weeks/week-XX/day-YY-topic/snapshot/` — исторические слепки.  После завершения дня snapshot считается неизменяемым.  Он сохраняет архитектуру, команды, зависимости и ограничения конкретного дня.  В snapshot могут оставаться старые CLI-команды, сценарии и runtime-результ"
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:week-02-day-readmes.md:0023",
+          "score": 0.744594,
+          "source": "corpus/week-02-day-readmes.md",
+          "title": "Public README документов Week 02",
+          "section": "Day 08 — Tokens Accounting > Цель задания",
+          "line_range": [
+            213,
+            216
+          ],
+          "text_preview": "## Цель задания  Сделать контекст агента наблюдаемым: считать токены текущего запроса, истории и ответа, оценивать стоимость и проверять поведение при переполнении контекстного окна."
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:week-02-day-readmes.md:0013",
+          "score": 0.74365,
+          "source": "corpus/week-02-day-readmes.md",
+          "title": "Public README документов Week 02",
+          "section": "Day 07 — Save Context > Цель задания",
+          "line_range": [
+            120,
+            123
+          ],
+          "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:week-01-day-readmes.md:0039",
+          "score": 0.716039,
+          "source": "corpus/week-01-day-readmes.md",
+          "title": "Public README документов Week 01",
+          "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+          "line_range": [
+            287,
+            291
+          ],
+          "text_preview": "## Результаты  - [Сырой отчёт запуска](results/day4_temperature_results_20260607_215421.md) - [Заполненный отчёт со сравнением](results/day4_temperature_results_20260607_215421_filled.md)"
+        }
+      ],
+      "baseline_answer": "Для точного ответа на ваш вопрос о запуске **historical day-specific сценариев** мне не хватает доступа к внутренней документации, структуре папок или конфигурации вашего конкретного проекта.\n\nОднако, исходя из общей практики работы с такими сценариями (например, в тестировании, аналитике или ETL-процессах), могу описать **наиболее вероятные способы**, которые используются в подобных системах. Пожалуйста, уточните детали вашего проекта, если это не то, что вы ищете.\n\n**Типичные варианты запуска (без привязки к вашему проекту):**\n\n1.  **Через аргументы командной строки (CLI):**\n    Чаще всего сценарий принимает дату как параметр.\n    ```bash\n    python run_scenario.py --date 2024-01-15\n    # или\n    ./run_historical.sh 2024-01-15\n    ```\n\n2.  **Через переменные окружения:**\n    Дата может быть задана до запуска.\n    ```bash\n    export SCENARIO_DATE=2024-01-15\n    python run_scenario.py\n    ```\n\n3.  **Через конфигурационный файл (YAML/JSON):**\n    В файле `config.yaml` указывается целевая дата, и сценарий читает её оттуда.\n    ```yaml\n    # config.yaml\n    historical_date: \"2024-01-15\"\n    ```\n\n4.  **Через API или веб-интерфейс (если проект имеет UI):**\n    Запрос к эндпоинту с параметром даты:\n    ```\n    POST /api/run/historical\n    Body: { \"date\": \"2024-01-15\" }\n    ```\n\n5.  **Автоматически (по расписанию):**\n    Если сценарий запускается для \"вчерашнего\" дня или по крону, он может сам вычислять дату (например, `today - 1`).\n\n**Что делать, если ни один из вариантов не подходит?**\n\nПожалуйста, уточните:\n- Какой язык/фреймворк используется (Python, Java, Airflow, dbt)?\n- Есть ли у вас файл `README.md` или `Makefile` в корне проекта?\n- Как обычно запускаются другие сценарии в этом проекте?\n\nБез этих данных я могу лишь предполагать общие шаблоны.",
+      "rag_answer": "На основе предоставленного контекста, для запуска historical day-specific сценариев необходимо использовать snapshot-local сценарии. Нельзя предлагать запуск исторического сценария через актуальный `packages/ai_advent_agent`. Если правится документация запуска, day-specific offline/online/video сценарии должны оставаться snapshot-local.\n\n**Источники:**\n- source: corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Разделение ответственности > Snapshots дней, chunk_id: structure:docs-development-rules.md:0001",
+      "quality": {
+        "baseline_expected_points_covered": 0,
+        "rag_expected_points_covered": 0,
+        "expected_sources_found": true,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    },
+    {
+      "id": "q02",
+      "question": "Почему day-specific сценарии не должны запускаться из актуального package?",
+      "expected_points": [
+        "Актуальный package является интегрированным развивающимся harness",
+        "Историческую воспроизводимость обеспечивает snapshot",
+        "В package не нужен ai-advent-scenarios"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:week-02-day-readmes.md:0047",
+          "score": 0.82422,
+          "source": "corpus/week-02-day-readmes.md",
+          "title": "Public README документов Week 02",
+          "section": "Day 10 — Context Management Strategies > Как запустить",
+          "line_range": [
+            503,
+            516
+          ],
+          "text_preview": "## Как запустить  Day-specific runner удалён из актуального package. Для воспроизведения сравнения используйте `Snapshot Day 10` ниже. Актуальный `packages/ai_advent_agent` остаётся интегрированным harness, а не runner-ом исторических day-specific сценариев; его общий CLI описан в `packages/docs/cli"
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:week-03-day-readmes.md:0052",
+          "score": 0.797955,
+          "source": "corpus/week-03-day-readmes.md",
+          "title": "Public README документов Week 03",
+          "section": "Day 14 — State Invariants > Как запустить > Актуальный пакет > Offline-сценарий",
+          "line_range": [
+            976,
+            980
+          ],
+          "text_preview": "#### Offline-сценарий  Day-specific offline runner удалён из актуального package. Текущие invariants проверяются package tests; историческую демонстрацию запускайте из `Snapshot Day 14` ниже."
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:week-03-day-readmes.md:0024",
+          "score": 0.797715,
+          "source": "corpus/week-03-day-readmes.md",
+          "title": "Public README документов Week 03",
+          "section": "Day 12 — Персонализация ассистента > Как запустить > Актуальный пакет > Offline-сценарий",
+          "line_range": [
+            502,
+            506
+          ],
+          "text_preview": "#### Offline-сценарий  Day-specific offline runner удалён из актуального package. Текущие profile APIs проверяются package tests; историческую демонстрацию запускайте из `Snapshot Day 12` ниже."
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:week-03-day-readmes.md:0066",
+          "score": 0.795732,
+          "source": "corpus/week-03-day-readmes.md",
+          "title": "Public README документов Week 03",
+          "section": "Day 15 — Контролируемые переходы состояний > Как запустить > Актуальный пакет > Offline-сценарий",
+          "line_range": [
+            1215,
+            1219
+          ],
+          "text_preview": "#### Offline-сценарий  Day-specific offline runner удалён из актуального package. Текущие controlled transitions проверяются package tests; историческую демонстрацию запускайте из `Snapshot Day 15` ниже."
+        }
+      ],
+      "baseline_answer": "Поскольку у меня нет доступа к внутренней базе знаний вашего проекта, я не могу назвать точные причины, установленные в вашей команде. Однако, исходя из общей практики разработки, могу предположить наиболее вероятные объяснения. Пожалуйста, уточните их у коллег или в документации проекта.\n\n**Наиболее вероятные причины (требуют верификации в вашем проекте):**\n\n1.  **Конфликт версий и зависимостей:** Актуальный `package` (например, `package.json` или собранный пакет) обычно содержит последние стабильные версии библиотек. Day-specific сценарии могут требовать специфических, возможно, устаревших зависимостей, которые несовместимы с текущим набором пакетов. Запуск из актуального `package` может привести к ошибкам выполнения из-за несоответствия API.\n\n2.  **Изоляция и воспроизводимость:** Day-specific сценарии часто привязаны к конкретной дате (например, для обработки данных за определённый день). Чтобы гарантировать, что результат будет идентичным при повторном запуске (даже если основной код изменился), их изолируют от текущей версии пакета. Запуск из актуального `package` нарушил бы эту изоляцию.\n\n3.  **Безопасность и стабильность:** Актуальный `package` может содержать незавершённые или экспериментальные изменения. Запуск day-specific сценариев (которые могут влиять на продуктивные данные) из такого окружения рискован. Обычно для них используют зафиксированную, проверенную версию пакета.\n\n4.  **Логика развёртывания (CI/CD):** В вашем пайплайне может быть настроено так, что day-specific сценарии запускаются из специального артефакта (например, образа Docker с тегом даты), а не из текущего `master`/`main`. Это сделано для того, чтобы не блокировать релизный цикл основного пакета.\n\n**Рекомендация:** Проверьте документацию в репозитории (файлы `README`, `CONTRIBUTING` или `ARCHITECTURE`) или спросите у тимлида/архитектора проекта. Без доступа к вашей базе знаний я не могу дать точный ответ.",
+      "rag_answer": "На основе предоставленного контекста, day-specific сценарии не должны запускаться из актуального package, потому что актуальный `packages/ai_advent_agent` остаётся интегрированным harness, а не runner-ом исторических day-specific сценариев (источник: corpus/week-02-day-readmes.md, section: Day 10 — Context Management Strategies > Как запустить, chunk_id: structure:week-02-day-readmes.md:0047). Кроме того, day-specific runner (или offline runner) удалён из актуального package, и текущие проверки выполняются package tests, а историческую демонстрацию следует запускать из соответствующего Snapshot (источники: corpus/week-03-day-readmes.md, section: Day 14 — State Invariants > Как запустить > Актуальный пакет > Offline-сценарий, chunk_id: structure:week-03-day-readmes.md:0052; corpus/week-03-day-readmes.md, section: Day 12 — Персонализация ассистента > Как запустить > Актуальный пакет > Offline-сценарий, chunk_id: structure:week-03-day-readmes.md:0024; corpus/week-03-day-readmes.md, section: Day 15 — Контролируемые переходы состояний > Как запустить > Актуальный пакет > Offline-сценарий, chunk_id: structure:week-03-day-readmes.md:0066).\n\n**Источники**:\n- corpus/week-02-day-readmes.md, section: Day 10 — Context Management Strategies > Как запустить, chunk_id: structure:week-02-day-readmes.md:0047\n- corpus/week-03-day-readmes.md, section: Day 14 — State Invariants > Как запустить > Актуальный пакет > Offline-сценарий, chunk_id: structure:week-03-day-readmes.md:0052\n- corpus/week-03-day-readmes.md, section: Day 12 — Персонализация ассистента > Как запустить > Актуальный пакет > Offline-сценарий, chunk_id: structure:week-03-day-readmes.md:0024\n- corpus/week-03-day-readmes.md, section: Day 15 — Контролируемые переходы состояний > Как запустить > Актуальный пакет > Offline-сценарий, chunk_id: structure:week-03-day-readmes.md:0066",
+      "quality": {
+        "baseline_expected_points_covered": 0,
+        "rag_expected_points_covered": 2,
+        "expected_sources_found": false,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    },
+    {
+      "id": "q03",
+      "question": "Какие проверки нужно запускать перед сдачей изменений с Python-кодом?",
+      "expected_points": [
+        "Запустить make check",
+        "Запустить make safety",
+        "Проверить Python-модули через py_compile"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:week-01-day-readmes.md:0002",
+          "score": 0.784579,
+          "source": "corpus/week-01-day-readmes.md",
+          "title": "Public README документов Week 01",
+          "section": "Day 01 — LLM REST API > Исходное условие",
+          "line_range": [
+            12,
+            29
+          ],
+          "text_preview": "## Исходное условие  🔥 День 1. Первый запрос к LLM через API  СНАЧАЛА ПОСМОТРИТЕ ВИДЕО  Напишите минимальный код, который:  - отправляет запрос в LLM через API; - получает ответ; - выводит его в консоль или простой интерфейс (CLI / Web).  Результат: код, который отправляет запрос в LLM через API и п"
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:week-02-day-readmes.md:0013",
+          "score": 0.778409,
+          "source": "corpus/week-02-day-readmes.md",
+          "title": "Public README документов Week 02",
+          "section": "Day 07 — Save Context > Цель задания",
+          "line_range": [
+            120,
+            123
+          ],
+          "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:week-04-day-readmes.md:0003",
+          "score": 0.773367,
+          "source": "corpus/week-04-day-readmes.md",
+          "title": "Public README документов Week 04",
+          "section": "Day 16 — Подключение MCP > Цель задания",
+          "line_range": [
+            37,
+            43
+          ],
+          "text_preview": "## Цель задания  Научиться подключать Python-клиент к публичному remote MCP server, выполнять protocol initialization и получать список tools через discovery. Day 16 проверяет только транспорт и `tools/list`: инструменты не вызываются, LLM API не используется, собственный MCP server не создаётся."
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:week-02-day-readmes.md:0023",
+          "score": 0.770605,
+          "source": "corpus/week-02-day-readmes.md",
+          "title": "Public README документов Week 02",
+          "section": "Day 08 — Tokens Accounting > Цель задания",
+          "line_range": [
+            213,
+            216
+          ],
+          "text_preview": "## Цель задания  Сделать контекст агента наблюдаемым: считать токены текущего запроса, истории и ответа, оценивать стоимость и проверять поведение при переполнении контекстного окна."
+        }
+      ],
+      "baseline_answer": "Поскольку у меня нет доступа к внутренней базе знаний вашего проекта, я не могу назвать точные команды или скрипты, которые используются именно у вас. Однако, основываясь на общепринятой практике для Python-проектов, перед сдачей изменений (commit/push) обычно рекомендуется запускать следующие проверки:\n\n1.  **Линтер (Linter):** Проверка стиля кода (например, `flake8`, `pylint`, `ruff`).\n2.  **Форматтер (Formatter):** Проверка или автоматическое приведение кода к единому стилю (например, `black`, `isort` для сортировки импортов).\n3.  **Статический анализатор типов (Type checker):** Проверка корректности аннотаций типов (например, `mypy`, `pyright`).\n4.  **Модульные тесты (Unit tests):** Запуск существующих тестов (обычно через `pytest` или `unittest`).\n5.  **Интеграционные тесты (если применимо):** Проверка взаимодействия компонентов.\n\n**Важно:** Точный набор команд, их конфигурация и необходимость запуска всех пунктов зависят от настроек вашего конкретного репозитория (например, файлов `pyproject.toml`, `setup.cfg`, `.pre-commit-config.yaml` или CI-конфигурации). Рекомендую уточнить актуальный список у вашей команды или в документации проекта.",
+      "rag_answer": "Найденных источников недостаточно.\n\n**Источники**\n- corpus/week-01-day-readmes.md, section: Day 01 — LLM REST API > Исходное условие, chunk_id: structure:week-01-day-readmes.md:0002\n- corpus/week-02-day-readmes.md, section: Day 07 — Save Context > Цель задания, chunk_id: structure:week-02-day-readmes.md:0013\n- corpus/week-04-day-readmes.md, section: Day 16 — Подключение MCP > Цель задания, chunk_id: structure:week-04-day-readmes.md:0003\n- corpus/week-02-day-readmes.md, section: Day 08 — Tokens Accounting > Цель задания, chunk_id: structure:week-02-day-readmes.md:0023",
+      "quality": {
+        "baseline_expected_points_covered": 0,
+        "rag_expected_points_covered": 0,
+        "expected_sources_found": false,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    },
+    {
+      "id": "q04",
+      "question": "Какие приватные и временные материалы нельзя включать в public export?",
+      "expected_points": [
+        "Не публиковать learning notes и memory-bank",
+        "Не публиковать codex-log и секреты",
+        "Не публиковать .tmp cache и runtime state"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:week-04-day-readmes.md:0080",
+          "score": 0.719541,
+          "source": "corpus/week-04-day-readmes.md",
+          "title": "Public README документов Week 04",
+          "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки",
+          "line_range": [
+            1250,
+            1258
+          ],
+          "text_preview": "### 13. Финальные проверки  ```bash make clean make check make safety python scripts/export_public.py --dry-run ```"
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:docs-development-rules.md:0000",
+          "score": 0.71518,
+          "source": "corpus/docs-development-rules.md",
+          "title": "Правила развития актуального AI harness",
+          "section": "Правила развития актуального AI harness > Назначение документа",
+          "line_range": [
+            3,
+            8
+          ],
+          "text_preview": "## Назначение документа  Этот документ описывает текущее правило развития кода в `packages/`.  Он относится к актуальному AI harness и не меняет историю уже завершённых дней курса."
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:week-01-day-readmes.md:0043",
+          "score": 0.710625,
+          "source": "corpus/week-01-day-readmes.md",
+          "title": "Public README документов Week 01",
+          "section": "Day 05 — Model Versions > Цель задания",
+          "line_range": [
+            329,
+            332
+          ],
+          "text_preview": "## Цель задания  Научиться сравнивать модели не только по качеству текста, но и по задержке, расходу токенов и стоимости."
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:week-02-day-readmes.md:0013",
+          "score": 0.710082,
+          "source": "corpus/week-02-day-readmes.md",
+          "title": "Public README документов Week 02",
+          "section": "Day 07 — Save Context > Цель задания",
+          "line_range": [
+            120,
+            123
+          ],
+          "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+        }
+      ],
+      "baseline_answer": "Поскольку у меня нет доступа к внутренней базе знаний вашего проекта, я не могу назвать точный перечень правил или файлов, действующих в вашей системе. Однако, основываясь на общих принципах безопасности и управления данными, в публичный экспорт (public export) **не следует включать** следующие категории приватных и временных материалов (если они присутствуют в проекте):\n\n1.  **Персональные данные (PII):** Имена, адреса, email, номера телефонов, IP-адреса пользователей или сотрудников.\n2.  **Учётные данные и ключи доступа:** Пароли, токены API, SSH-ключи, сертификаты, строки подключения к базам данных.\n3.  **Временные файлы и кэш:** Файлы с расширениями `.tmp`, `.log`, `.cache`, `*.swp`, а также содержимое папок `temp/`, `logs/`, `node_modules/` (если они не являются частью дистрибутива).\n4.  **Конфиденциальная бизнес-логика:** Внутренние алгоритмы, неопубликованные паттерны, секретные ключи шифрования.\n5.  **Черновики и незавершённые материалы:** Документы с пометками «DRAFT», «WIP», «REVIEW», внутренние комментарии, трекеры изменений, содержащие критику или планы.\n6.  **Внутренняя переписка и метаданные:** Логи чатов, комментарии в коде, содержащие упоминания о нераскрытых уязвимостях или внутренних политиках.\n7.  **Файлы конфигурации окружения:** Файлы `.env`, `config.local.*`, `*.secret.*`, которые могут содержать настройки для staging/production сред.\n\n**Важно:** Точный состав запрещённых материалов определяется политикой вашего проекта. Если вы не уверены, рекомендуется провести аудит экспорта на предмет наличия перечисленных типов данных.",
+      "rag_answer": "Найденных источников недостаточно.\n\n**Источники**  \n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки, chunk_id: structure:week-04-day-readmes.md:0080  \n- corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Назначение документа, chunk_id: structure:docs-development-rules.md:0000  \n- corpus/week-01-day-readmes.md, section: Day 05 — Model Versions > Цель задания, chunk_id: structure:week-01-day-readmes.md:0043  \n- corpus/week-02-day-readmes.md, section: Day 07 — Save Context > Цель задания, chunk_id: structure:week-02-day-readmes.md:0013",
+      "quality": {
+        "baseline_expected_points_covered": 0,
+        "rag_expected_points_covered": 0,
+        "expected_sources_found": true,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    },
+    {
+      "id": "q05",
+      "question": "Какие metadata сохраняются для chunk в локальном document index?",
+      "expected_points": [
+        "source title и section",
+        "chunk_id и стратегия chunking",
+        "line range и hash источника"
+      ],
+      "expected_sources": [
+        "day-21-document-indexing-readme.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:day-21-document-indexing-readme.md:0002",
+          "score": 0.878315,
+          "source": "corpus/day-21-document-indexing-readme.md",
+          "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+          "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk",
+          "line_range": [
+            24,
+            39
+          ],
+          "text_preview": "## Metadata каждого chunk  Каждая индексная запись хранит:  - `source` — относительный путь исходного документа; - `title` и `section` — заголовок документа и структурный путь раздела; - стабильный `chunk_id` и порядковый `chunk_index`; - `strategy` — `fixed` или `structure`; - `source_sha256` — has"
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+          "score": 0.767544,
+          "source": "corpus/day-21-document-indexing-readme.md",
+          "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+          "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+          "line_range": [
+            7,
+            23
+          ],
+          "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отде"
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:docs-cli.md:0013",
+          "score": 0.74493,
+          "source": "corpus/docs-cli.md",
+          "title": "CLI актуального harness",
+          "section": "CLI актуального harness > Интерактивный режим и slash-команды",
+          "line_range": [
+            356,
+            362
+          ],
+          "text_preview": "## Интерактивный режим и slash-команды  В колонке `current status` используются значения `active`, `group`, `compatibility` и `hidden`. Колонка `target status` фиксирует ранее принятое migration-намерение для slash aliases: `keep`, `rename`, `merge`, `remove` или `needs-docs`. Этот inventory не меня"
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:README.md:0002",
+          "score": 0.738237,
+          "source": "corpus/README.md",
+          "title": "Corpus Day 22",
+          "section": "Corpus Day 22 > Объём",
+          "line_range": [
+            22,
+            34
+          ],
+          "text_preview": "## Объём  - Документов с основным содержимым: 10. - Символов: 187,330. - Слов: 21,994. - Грубая оценка при 500 словах на страницу: 44.0 страницы.  `README.md` также индексируется как manifest corpus. Snapshot Day 22 использует эту локальную копию напрямую; для воспроизведения не нужны файлы других д"
+        }
+      ],
+      "baseline_answer": "Для ответа на ваш вопрос о metadata, сохраняемых для chunk в локальном document index, у меня нет доступа к внутренней базе знаний этого конкретного проекта. Без точных данных о реализации (например, какая библиотека или фреймворк используется — LangChain, LlamaIndex, собственное решение) я не могу назвать точный набор полей.\n\nОднако, основываясь на общей практике в подобных системах, можно предположить, что типичные metadata для chunk включают:\n- **source** (источник: имя файла, URL или идентификатор документа)\n- **page_number** или **section** (номер страницы/раздела, если применимо)\n- **chunk_index** (порядковый номер чанка в документе)\n- **timestamp** (время индексации)\n- **embedding_model** (используемая модель эмбеддингов, если это фиксируется)\n\n**Важно:** Это лишь общие предположения. Для точного ответа необходимо обратиться к документации или коду вашего проекта. Если вы укажете, какая именно библиотека или фреймворк используется, я смогу дать более конкретный ответ (но без доступа к внутренней базе знаний проекта).",
+      "rag_answer": "На основе предоставленного контекста, для chunk в локальном document index сохраняются следующие metadata:\n\n- `source` — относительный путь исходного документа;\n- `title` и `section` — заголовок документа и структурный путь раздела;\n- стабильный `chunk_id` и порядковый `chunk_index`;\n- `strategy` — `fixed` или `structure`;\n- `source_sha256` — hash исходного документа;\n- `start_line` и `end_line` — line range фрагмента;\n- `char_count` и `word_count`;\n- текст chunk и embedding vector.\n\n**Источники**:\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk, chunk_id: structure:day-21-document-indexing-readme.md:0002",
+      "quality": {
+        "baseline_expected_points_covered": 1,
+        "rag_expected_points_covered": 2,
+        "expected_sources_found": true,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    },
+    {
+      "id": "q06",
+      "question": "Чем fixed-size chunking отличается от structure-aware chunking?",
+      "expected_points": [
+        "Fixed-size режет по ограничению размера и overlap",
+        "Structure-aware учитывает заголовки Markdown и блоки Python",
+        "Structure-aware сохраняет section metadata"
+      ],
+      "expected_sources": [
+        "day-21-document-indexing-readme.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+          "score": 0.803372,
+          "source": "corpus/day-21-document-indexing-readme.md",
+          "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+          "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+          "line_range": [
+            7,
+            23
+          ],
+          "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отде"
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:day-21-document-indexing-readme.md:0002",
+          "score": 0.757357,
+          "source": "corpus/day-21-document-indexing-readme.md",
+          "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+          "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Metadata каждого chunk",
+          "line_range": [
+            24,
+            39
+          ],
+          "text_preview": "## Metadata каждого chunk  Каждая индексная запись хранит:  - `source` — относительный путь исходного документа; - `title` и `section` — заголовок документа и структурный путь раздела; - стабильный `chunk_id` и порядковый `chunk_index`; - `strategy` — `fixed` или `structure`; - `source_sha256` — has"
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:week-03-day-readmes.md:0012",
+          "score": 0.698198,
+          "source": "corpus/week-03-day-readmes.md",
+          "title": "Public README документов Week 03",
+          "section": "Day 11 — Memory Layers > Сценарий демонстрации для видео > C. Демонстрация интерактивного агента и меню команд",
+          "line_range": [
+            259,
+            312
+          ],
+          "text_preview": "10. Ввести `/memory set ` и показать, что argument completion предлагает `working` и `long`.     После выбора `working` строка становится `/memory set working `, дальше key-value вводится     вручную. 11. Ввести `/memory reset ` и показать, что argument completion предлагает `working` и     `all --y"
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:docs-cli.md:0013",
+          "score": 0.685154,
+          "source": "corpus/docs-cli.md",
+          "title": "CLI актуального harness",
+          "section": "CLI актуального harness > Интерактивный режим и slash-команды",
+          "line_range": [
+            356,
+            362
+          ],
+          "text_preview": "## Интерактивный режим и slash-команды  В колонке `current status` используются значения `active`, `group`, `compatibility` и `hidden`. Колонка `target status` фиксирует ранее принятое migration-намерение для slash aliases: `keep`, `rename`, `merge`, `remove` или `needs-docs`. Этот inventory не меня"
+        }
+      ],
+      "baseline_answer": "Для ответа на ваш вопрос о различиях между **fixed-size chunking** (разбиение на фрагменты фиксированного размера) и **structure-aware chunking** (разбиение с учётом структуры) я могу опираться только на общеизвестные концепции в области обработки текстов и RAG-систем, так как у меня нет доступа к внутренней базе знаний вашего проекта.\n\n**Fixed-size chunking** — это метод, при котором текст делится на фрагменты (чанки) строго определённой длины, например, по количеству символов, слов или токенов. Границы фрагментов часто не совпадают с логическими границами предложений или абзацев, что может приводить к разрыву смысловых блоков.\n\n**Structure-aware chunking** — это подход, при котором разбиение текста происходит с учётом его естественной структуры: по предложениям, абзацам, заголовкам, разделам или другим семантическим единицам. Цель — сохранить целостность смысловых блоков и контекста.\n\n**Основные различия:**\n\n1.  **Принцип деления:** Fixed-size использует жёсткую границу по длине; structure-aware — по логическим или структурным маркерам текста.\n2.  **Целостность контекста:** Fixed-size может разрывать предложения или мысли на середине, что ухудшает качество поиска и ответов. Structure-aware стремится сохранить смысловую законченность фрагментов.\n3.  **Гибкость размера:** В fixed-size все чанки примерно одинаковы по длине. В structure-aware размер чанков может варьироваться в зависимости от длины абзацев или разделов.\n4.  **Сложность реализации:** Fixed-size проще и быстрее реализовать. Structure-aware требует анализа структуры документа (например, парсинга Markdown, HTML, PDF или использования NLP для определения границ предложений).\n\n**Когда что применять (общие рекомендации):**\n- Fixed-size часто используется для простых задач или когда структура документа неизвестна/нерегулярна.\n- Structure-aware предпочтительнее для документов с чёткой иерархией (статьи, документация, юридические тексты), где важно сохранить логику разделов.\n\nЕсли в вашем проекте используются какие-то специфические внутренние правила или команды для этих методов, я не могу их назвать, так как они не являются общеизвестными. Для точного ответа по вашему проекту необходимо обратиться к его документации или исходному коду.",
+      "rag_answer": "Fixed-size chunking использует окно до 1600 символов и overlap 200 символов, граница по возможности переносится на конец строки. Эта стратегия проста и даёт сравнительно равномерные chunks, но может разрезать смысловой раздел или объединить соседние темы. Structure-aware chunking учитывает Markdown headings, top-level Python `class` / `def` и границы paragraphs, для Markdown сохраняется полный section path, а слишком крупные sections дополнительно режутся до 2400 символов с overlap 200. Эта стратегия лучше сохраняет смысловые границы документации и более информативную section metadata.\n\n**Источники**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации, chunk_id: structure:day-21-document-indexing-readme.md:0001",
+      "quality": {
+        "baseline_expected_points_covered": 0,
+        "rag_expected_points_covered": 2,
+        "expected_sources_found": true,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    },
+    {
+      "id": "q07",
+      "question": "Зачем нужен hash embedding backend и почему он не заменяет semantic model?",
+      "expected_points": [
+        "Hash backend deterministic и подходит для tests offline smoke",
+        "Он использует feature hashing",
+        "Он не является качественной semantic embedding model"
+      ],
+      "expected_sources": [
+        "day-21-document-indexing-readme.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:day-21-document-indexing-readme.md:0003",
+          "score": 0.892158,
+          "source": "corpus/day-21-document-indexing-readme.md",
+          "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+          "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Embedding backends",
+          "line_range": [
+            40,
+            51
+          ],
+          "text_preview": "## Embedding backends  Основной semantic backend для учебного demo — локальный Ollama с моделью `nomic-embed-text`. Одна и та же embedding model используется при индексации corpus и embedding query; найденные vectors ранжируются по cosine similarity. Ollama не требует API key, но требует запущенный "
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:package-readme.md:0006",
+          "score": 0.757879,
+          "source": "corpus/package-readme.md",
+          "title": "ai_advent_agent",
+          "section": "ai_advent_agent > Semantic memory writes",
+          "line_range": [
+            115,
+            130
+          ],
+          "text_preview": "## Semantic memory writes  Explicit memory layers можно изменять grouped CLI-командами без `DEEPSEEK_API_KEY`, `SimpleAgent` и LLM call:  ```bash uv run --project packages/ai_advent_agent ai-advent-agent memory note add \"короткая заметка\" uv run --project packages/ai_advent_agent ai-advent-agent mem"
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:docs-cli.md:0004",
+          "score": 0.751993,
+          "source": "corpus/docs-cli.md",
+          "title": "CLI актуального harness",
+          "section": "CLI актуального harness > Semantic memory write grouped CLI",
+          "line_range": [
+            96,
+            122
+          ],
+          "text_preview": "## Semantic memory write grouped CLI  Semantic memory commands управляют explicit memory layers без API key:  ```text ai-advent-agent memory note add \"короткая заметка\" ai-advent-agent memory set working KEY VALUE ai-advent-agent memory set long-term KEY VALUE ai-advent-agent memory forget working K"
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:week-04-day-readmes.md:0059",
+          "score": 0.747742,
+          "source": "corpus/week-04-day-readmes.md",
+          "title": "Public README документов Week 04",
+          "section": "Day 20 — Orchestration MCP > Цель задания",
+          "line_range": [
+            899,
+            907
+          ],
+          "text_preview": "## Цель задания  Реализовать модель-агностичный host/orchestrator, который обнаруживает tools четырёх независимых stdio MCP servers, формирует normalized registry, получает от LLM следующий neutral JSON action, валидирует его, маршрутизирует в правильную `ClientSession` и повторяет цикл до сохранени"
+        }
+      ],
+      "baseline_answer": "Для ответа на ваш вопрос о **hash embedding backend** и его отличии от **semantic model** у меня нет доступа к внутренней документации или базе знаний конкретного проекта. Однако я могу объяснить общую логику, исходя из типовой архитектуры систем, работающих с эмбеддингами и семантикой.\n\n**Зачем нужен hash embedding backend?**\n\nHash embedding backend обычно используется для **быстрого и детерминированного сопоставления** (lookup) между идентификаторами (например, ID сущностей, токенов, строк) и их векторными представлениями (эмбеддингами). Его ключевые задачи:\n\n1.  **Скорость и масштабирование:** Хэш-таблицы позволяют получать эмбеддинг за O(1) в среднем, что критично для высоконагруженных систем (рекомендации, поиск, NLP).\n2.  **Фиксированное отображение:** Каждому входному значению (например, слову «кот») ставится в соответствие один и тот же вектор, вычисленный заранее или обученный. Это «словарный» подход.\n3.  **Экономия памяти:** Вместо хранения огромной матрицы эмбеддингов для всех возможных сущностей, хэш-функция может сжимать пространство (например, через hashing trick), хотя это может приводить к коллизиям.\n\n**Почему hash embedding backend не заменяет semantic model?**\n\nSemantic model (семантическая модель) — это, как правило, более сложная система, которая понимает **контекст и отношения между сущностями**, а не просто хранит статичные вектора. Основные причины, почему они не взаимозаменяемы:\n\n1.  **Отсутствие контекста:** Hash embedding backend возвращает один и тот же вектор для одного и того же идентификатора независимо от окружения. Семантическая модель (например, трансформер) генерирует разные эмбеддинги для слова «ключ» в контексте «дверной ключ» и «ключ к решению».\n2.  **Статичность vs. Динамика:** Hash backend — это статическая таблица (или хэш-функция). Semantic model может адаптироваться к новым данным, дообучаться и учитывать сложные зависимости (синонимию, антонимию, иерархии).\n3.  **Разные цели:**\n    *   **Hash backend** — это **инструмент индексации и поиска** по заранее известным векторам. Он отвечает на вопрос: «Какой вектор соответствует этому ID?».\n    *   **Semantic model** — это **инструмент понимания и вывода**. Она отвечает на вопрос: «Что означает этот текст/объект в данном контексте?».\n\n**Итог:** Hash embedding backend — это быстрый слой хранения/извлечения эмбеддингов, а semantic model — это слой, который эти эмбеддинги создает, интерпретирует и связывает со смыслом. Они работают в связке: semantic model может генерировать эмбеддинги, которые затем кэшируются или индексируются через hash backend для быстрого доступа. Замена одного другим невозможна, так как это разные уровни абстракции.\n\n*Если в вашем проекте под «hash embedding backend» подразумевается что-то специфическое (например, конкретная библиотека или метод сжатия), уточните контекст — без доступа к базе знаний я могу дать только общее объяснение.*",
+      "rag_answer": "На основе предоставленного контекста:\n\nHash embedding backend нужен для unit tests, CI и offline smoke, потому что не требует Ollama, сети или секретов и даёт воспроизводимые векторы. Он не заменяет semantic model, потому что не является качественной semantic embedding model: он в основном отражает пересечение токенов и не должен использоваться как финальная оценка semantic retrieval.\n\n**Источники:**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Embedding backends, chunk_id: structure:day-21-document-indexing-readme.md:0003",
+      "quality": {
+        "baseline_expected_points_covered": 1,
+        "rag_expected_points_covered": 2,
+        "expected_sources_found": true,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    },
+    {
+      "id": "q08",
+      "question": "Какие artifacts создаёт pipeline индексации документов?",
+      "expected_points": [
+        "JSON index",
+        "SQLite index",
+        "Index manifest и sample search results"
+      ],
+      "expected_sources": [
+        "day-21-document-indexing-readme.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:day-21-document-indexing-readme.md:0004",
+          "score": 0.800288,
+          "source": "corpus/day-21-document-indexing-readme.md",
+          "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+          "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Artifacts индексирующего pipeline",
+          "line_range": [
+            52,
+            64
+          ],
+          "text_preview": "## Artifacts индексирующего pipeline  Day 21 создавал следующие типы artifacts:  - `fixed-index.json` и `fixed-index.sqlite3` — fixed-size index в двух форматах; - `structure-index.json` и `structure-index.sqlite3` — structure-aware index в двух форматах; - `chunking-comparison.md` — настройки и сра"
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:week-03-day-readmes.md:0015",
+          "score": 0.764919,
+          "source": "corpus/week-03-day-readmes.md",
+          "title": "Public README документов Week 03",
+          "section": "Day 11 — Memory Layers > Результаты",
+          "line_range": [
+            370,
+            376
+          ],
+          "text_preview": "## Результаты  - [Отчёт Day 11](results/day-11-memory-layers.md) - [Демонстрационные artifacts](artifacts/agent-context/)  Краткий результат: агент получил явную модель памяти, где short-term, working и long-term данные хранятся отдельно, управляются командами и отражаются в token reports."
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:week-02-day-readmes.md:0029",
+          "score": 0.761357,
+          "source": "corpus/week-02-day-readmes.md",
+          "title": "Public README документов Week 02",
+          "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+          "line_range": [
+            272,
+            277
+          ],
+          "text_preview": "## Результаты  - [Исторический JSON-контекст](artifacts/agent-context/messages.json) - [Исторические token reports](artifacts/agent-context/token_reports.jsonl) - [Большой файл для проверки переполнения](artifacts/skills-all.md)"
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:day-21-document-indexing-readme.md:0001",
+          "score": 0.752802,
+          "source": "corpus/day-21-document-indexing-readme.md",
+          "title": "Day 21 — Индексация документов: зафиксированный контекст для Day 22",
+          "section": "Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Pipeline индексации",
+          "line_range": [
+            7,
+            23
+          ],
+          "text_preview": "## Pipeline индексации  Индексирующий pipeline читает документы, разбивает их на chunks, строит embedding каждого chunk и сохраняет локальный индекс в JSON и SQLite. JSON удобен для просмотра manifest, текста, vectors и metadata; SQLite хранит те же записи в структурированной локальной базе без отде"
+        }
+      ],
+      "baseline_answer": "Поскольку у меня нет доступа к внутренней базе знаний вашего проекта, я не могу точно назвать конкретные артефакты, которые создаёт ваш pipeline индексации документов. Состав артефактов сильно зависит от архитектуры системы (например, используется ли Elasticsearch, векторная БД, гибридный поиск) и настроек обработки.\n\nОднако, в типичных системах индексации документов pipeline обычно создаёт следующие категории артефактов (с высокой степенью неопределённости для вашего конкретного случая):\n\n1.  **Инвертированный индекс (Inverted Index):** Основной артефакт для полнотекстового поиска (слова → документы).\n2.  **Векторные эмбеддинги (Vector Embeddings):** Если используется семантический поиск, создаются числовые представления документов (обычно в виде файлов или записей в векторной БД).\n3.  **Метаданные и словари:** Например, список уникальных токенов (vocabulary), статистика TF-IDF, информация о частоте терминов.\n4.  **Предобработанные копии документов:** Очищенные, нормализованные или размеченные версии исходных файлов (например, после удаления стоп-слов, стемминга).\n5.  **Логи и отчёты:** Файлы с результатами индексации (количество обработанных документов, ошибки, время выполнения).\n6.  **Кэши:** Промежуточные результаты (например, результаты парсинга разных форматов: PDF, DOCX).\n\n**Рекомендация:** Для точного ответа проверьте конфигурацию вашего pipeline (например, файлы `pipeline.yaml`, `config.json` или код в репозитории проекта).",
+      "rag_answer": "На основе предоставленного контекста, pipeline индексации документов создаёт следующие типы artifacts:\n\n- `fixed-index.json` и `fixed-index.sqlite3` — fixed-size index в двух форматах;\n- `structure-index.json` и `structure-index.sqlite3` — structure-aware index в двух форматах;\n- `chunking-comparison.md` — настройки и сравнение стратегий;\n- `sample-search-results.json` — sample top-k retrieval без генеративной LLM;\n- `index-manifest.json` — corpus statistics, index settings и точный список artifacts.\n\n**Источники:**\n- corpus/day-21-document-indexing-readme.md, section: Day 21 — Индексация документов: зафиксированный контекст для Day 22 > Artifacts индексирующего pipeline, chunk_id: structure:day-21-document-indexing-readme.md:0004",
+      "quality": {
+        "baseline_expected_points_covered": 2,
+        "rag_expected_points_covered": 2,
+        "expected_sources_found": true,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    },
+    {
+      "id": "q09",
+      "question": "Что означает MCP orchestration в контексте Week 4?",
+      "expected_points": [
+        "Клиент планирует цепочку вызовов нескольких MCP servers",
+        "Результат одного шага используется следующим",
+        "Сохраняются trace и итоговый отчёт"
+      ],
+      "expected_sources": [
+        "week-04-day-readmes.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:week-04-day-readmes.md:0058",
+          "score": 0.814267,
+          "source": "corpus/week-04-day-readmes.md",
+          "title": "Public README документов Week 04",
+          "section": "Day 20 — Orchestration MCP > Исходное условие",
+          "line_range": [
+            878,
+            898
+          ],
+          "text_preview": "## Исходное условие  🔥 День 20. Orchestration MCP  Зарегистрируйте несколько MCP-серверов.  Сделайте так, чтобы: 👉 агент выбирал нужный инструмент 👉 корректно маршрутизировал запросы 👉 выполнял длинный флоу взаимодействия  Проверьте: 👉 сценарий, в котором используются инструменты с разных серверов 👉"
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:week-04-day-readmes.md:0060",
+          "score": 0.805824,
+          "source": "corpus/week-04-day-readmes.md",
+          "title": "Public README документов Week 04",
+          "section": "Day 20 — Orchestration MCP > Дополнительные учебные заметки",
+          "line_range": [
+            908,
+            911
+          ],
+          "text_preview": "## Дополнительные учебные заметки  - [Заметки по теме задания](../../../notes/task_notes/day-20-mcp-orchestration.md)"
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:week-04-day-readmes.md:0082",
+          "score": 0.79767,
+          "source": "corpus/week-04-day-readmes.md",
+          "title": "Public README документов Week 04",
+          "section": "Day 20 — Orchestration MCP > Выводы",
+          "line_range": [
+            1271,
+            1276
+          ],
+          "text_preview": "## Выводы  Multi-server MCP orchestration — это ответственность host-а: servers публикуют маленькие deterministic capabilities, registry задаёт проверяемое пространство действий, planner выбирает следующий neutral JSON action, validator охраняет границы, router вызывает правильную session, а evidenc"
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:week-04-day-readmes.md:0071",
+          "score": 0.783403,
+          "source": "corpus/week-04-day-readmes.md",
+          "title": "Public README документов Week 04",
+          "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 4. Запустить online scenario",
+          "line_range": [
+            1103,
+            1126
+          ],
+          "text_preview": "### 4. Запустить online scenario  Показать команду из snapshot-каталога. Это основной сценарий для видео; он требует `DEEPSEEK_API_KEY`, но значение ключа не показывать.  ```bash cd weeks/week-04/day-20-mcp-orchestration/snapshot  uv run ai-advent-scenarios mcp-orchestration-demo \\   --planner llm-j"
+        }
+      ],
+      "baseline_answer": "В контексте Week 4 (предположительно, какого-то курса или программы обучения) термин **MCP orchestration** может означать координацию или управление несколькими **MCP** (Message Control Protocol, Model Context Protocol, или другим специфическим для проекта акронимом). Однако, поскольку у меня нет доступа к внутренней базе знаний вашего проекта, я не могу точно определить, что именно подразумевается под MCP в вашем случае.\n\n**Возможные интерпретации (без привязки к конкретному проекту):**\n- Если MCP — это протокол или система обмена сообщениями, то оркестрация может означать автоматизацию последовательности вызовов, маршрутизацию запросов или синхронизацию между компонентами.\n- Если MCP — это модель или компонент (например, в машинном обучении или микросервисах), то оркестрация может относиться к управлению жизненным циклом, зависимостями или параллельным выполнением задач.\n\n**Рекомендация:**  \nДля точного ответа уточните, что именно обозначает аббревиатура MCP в вашем проекте, и какой контекст (например, учебный модуль, техническая документация) подразумевается под Week 4. Без этих данных любое объяснение будет предположительным.",
+      "rag_answer": "На основе предоставленного контекста, **MCP orchestration** в контексте Week 4 означает:\n\n- Регистрацию нескольких MCP-серверов, где агент выбирает нужный инструмент, корректно маршрутизирует запросы и выполняет длинный флоу взаимодействия (source: corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Исходное условие, chunk_id: structure:week-04-day-readmes.md:0058).\n- Это **multi-server MCP orchestration**, где host отвечает за orchestration: servers публикуют маленькие deterministic capabilities, registry задаёт проверяемое пространство действий, planner выбирает следующий neutral JSON action, validator охраняет границы, router вызывает правильную session, а evidence позволяет доказать выбор и порядок (source: corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Выводы, chunk_id: structure:week-04-day-readmes.md:0082).\n\n**Источники:**\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Исходное условие, chunk_id: structure:week-04-day-readmes.md:0058\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Выводы, chunk_id: structure:week-04-day-readmes.md:0082",
+      "quality": {
+        "baseline_expected_points_covered": 0,
+        "rag_expected_points_covered": 0,
+        "expected_sources_found": true,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    },
+    {
+      "id": "q10",
+      "question": "Как связаны актуальный package и snapshot каждого завершённого дня?",
+      "expected_points": [
+        "Package содержит актуальный переиспользуемый функционал",
+        "Snapshot фиксирует самодостаточное состояние конкретного дня",
+        "Старые snapshots не синхронизируются с будущими изменениями package"
+      ],
+      "expected_sources": [
+        "docs-development-rules.md"
+      ],
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "chunk_id": "structure:docs-development-rules.md:0001",
+          "score": 0.83186,
+          "source": "corpus/docs-development-rules.md",
+          "title": "Правила развития актуального AI harness",
+          "section": "Правила развития актуального AI harness > Разделение ответственности > Snapshots дней",
+          "line_range": [
+            11,
+            26
+          ],
+          "text_preview": "### Snapshots дней  Каталоги `weeks/week-XX/day-YY-topic/snapshot/` — исторические слепки.  После завершения дня snapshot считается неизменяемым.  Он сохраняет архитектуру, команды, зависимости и ограничения конкретного дня.  В snapshot могут оставаться старые CLI-команды, сценарии и runtime-результ"
+        },
+        {
+          "rank": 2,
+          "chunk_id": "structure:week-01-day-readmes.md:0009",
+          "score": 0.807217,
+          "source": "corpus/week-01-day-readmes.md",
+          "title": "Public README документов Week 01",
+          "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+          "line_range": [
+            64,
+            67
+          ],
+          "text_preview": "## Результаты  Результат задания представлен кодом в `snapshot/` и видео-отчётом. Отдельные Markdown-результаты для дня 1 не создавались."
+        },
+        {
+          "rank": 3,
+          "chunk_id": "structure:docs-development-rules.md:0000",
+          "score": 0.803587,
+          "source": "corpus/docs-development-rules.md",
+          "title": "Правила развития актуального AI harness",
+          "section": "Правила развития актуального AI harness > Назначение документа",
+          "line_range": [
+            3,
+            8
+          ],
+          "text_preview": "## Назначение документа  Этот документ описывает текущее правило развития кода в `packages/`.  Он относится к актуальному AI harness и не меняет историю уже завершённых дней курса."
+        },
+        {
+          "rank": 4,
+          "chunk_id": "structure:week-02-day-readmes.md:0009",
+          "score": 0.801962,
+          "source": "corpus/week-02-day-readmes.md",
+          "title": "Public README документов Week 02",
+          "section": "Добавьте DEEPSEEK_API_KEY в .env > Результаты",
+          "line_range": [
+            85,
+            88
+          ],
+          "text_preview": "## Результаты  Результат задания представлен самодостаточным snapshot и видео-отчётом. Отдельные файлы результатов для дня 6 не создавались."
+        }
+      ],
+      "baseline_answer": "Для ответа на ваш вопрос мне не хватает доступа к внутренней базе знаний проекта, поэтому я не могу точно описать связь между актуальным package и snapshot каждого завершённого дня.  \n\nЕсли в проекте под «актуальным package» подразумевается текущая версия зависимостей или сборки, а под «snapshot» — срез состояния на конец дня, то логично предположить, что snapshot фиксирует состояние package на момент завершения дня. Однако без конкретных правил проекта (например, как именно формируется snapshot, обновляется ли package после его создания и т.д.) это лишь догадка.  \n\nПожалуйста, уточните контекст или обратитесь к документации проекта.",
+      "rag_answer": "На основе предоставленного контекста, актуальный package и snapshot каждого завершённого дня связаны следующим образом: snapshot является историческим слепком, который сохраняет архитектуру, команды, зависимости и ограничения конкретного дня. Новые улучшения актуального пакета не копируются в старые snapshots автоматически. Исправление исторического snapshot допускается только по отдельной явной задаче, и нельзя предлагать запуск исторического сценария через актуальный `packages/ai_advent_agent`.\n\n**Источники**\n- source: corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Разделение ответственности > Snapshots дней, chunk_id: structure:docs-development-rules.md:0001",
+      "quality": {
+        "baseline_expected_points_covered": 1,
+        "rag_expected_points_covered": 1,
+        "expected_sources_found": true,
+        "notes": "Эвристика: совпадение значимых слов; это не LLM-as-judge."
+      }
+    }
+  ]
+}

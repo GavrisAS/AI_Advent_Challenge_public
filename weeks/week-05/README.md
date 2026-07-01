@@ -44,7 +44,8 @@ context strategies. Week 03 собрала memory layers, user profile, task sta
 | День | Тема | Статус | Папка |
 |---|---|---|---|
 | day-21 | Индексация документов | ✅ done | [day-21-document-indexing](day-21-document-indexing/) |
-| day-22 — day-25 | Следующие этапы RAG | ⏳ planned | — |
+| day-22 | Первый RAG-запрос | ✅ done | [day-22-first-rag-query](day-22-first-rag-query/) |
+| day-23 | Реранкинг и фильтрация | ✅ done | [day-23-reranking-filtering](day-23-reranking-filtering/) |
 
 ## Ключевые навыки недели
 
@@ -58,5 +59,6 @@ context strategies. Week 03 собрала memory layers, user profile, task sta
 
 ## Итоги недели
 
-Day 21 завершён: создан public-safe corpus, две стратегии chunking, локальные JSON/SQLite индексы,
-Ollama embeddings, deterministic fallback и retrieval sanity checks. Week 05 остаётся в работе.
+Day 21 подготовил индекс. Day 22 добавил полный baseline/RAG QA pipeline, 10 контрольных вопросов,
+grounded prompts, источники и comparison reports. Day 23 добавил query rewrite, threshold,
+heuristic reranking и сравнение plain/improved RAG. Day 24–25 остаются запланированными.

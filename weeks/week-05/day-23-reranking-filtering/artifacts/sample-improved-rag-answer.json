@@ -1,0 +1,283 @@
+{
+  "id": "q03",
+  "question": "Какие проверки нужно запускать перед сдачей изменений с Python-кодом?",
+  "expected_points": [
+    "Запустить make check",
+    "Запустить make safety",
+    "Проверить Python-модули через py_compile"
+  ],
+  "expected_sources": [
+    "docs-development-rules.md"
+  ],
+  "plain_rag": {
+    "retrieved_chunks": [
+      {
+        "rank": 1,
+        "chunk_id": "structure:week-01-day-readmes.md:0002",
+        "similarity_score": 0.784579,
+        "source": "corpus/week-01-day-readmes.md",
+        "title": "Public README документов Week 01",
+        "section": "Day 01 — LLM REST API > Исходное условие",
+        "line_range": [
+          12,
+          29
+        ],
+        "text_preview": "## Исходное условие  🔥 День 1. Первый запрос к LLM через API  СНАЧАЛА ПОСМОТРИТЕ ВИДЕО  Напишите минимальный код, который:  - отправляет запрос в LLM через API; - получает ответ; - выводит его в консоль или простой интерфейс (CLI / Web).  Результат: код, который отправляет запрос в LLM через API и получает ответ.  Формат: видео + код.  Видео к заданию: https://disk.yandex.ru/i/iDqQAsdBVg8y7g"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "structure:week-02-day-readmes.md:0013",
+        "similarity_score": 0.778409,
+        "source": "corpus/week-02-day-readmes.md",
+        "title": "Public README документов Week 02",
+        "section": "Day 07 — Save Context > Цель задания",
+        "line_range": [
+          120,
+          123
+        ],
+        "text_preview": "## Цель задания  Сделать контекст агента долговременным состоянием и проверить восстановление истории после перезапуска."
+      },
+      {
+        "rank": 3,
+        "chunk_id": "structure:week-04-day-readmes.md:0003",
+        "similarity_score": 0.773367,
+        "source": "corpus/week-04-day-readmes.md",
+        "title": "Public README документов Week 04",
+        "section": "Day 16 — Подключение MCP > Цель задания",
+        "line_range": [
+          37,
+          43
+        ],
+        "text_preview": "## Цель задания  Научиться подключать Python-клиент к публичному remote MCP server, выполнять protocol initialization и получать список tools через discovery. Day 16 проверяет только транспорт и `tools/list`: инструменты не вызываются, LLM API не используется, собственный MCP server не создаётся."
+      },
+      {
+        "rank": 4,
+        "chunk_id": "structure:week-02-day-readmes.md:0023",
+        "similarity_score": 0.770605,
+        "source": "corpus/week-02-day-readmes.md",
+        "title": "Public README документов Week 02",
+        "section": "Day 08 — Tokens Accounting > Цель задания",
+        "line_range": [
+          213,
+          216
+        ],
+        "text_preview": "## Цель задания  Сделать контекст агента наблюдаемым: считать токены текущего запроса, истории и ответа, оценивать стоимость и проверять поведение при переполнении контекстного окна."
+      }
+    ],
+    "answer": "Найденных источников недостаточно.\n\n**Источники**  \n- corpus/week-01-day-readmes.md, section: Day 01 — LLM REST API > Исходное условие, chunk_id: structure:week-01-day-readmes.md:0002  \n- corpus/week-02-day-readmes.md, section: Day 07 — Save Context > Цель задания, chunk_id: structure:week-02-day-readmes.md:0013  \n- corpus/week-04-day-readmes.md, section: Day 16 — Подключение MCP > Цель задания, chunk_id: structure:week-04-day-readmes.md:0003  \n- corpus/week-02-day-readmes.md, section: Day 08 — Tokens Accounting > Цель задания, chunk_id: structure:week-02-day-readmes.md:0023",
+    "expected_sources_found": false,
+    "expected_points_covered": 0
+  },
+  "improved_rag": {
+    "original_question": "Какие проверки нужно запускать перед сдачей изменений с Python-кодом?",
+    "rewritten_query": "Какие проверки нужно запускать перед сдачей изменений с Python-кодом? make check make safety pytest py_compile export_public check_repo_safety development rules",
+    "rewrite_mode": "heuristic",
+    "added_terms": [
+      "make check",
+      "make safety",
+      "pytest",
+      "py_compile",
+      "export_public",
+      "check_repo_safety",
+      "development rules"
+    ],
+    "retrieved_before_filter": [
+      {
+        "rank": 1,
+        "chunk_id": "structure:week-04-day-readmes.md:0080",
+        "similarity_score": 0.819417,
+        "source": "corpus/week-04-day-readmes.md",
+        "title": "Public README документов Week 04",
+        "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки",
+        "line_range": [
+          1250,
+          1258
+        ],
+        "text_preview": "### 13. Финальные проверки  ```bash make clean make check make safety python scripts/export_public.py --dry-run ```"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "structure:package-readme.md:0013",
+        "similarity_score": 0.786868,
+        "source": "corpus/package-readme.md",
+        "title": "ai_advent_agent",
+        "section": "ai_advent_agent > Проверки",
+        "line_range": [
+          235,
+          255
+        ],
+        "text_preview": "## Проверки  Из корня репозитория:  ```bash make check make safety ```  Package tests без обязательной сети:  ```bash uv run pytest packages/ai_advent_agent/tests -q ```  Remote MCP integration остаётся opt-in:  ```bash AI_ADVENT_RUN_MCP_INTEGRATION=1 \\ uv run pytest packages/ai_advent_agent/tests/test_mcp_connection.py -q ```"
+      },
+      {
+        "rank": 3,
+        "chunk_id": "structure:project-readme.md:0006",
+        "similarity_score": 0.781184,
+        "source": "corpus/project-readme.md",
+        "title": "AI Advent Challenge",
+        "section": "AI Advent Challenge > Проверки",
+        "line_range": [
+          90,
+          96
+        ],
+        "text_preview": "## Проверки  ```bash make format make check make safety ```"
+      },
+      {
+        "rank": 4,
+        "chunk_id": "structure:docs-development-rules.md:0011",
+        "similarity_score": 0.764224,
+        "source": "corpus/docs-development-rules.md",
+        "title": "Правила развития актуального AI harness",
+        "section": "Правила развития актуального AI harness > Критерии готовности изменений",
+        "line_range": [
+          184,
+          194
+        ],
+        "text_preview": "## Критерии готовности изменений  Функциональность имеет локальные тесты без обязательного обращения к сети.  Документация соответствует фактическим интерфейсам.  Runtime-файлы не появляются в git status.  Завершённые snapshots и day artifacts отсутствуют в diff.  Перед сдачей выполняются `make check` и `make safety`."
+      },
+      {
+        "rank": 5,
+        "chunk_id": "structure:week-01-day-readmes.md:0028",
+        "similarity_score": 0.744731,
+        "source": "corpus/week-01-day-readmes.md",
+        "title": "Public README документов Week 01",
+        "section": "Добавьте DEEPSEEK_API_KEY в .env",
+        "line_range": [
+          204,
+          209
+        ],
+        "text_preview": "# Добавьте DEEPSEEK_API_KEY в .env python REASONING.py ```  Скрипт спросит лимиты токенов и задачу. Если задачу оставить пустой, используется демонстрационная задача про автомойку."
+      },
+      {
+        "rank": 6,
+        "chunk_id": "structure:week-04-day-readmes.md:0003",
+        "similarity_score": 0.743805,
+        "source": "corpus/week-04-day-readmes.md",
+        "title": "Public README документов Week 04",
+        "section": "Day 16 — Подключение MCP > Цель задания",
+        "line_range": [
+          37,
+          43
+        ],
+        "text_preview": "## Цель задания  Научиться подключать Python-клиент к публичному remote MCP server, выполнять protocol initialization и получать список tools через discovery. Day 16 проверяет только транспорт и `tools/list`: инструменты не вызываются, LLM API не используется, собственный MCP server не создаётся."
+      },
+      {
+        "rank": 7,
+        "chunk_id": "structure:week-04-day-readmes.md:0019",
+        "similarity_score": 0.738723,
+        "source": "corpus/week-04-day-readmes.md",
+        "title": "Public README документов Week 04",
+        "section": "Day 17 — Первый инструмент MCP > Реализация",
+        "line_range": [
+          252,
+          278
+        ],
+        "text_preview": "## Реализация  Статус: `✅ done`.  Day 17 продолжает Day 16, но меняет предмет проверки. Day 16 подключался к публичному remote DeepWiki MCP и только получал список tools. Day 17 создаёт собственный локальный MCP server, публикует один read-only tool и вызывает его из приложения.  Выбран mock Tracker API, а не реальный Яндекс.Трекер, Jira, GitHub или CRM. Это убирает OAuth, secrets, rate limits, внешнюю сеть и нестабильность интеграции. Backend полностью deterministic: в памяти есть задачи `AI-16"
+      },
+      {
+        "rank": 8,
+        "chunk_id": "structure:week-02-day-readmes.md:0025",
+        "similarity_score": 0.737537,
+        "source": "corpus/week-02-day-readmes.md",
+        "title": "Public README документов Week 02",
+        "section": "Day 08 — Tokens Accounting > Реализация",
+        "line_range": [
+          221,
+          232
+        ],
+        "text_preview": "## Реализация  День 8 расширяет агента дня 7. В `snapshot/` добавлены:  - `token_counter.py` — оценочный локальный подсчёт токенов; - `token_report.py` — структура отчёта и JSONL-лог; - `scenarios.py` — offline-сценарии роста контекста без API-вызовов; - политики переполнения `error`, `no_trim`, `sliding_window`; - CLI-команды `/tokens`, `/last-report`, `/analyze-file`, `/ask-file`, `/context-mode`.  Точный токенизатор зависит от модели и провайдера, поэтому локальный счётчик используется как оц"
+      }
+    ],
+    "filtered_or_reranked_chunks": [
+      {
+        "rank": 1,
+        "chunk_id": "structure:week-04-day-readmes.md:0080",
+        "similarity_score": 0.819417,
+        "final_rerank_score": 0.904417,
+        "score_components": {
+          "similarity_score": 0.819417,
+          "source_bonus": 0.0,
+          "section_bonus": 0.025,
+          "keyword_bonus": 0.06
+        },
+        "source": "corpus/week-04-day-readmes.md",
+        "title": "Public README документов Week 04",
+        "section": "Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки",
+        "line_range": [
+          1250,
+          1258
+        ],
+        "text_preview": "### 13. Финальные проверки  ```bash make clean make check make safety python scripts/export_public.py --dry-run ```"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "structure:package-readme.md:0013",
+        "similarity_score": 0.786868,
+        "final_rerank_score": 0.886868,
+        "score_components": {
+          "similarity_score": 0.786868,
+          "source_bonus": 0.0,
+          "section_bonus": 0.025,
+          "keyword_bonus": 0.075
+        },
+        "source": "corpus/package-readme.md",
+        "title": "ai_advent_agent",
+        "section": "ai_advent_agent > Проверки",
+        "line_range": [
+          235,
+          255
+        ],
+        "text_preview": "## Проверки  Из корня репозитория:  ```bash make check make safety ```  Package tests без обязательной сети:  ```bash uv run pytest packages/ai_advent_agent/tests -q ```  Remote MCP integration остаётся opt-in:  ```bash AI_ADVENT_RUN_MCP_INTEGRATION=1 \\ uv run pytest packages/ai_advent_agent/tests/test_mcp_connection.py -q ```"
+      },
+      {
+        "rank": 3,
+        "chunk_id": "structure:project-readme.md:0006",
+        "similarity_score": 0.781184,
+        "final_rerank_score": 0.866184,
+        "score_components": {
+          "similarity_score": 0.781184,
+          "source_bonus": 0.0,
+          "section_bonus": 0.025,
+          "keyword_bonus": 0.06
+        },
+        "source": "corpus/project-readme.md",
+        "title": "AI Advent Challenge",
+        "section": "AI Advent Challenge > Проверки",
+        "line_range": [
+          90,
+          96
+        ],
+        "text_preview": "## Проверки  ```bash make format make check make safety ```"
+      },
+      {
+        "rank": 4,
+        "chunk_id": "structure:docs-development-rules.md:0011",
+        "similarity_score": 0.764224,
+        "final_rerank_score": 0.864224,
+        "score_components": {
+          "similarity_score": 0.764224,
+          "source_bonus": 0.0,
+          "section_bonus": 0.025,
+          "keyword_bonus": 0.075
+        },
+        "source": "corpus/docs-development-rules.md",
+        "title": "Правила развития актуального AI harness",
+        "section": "Правила развития актуального AI harness > Критерии готовности изменений",
+        "line_range": [
+          184,
+          194
+        ],
+        "text_preview": "## Критерии готовности изменений  Функциональность имеет локальные тесты без обязательного обращения к сети.  Документация соответствует фактическим интерфейсам.  Runtime-файлы не появляются в git status.  Завершённые snapshots и day artifacts отсутствуют в diff.  Перед сдачей выполняются `make check` и `make safety`."
+      }
+    ],
+    "rejected_chunk_ids": [],
+    "answer": "Перед сдачей изменений с Python-кодом нужно запускать следующие проверки:\n\n- `make check`\n- `make safety`\n\nТакже рекомендуется запускать `make clean` и `python scripts/export_public.py --dry-run`.\n\n**Источники:**\n- corpus/week-04-day-readmes.md, section: Day 20 — Orchestration MCP > Сценарий демонстрации для видео > 13. Финальные проверки, chunk_id: structure:week-04-day-readmes.md:0080\n- corpus/package-readme.md, section: ai_advent_agent > Проверки, chunk_id: structure:package-readme.md:0013\n- corpus/project-readme.md, section: AI Advent Challenge > Проверки, chunk_id: structure:project-readme.md:0006\n- corpus/docs-development-rules.md, section: Правила развития актуального AI harness > Критерии готовности изменений, chunk_id: structure:docs-development-rules.md:0011",
+    "expected_sources_found": true,
+    "expected_points_covered": 2,
+    "fallback_used": false
+  },
+  "comparison": {
+    "source_hit_delta": 1,
+    "expected_points_delta": 2,
+    "summary": "Improved RAG улучшил попадание в источники или покрытие ожидаемых пунктов."
+  }
+}

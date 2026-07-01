@@ -22,10 +22,12 @@
 
 ## Week 05 — RAG
 
-Пятая неделя начата с базового слоя RAG: Day 21 строит воспроизводимый локальный индекс документов.
-Остальные дни будут добавляться после получения отдельных исходных условий.
+Day 21 строит воспроизводимый локальный индекс документов. Day 22 подключает retrieval к LLM,
+сравнивает baseline/RAG и сохраняет источники. Day 23 получен как planned-задание.
 
 | День | Тема | Статус | Папка |
 |---|---|---|---|
 | day-21 | Document Indexing | ✅ done | [week-05/day-21-document-indexing](week-05/day-21-document-indexing/) |
-| day-22 — day-25 | RAG | ⏳ planned | [week-05](week-05/) |
+| day-22 | First RAG Query | ✅ done | [week-05/day-22-first-rag-query](week-05/day-22-first-rag-query/) |
+| day-23 | Reranking and Filtering | ⏳ planned | [week-05/day-23-reranking-filtering](week-05/day-23-reranking-filtering/) |
+| day-24 — day-25 | RAG | ⏳ planned | [week-05](week-05/) |

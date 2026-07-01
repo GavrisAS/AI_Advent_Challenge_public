@@ -1,0 +1,102 @@
+[
+  {
+    "id": "q01",
+    "question": "Как запускать historical day-specific сценарии?",
+    "expected_points": [
+      "Запускать из snapshot соответствующего дня",
+      "Runtime artifacts хранить вне snapshot",
+      "Актуальный package не является historical runner"
+    ],
+    "expected_sources": ["docs-development-rules.md", "docs-cli.md"]
+  },
+  {
+    "id": "q02",
+    "question": "Почему day-specific сценарии не должны запускаться из актуального package?",
+    "expected_points": [
+      "Актуальный package является интегрированным развивающимся harness",
+      "Историческую воспроизводимость обеспечивает snapshot",
+      "В package не нужен ai-advent-scenarios"
+    ],
+    "expected_sources": ["docs-development-rules.md", "docs-cli.md"]
+  },
+  {
+    "id": "q03",
+    "question": "Какие проверки нужно запускать перед сдачей изменений с Python-кодом?",
+    "expected_points": [
+      "Запустить make check",
+      "Запустить make safety",
+      "Проверить Python-модули через py_compile"
+    ],
+    "expected_sources": ["docs-development-rules.md"]
+  },
+  {
+    "id": "q04",
+    "question": "Какие приватные и временные материалы нельзя включать в public export?",
+    "expected_points": [
+      "Не публиковать learning notes и memory-bank",
+      "Не публиковать codex-log и секреты",
+      "Не публиковать .tmp cache и runtime state"
+    ],
+    "expected_sources": ["docs-development-rules.md"]
+  },
+  {
+    "id": "q05",
+    "question": "Какие metadata сохраняются для chunk в локальном document index?",
+    "expected_points": [
+      "source title и section",
+      "chunk_id и стратегия chunking",
+      "line range и hash источника"
+    ],
+    "expected_sources": ["day-21-document-indexing-readme.md"]
+  },
+  {
+    "id": "q06",
+    "question": "Чем fixed-size chunking отличается от structure-aware chunking?",
+    "expected_points": [
+      "Fixed-size режет по ограничению размера и overlap",
+      "Structure-aware учитывает заголовки Markdown и блоки Python",
+      "Structure-aware сохраняет section metadata"
+    ],
+    "expected_sources": ["day-21-document-indexing-readme.md"]
+  },
+  {
+    "id": "q07",
+    "question": "Зачем нужен hash embedding backend и почему он не заменяет semantic model?",
+    "expected_points": [
+      "Hash backend deterministic и подходит для tests offline smoke",
+      "Он использует feature hashing",
+      "Он не является качественной semantic embedding model"
+    ],
+    "expected_sources": ["day-21-document-indexing-readme.md"]
+  },
+  {
+    "id": "q08",
+    "question": "Какие artifacts создаёт pipeline индексации документов?",
+    "expected_points": [
+      "JSON index",
+      "SQLite index",
+      "Index manifest и sample search results"
+    ],
+    "expected_sources": ["day-21-document-indexing-readme.md"]
+  },
+  {
+    "id": "q09",
+    "question": "Что означает MCP orchestration в контексте Week 4?",
+    "expected_points": [
+      "Клиент планирует цепочку вызовов нескольких MCP servers",
+      "Результат одного шага используется следующим",
+      "Сохраняются trace и итоговый отчёт"
+    ],
+    "expected_sources": ["week-04-day-readmes.md"]
+  },
+  {
+    "id": "q10",
+    "question": "Как связаны актуальный package и snapshot каждого завершённого дня?",
+    "expected_points": [
+      "Package содержит актуальный переиспользуемый функционал",
+      "Snapshot фиксирует самодостаточное состояние конкретного дня",
+      "Старые snapshots не синхронизируются с будущими изменениями package"
+    ],
+    "expected_sources": ["docs-development-rules.md"]
+  }
+]
